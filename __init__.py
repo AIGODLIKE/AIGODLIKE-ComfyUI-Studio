@@ -1,0 +1,2 @@
+NODE_CLASS_MAPPINGS = {}
+WEB_DIRECTORY = "./loader"
