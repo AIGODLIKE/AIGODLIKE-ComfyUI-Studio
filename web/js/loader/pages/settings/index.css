@@ -1,0 +1,68 @@
+.settings_page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.settings_page .content_wrapper {
+  flex: 1;
+  overflow: hidden;
+  padding: 1.6vw 2.6vw 1.8vw 2.6vw;
+}
+.settings_page .content_wrapper .content {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.settings_page .content_wrapper .content .setting_items {
+  margin-bottom: 1.3vw;
+}
+.settings_page .content_wrapper .content .setting_items h1 {
+  font-size: 1.4rem;
+}
+.settings_page .content_wrapper .content .setting_items p {
+  color: #bfbfbf;
+}
+.settings_page .content_wrapper .content .setting_items .language_list {
+  display: grid;
+  grid-gap: 0.5vw;
+  padding: 0.3vw;
+  grid-template-columns: repeat(3, 1fr);
+  background: #262626;
+  border-radius: 0.5vw;
+  margin-top: 0.7vw;
+  border: 1px solid #3d3d3d;
+}
+.settings_page .content_wrapper .content .setting_items .language_list .selected {
+  background: #ffc300 !important;
+}
+.settings_page .content_wrapper .content .setting_items .language_list .language_item {
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0.5vw 0.8vw;
+  border-radius: 0.4vw;
+  white-space: nowrap;
+  font-weight: bold;
+  text-align: center;
+}
+.settings_page .content_wrapper .content .setting_items .language_list .language_item:hover {
+  background: #383838;
+}
+.settings_page .content_wrapper .content::-webkit-scrollbar {
+  width: 15px;
+}
+.settings_page .content_wrapper .content::-webkit-scrollbar-thumb:vertical {
+  border-radius: 20px;
+  background: #ff8d1a;
+}
+.settings_page .content_wrapper .content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.settings_page .foot {
+  width: 100%;
+  height: 2.2vw;
+  border-top: 1px solid #383838;
+}

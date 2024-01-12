@@ -1,0 +1,181 @@
+@keyframes tag_input_enter {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 7vw;
+  }
+}
+.shield_table {
+  margin-top: 0.7vw;
+  width: 75vw;
+  border: 1px solid #3d3d3d;
+  background-color: #262626;
+}
+.shield_table .title {
+  height: 2vw;
+  font-size: 1rem;
+  line-height: 2vw;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  border-bottom: 1px solid #3d3d3d;
+  font-weight: bold;
+}
+.shield_table .title .loader_name {
+  padding-left: 1.6vw;
+}
+.shield_table .list {
+  display: grid;
+  grid-gap: 0.5vw;
+  padding: 0.5vw 0 1.6vw 0;
+}
+.shield_table .list .list_item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: flex-start;
+}
+.shield_table .list .list_item .item_name {
+  margin: 0 0.5vw 0 1.6vw;
+  display: flex;
+  height: 2.6vw;
+  padding: 0 0.5vw;
+  text-align: left;
+  align-items: center;
+  background: #1f1f1f;
+  border-radius: 0.3vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.shield_table .list .list_item .shield_model_list {
+  width: 100%;
+  padding-right: 1.8vw;
+}
+.shield_table .list .list_item .shield_model_list .list_area {
+  width: 100%;
+  min-height: 2.6vw;
+  border-radius: 0.3vw;
+  background: #1f1f1f;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0 0.5vw;
+}
+.shield_table .list .list_item .shield_model_list .list_area .model {
+  cursor: default;
+  display: flex;
+  color: #ffffff;
+  background: #383838;
+  border-radius: 0.3vw;
+  padding: 0.2vw 0.5vw;
+  flex: 0;
+  white-space: nowrap;
+  align-items: center;
+  margin: 0.2vw 0.5vw 0.2vw 0;
+  font-size: 1rem;
+}
+.shield_table .list .list_item .shield_model_list .list_area .model em {
+  color: #808080;
+  cursor: pointer;
+  margin-left: 0.5vw;
+  transition: color 0.25s;
+  font-size: 0.7rem;
+}
+.shield_table .list .list_item .shield_model_list .list_area .model em:hover {
+  color: red;
+}
+.shield_table .list .list_item .shield_model_list .list_area .expand {
+  background: #383838 !important;
+  border: 1px solid transparent !important;
+}
+.shield_table .list .list_item .shield_model_list .list_area .expand em {
+  color: #ffffff !important;
+}
+.shield_table .list .list_item .shield_model_list .list_area .add_icon {
+  padding: 0.36vw 0.62vw;
+  border: 1px solid #3d3d3d;
+  border-radius: 0.36vw;
+  background: #1f1f1f;
+  cursor: pointer;
+}
+.shield_table .list .list_item .shield_model_list .list_area .add_icon em {
+  color: #3d3d3d;
+}
+.shield_table .list .list_item .shield_model_list .list_area .add_icon:hover {
+  background: #262626;
+  border: 1px solid #262626;
+}
+.shield_table .list .list_item .shield_model_list .list_area .add_icon:hover em {
+  color: #ffffff;
+}
+.shield_table .list .list_item .shield_model_list .list_area::-webkit-scrollbar {
+  width: 8px;
+}
+.shield_table .list .list_item .shield_model_list .list_area::-webkit-scrollbar-thumb:vertical {
+  border-radius: 20px;
+  background: #808080;
+}
+.shield_table .list .list_item .shield_model_list .list_area::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.shield_table .list .list_item .shield_model_list .list_area::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.model_input {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #1f1f1fcd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.model_input .input_area {
+  width: 40vw;
+  border-radius: 1vw;
+}
+.model_input .input_area .loader_name {
+  font-size: 2rem;
+  color: #ffffff;
+}
+.model_input .input_area .input_box {
+  display: flex;
+  height: 4vw;
+  border: 2px solid #3d3d3d;
+  border-radius: 0.3vw;
+  background: #1f1f1f;
+  margin-top: 1vw;
+  overflow: hidden;
+}
+.model_input .input_area .input_box input {
+  flex: 1;
+  height: 100%;
+  color: #ffffff;
+  padding: 0 1vw;
+  font-size: 1.5rem;
+  background: transparent;
+  border-right: 1px solid #3d3d3d;
+}
+.model_input .input_area .input_box input::-webkit-input-placeholder {
+  font-size: 1rem;
+}
+.model_input .input_area .input_box .button_group {
+  display: flex;
+  justify-content: center;
+}
+.model_input .input_area .input_box .button_group button {
+  background: transparent;
+  font-size: 1.2rem;
+  padding: 0 1vw;
+  color: #ffffff;
+  transition: background 0.2s;
+}
+.model_input .input_area .input_box .button_group button:nth-of-type(1):hover {
+  background: #43cf7c;
+}
+.model_input .input_area .input_box .button_group button:nth-of-type(2):hover {
+  background: #ff5733;
+}
