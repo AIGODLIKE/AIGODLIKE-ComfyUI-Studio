@@ -1,4 +1,5 @@
 import { app } from "../../../../scripts/app.js";
+import BluePrints from "./blueprints.js";
 function enterLoader() {
   window.removeEventListener("message", message);
   const html = `<iframe id="loader_iframe" src="./index.html" frameborder="0">
@@ -27,24 +28,7 @@ function message(event) {
 }
 
 function registerCallBack(node) {
-  if (node.constructor.comfyClass == "CheckpointLoaderSimple") {
-    let btn = node.addWidget("button", "模型管理器", "MMM", callBack);
-    btn._node = node;
-    const f = node.onSerialize;
-    function onSerialize(o) {
-      if (f) {
-        f.apply(this, arguments);
-      }
-      for (var i = 0; i < this.widgets.length; ++i) {
-        if (this.widgets[i] == btn) {
-          delete o.widgets_values[i];
-          o.widgets_values = o.widgets_values.filter((v) => v);
-          break
-        }
-      }
-    }
-    node.onSerialize = onSerialize;
-  }
+  BluePrints.prototype.CSregister(node, callBack);
 }
 
 function styleInit() {
