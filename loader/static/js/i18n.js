@@ -2,6 +2,7 @@ const message = {
   cn: {
     home: {
       head: {
+        search: "搜索",
         title: "本地工作流",
         categoryList: [
           {
@@ -97,7 +98,7 @@ const message = {
       modelShield: {
         title: "模型屏蔽",
         describe:
-          "你可以决定有一些模型不再特定加载器中显示和进行缩略图渲染(这仅对支持的加载器有用)",
+          "你可以决定有一些模型不在特定加载器中显示和进行缩略图渲染(这仅对支持的加载器有用)",
         loaderName: "加载器名称",
         shieldingModel: "屏蔽模型",
         blockInputBoxText: "请输入需要屏蔽的模型文件完整名称(如a.ckpt)",
@@ -115,6 +116,7 @@ const message = {
   en: {
     home: {
       head: {
+        search: "Search",
         title: "Local workflow",
         categoryList: [
           {
@@ -229,6 +231,7 @@ const message = {
   tc: {
     home: {
       head: {
+        search: "搜索",
         title: "本地工作流",
         categoryList: [
           {
@@ -324,7 +327,7 @@ const message = {
       modelShield: {
         title: "模型屏蔽",
         describe:
-          "你可以決定有一些模型不再特定加載器中顯示和進行縮略圖渲染(這僅對支持的加載器有用)",
+          "你可以決定有一些模型不在特定加載器中顯示和進行縮略圖渲染(這僅對支持的加載器有用)",
         loaderName: "加載器名稱",
         shieldingModel: "屏蔽模型",
         blockInputBoxText: "請輸入需要屏蔽的模型文件完整名稱(如a.ckpt)",

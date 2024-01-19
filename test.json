@@ -1,0 +1,103 @@
+{
+    "checkpoints": [
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/AIGODLIKE%E5%8D%8E%E4%B8%BD_4000.ckpt.jpg",
+            "level": "C",
+            "name": "AIGODLIKE华丽_4000.ckpt",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1669769404000.0,
+            "modifyTime": 1669769404000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/GuoFeng3.2_f16.jpg",
+            "level": "B",
+            "name": "GuoFeng3.2_f16.safetensors",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1682329705000.0,
+            "modifyTime": 1682329705000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/Shyaku_Tonades.ckpt.jpg",
+            "level": "S",
+            "name": "Shyaku_Tonades.ckpt",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1682337686000.0,
+            "modifyTime": 1682337686000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/Shyaku_qofo.ckpt.jpg",
+            "level": "A",
+            "name": "Shyaku_qofo.ckpt",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1682337668000.0,
+            "modifyTime": 1682337668000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/sd_xl_turbo_1.0_fp16.jpg",
+            "level": "A",
+            "name": "sd_xl_turbo_1.0_fp16.safetensors",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1701531930732.4548,
+            "modifyTime": 1701531930732.4548,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/wd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors.jpg",
+            "level": "S",
+            "name": "wd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1681375620000.0,
+            "modifyTime": 1681375620000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/wd-1-5-beta2-aesthetic-unclip-l-fp16.safetensors.jpg",
+            "level": "B",
+            "name": "wd-1-5-beta2-aesthetic-unclip-l-fp16.safetensors",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1681375557000.0,
+            "modifyTime": 1681375557000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/wd-1-5-beta2-unclip-h-fp16.safetensors.jpg",
+            "level": "B",
+            "name": "wd-1-5-beta2-unclip-h-fp16.safetensors",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1681375734000.0,
+            "modifyTime": 1681375734000.0,
+            "size": 1
+        },
+        {
+            "cover": "/Volumes/FastTemp/AI/ComfyUI/models/checkpoints/%E8%8B%8D%E7%8E%84.safetensors.jpg",
+            "level": "B",
+            "name": "苍玄.safetensors",
+            "type": "CKPT",
+            "mtype": "checkpoints",
+            "tags": [],
+            "creationTime": 1682337419000.0,
+            "modifyTime": 1682337419000.0,
+            "size": 1
+        }
+    ]
+}

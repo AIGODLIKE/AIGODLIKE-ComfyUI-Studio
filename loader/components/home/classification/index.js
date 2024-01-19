@@ -8,36 +8,60 @@ export default {
     };
   },
   created() {
-    let index = 0;
-    const list = [
-      "模",
-      "型",
-      "你",
-      "是",
-      "上",
-      "就",
-      "和",
-      "发",
-      "人",
-      "有",
-      "怕",
-    ];
-    while (index !== 30) {
-      const randomLength = Math.floor(Math.random() * 8) + 1;
-      let str = "";
-      let strIndex = 0;
-      while (strIndex < randomLength) {
-        const randomPos = Math.floor(Math.random() * 11);
-        str += list[randomPos];
-        strIndex++;
+    // let index = 0;
+    // const list = [
+    //   "模",
+    //   "型",
+    //   "你",
+    //   "是",
+    //   "上",
+    //   "就",
+    //   "和",
+    //   "发",
+    //   "人",
+    //   "有",
+    //   "怕",
+    // ];
+    // while (index !== 30) {
+    //   const randomLength = Math.floor(Math.random() * 8) + 1;
+    //   let str = "";
+    //   let strIndex = 0;
+    //   while (strIndex < randomLength) {
+    //     const randomPos = Math.floor(Math.random() * 11);
+    //     str += list[randomPos];
+    //     strIndex++;
+    //   }
+    //   this.list.push({
+    //     name: str,
+    //   });
+    //   index++;
+    // }
+    let node = window._node;
+    if (node) {
+      let modelLists = node.CSgetModelLists();
+      if (modelLists) {
+        this.updateTag(modelLists);
       }
-      this.list.push({
-        name: str,
-      });
-      index++;
     }
+    this.$parent.$on("updateTag", this.updateTag);
   },
   methods: {
+    // update tag
+    updateTag(list) {
+      if (!list)
+        return;
+
+      let tags = new Set();
+      
+      for (let i = 0; i < list.length; i++) {
+        let model = list[i];
+        for (let j = 0; j < model.tags.length; j++) {
+          tags.add(model.tags[j]);
+        }
+      }
+
+      this.list = Array.from(tags).map((x) => { return { name: x } });
+    },
     // Select all tags
     selectAll() {
       this.selectedList = [];

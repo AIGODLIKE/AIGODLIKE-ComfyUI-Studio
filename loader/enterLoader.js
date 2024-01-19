@@ -12,13 +12,18 @@ function enterLoader() {
 function callBack() {
   console.log("enterLoader", this._node);
   window.removeEventListener("message", message);
-  var realpath = "./extensions/ComfyUI-Model-Manager/index.html";
+  var realpath = "./extensions/ComfyUI-Studio/index.html";
   const html = `<iframe id="loader_iframe" src="${realpath}" frameborder="0"></iframe>`;
-  // window.postMessage({ type: "set_node" }, this._node);
   document.body.insertAdjacentHTML("beforeend", html);
   let w = document.getElementById("loader_iframe").contentWindow;
   w._node = this._node;
   window.addEventListener("message", message);
+  w.focus();
+  w.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      w.parent.postMessage({ type: "close_loader_page" }, "*");
+    }
+  });
 }
 
 function message(event) {

@@ -60,7 +60,7 @@ export default {
                 <div class="left">
                     <span class="title">{{$t("home.head.title")}}</span>
                     <div class="search">
-                        <input type="value" v-model="value" placeholder="Search"   @keydown="handleKeyDown($event)" />
+                        <input type="value" v-model="value" :placeholder="$t('home.head.search')"   @keydown="handleKeyDown($event)" />
                         <span @click="handleSearch"><em class="iconfont icon-search"></em></span>
                     </div>
                     <HoverMenu icon="icon-exchange" :list="$t('home.head.categoryList')" @changeValue= "changeSort" />

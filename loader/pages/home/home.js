@@ -40,7 +40,7 @@ export default {
     },
   },
   template: `<div class="home_page">
-               <div class="content">          
+               <div class="content">
                 <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" />
                 <Classification @changeSearchParameter="changeSearchParameter" />
                 <Model :column="column" :search-parameter="searchParameter" />

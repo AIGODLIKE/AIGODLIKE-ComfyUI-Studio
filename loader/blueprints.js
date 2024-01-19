@@ -1,79 +1,141 @@
 const IMPL = {
     "CheckpointLoaderSimple": {
-        type: "Checkpoint",
-        getWidget: n => n.constructor.nodeData.input.required.ckpt_name[0],
-        setWidget: (n, v) => n.constructor.nodeData.input.required.ckpt_name[0] = v
+        type: "checkpoints",
+        getWidgets: n => n.constructor.nodeData.input.required.ckpt_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "ImageOnlyCheckpointLoader": {
-        type: "Checkpoint",
-        getWidget: n => n.constructor.nodeData.input.required.ckpt_name[0]
+        type: "checkpoints",
+        getWidgets: n => n.constructor.nodeData.input.required.ckpt_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "unCLIPCheckpointLoader": {
-        type: "Checkpoint",
-        getWidget: n => n.constructor.nodeData.input.required.ckpt_name[0]
+        type: "checkpoints",
+        getWidgets: n => n.constructor.nodeData.input.required.ckpt_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "CheckpointLoader": {
-        type: "Checkpoint",
-        getWidget: n => n.constructor.nodeData.input.required.ckpt_name[0]
+        type: "checkpoints",
+        getWidgets: n => n.constructor.nodeData.input.required.ckpt_name[0],
+        getSelWidget: n => n.widgets[1].value,
+        setWidget: (n, v) => n.widgets[1].value = v,
     },
     "VAELoader": {
-        type: "VAE",
-        getWidget: n => n.constructor.nodeData.input.required.vae_name[0]
+        type: "vae",
+        getWidgets: n => n.constructor.nodeData.input.required.vae_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "CLIPVisionLoader": {
-        type: "CLIP Vision",
-        getWidget: n => n.constructor.nodeData.input.required.clip_name[0]
+        type: "clip_vision",
+        getWidgets: n => n.constructor.nodeData.input.required.clip_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "GLIGENLoader": {
-        type: "GLIGEN",
-        getWidget: n => n.constructor.nodeData.input.required.gligen_name[0]
+        type: "gligen",
+        getWidgets: n => n.constructor.nodeData.input.required.gligen_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "ControlNetLoader": {
-        type: "ControlNet",
-        getWidget: n => n.constructor.nodeData.input.required.control_net_name[0]
+        type: "controlnet",
+        getWidgets: n => n.constructor.nodeData.input.required.control_net_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "DiffControlNetLoader": {
-        type: "ControlNet",
-        getWidget: n => n.constructor.nodeData.input.required.control_net_name[0]
+        type: "controlnet",
+        getWidgets: n => n.constructor.nodeData.input.required.control_net_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "LoraLoaderModelOnly": {
-        type: "LoRA",
-        getWidget: n => n.constructor.nodeData.input.required.lora_name[0]
+        type: "loras",
+        getWidgets: n => n.constructor.nodeData.input.required.lora_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "LoraLoader": {
-        type: "LoRA",
-        getWidget: n => n.constructor.nodeData.input.required.lora_name[0]
+        type: "loras",
+        getWidgets: n => n.constructor.nodeData.input.required.lora_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "StyleModelLoader": {
-        type: "StyleModel",
-        getWidget: n => n.constructor.nodeData.input.required.style_model_name[0]
+        type: "style_models",
+        getWidgets: n => n.constructor.nodeData.input.required.style_model_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "UpscaleModelLoader": {
-        type: "Upscale",
-        getWidget: n => n.constructor.nodeData.input.required.model_name[0]
+        type: "upscale_models",
+        getWidgets: n => n.constructor.nodeData.input.required.model_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "HypernetworkLoader": {
-        type: "HyperNetwork",
-        getWidget: n => n.constructor.nodeData.input.required.hypernetwork_name[0]
+        type: "hypernetworks",
+        getWidgets: n => n.constructor.nodeData.input.required.hypernetwork_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "CLIPLoader": {
-        type: "CLIP",
-        getWidget: n => n.constructor.nodeData.input.required.clip_name[0]
+        type: "clip",
+        getWidgets: n => n.constructor.nodeData.input.required.clip_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     // "DualCLIPLoader": {
     //     type: "CLIP",
-    //     getWidget: n => n.constructor.nodeData.input.required.ckpt_name[0]
+    //     getWidgets: n => n.constructor.nodeData.input.required.ckpt_name[0]
     // },
     "UNETLoader": {
-        type: "UNET",
-        getWidget: n => n.constructor.nodeData.input.required.unet_name[0]
+        type: "unet",
+        getWidgets: n => n.constructor.nodeData.input.required.unet_name[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
     "DiffusersLoader": {
-        type: "Diffuser",
-        getWidget: n => n.constructor.nodeData.input.required.model_path[0]
+        type: "diffusers",
+        getWidgets: n => n.constructor.nodeData.input.required.model_path[0],
+        getSelWidget: n => n.widgets[0].value,
+        setWidget: (n, v) => n.widgets[0].value = v,
     },
 }
-
+class ModelConfig {
+    static dirty = {};
+    static config = {};
+    static fetchConfig(mtype, models) {
+        var request = new XMLHttpRequest();
+        request.open("post", "/cs/fetch_config", false);
+        // request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            if (request.status != 200)
+                return;
+            var resp = JSON.parse(request.responseText);
+            ModelConfig.config[mtype] = resp;
+        };
+        let body = { mtype: mtype, models: models };
+        request.send(JSON.stringify(body));
+        // return new Promise(function (resolve, reject) {
+        //     const res = fetch("/cs/fetch_config", { method: "POST", body: JSON.stringify({ mtype: mtype }) });
+        //     res.then(r => r.json()).then(json => {
+        //         if (json.status === "ok") {
+        //             ModelConfig.config[mtype] = json.data;
+        //             resolve(json.data);
+        //         } else {
+        //             reject(json);
+        //         }
+        //     });
+        // });
+    }
+    static async updateConfig() { }
+}
 class BluePrints {
     constructor() {
         this.blueprints = {};
@@ -104,30 +166,48 @@ class BluePrints {
             node[prop] = BluePrints.prototype[prop];
         }
     }
+    CSsetModelWidget(v) {
+        IMPL[this.constructor.type]?.setWidget(this, v);
+    }
     CSgetModelWidgetType() {
         return IMPL[this.constructor.type].type;
     }
-    CSgetModelWidget() {
-        return IMPL[this.constructor.type].getWidget(this);
+    CSgetSelModelWidget() {
+        return IMPL[this.constructor.type].getSelWidget(this);
+    }
+    CSgetModelWidgets() {
+        return IMPL[this.constructor.type].getWidgets(this);
     }
     CSgetModelLists() {
-        console.log(this);
+        // console.log(this);
         let l = [];
-        let modelList = this.CSgetModelWidget();
+        let modelList = this.CSgetModelWidgets();
         if (!modelList) {
             return l;
         }
+        let mtype = this.CSgetModelWidgetType();
+        if (ModelConfig.dirty[mtype] || !ModelConfig.dirty.hasOwnProperty(mtype)) {
+            ModelConfig.fetchConfig(mtype, modelList);
+            ModelConfig.dirty[mtype] = false;
+        }
+        let modelConfigs = ModelConfig.config[mtype];
         for (let i = 0; i < modelList.length; i++) {
+            let name = modelList[i];
+            if (modelConfigs?.hasOwnProperty(name)) {
+                l.push(modelConfigs[name])
+                continue;
+            }
             l.push({
                 cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
                 level: "C",
-                name: modelList[i],
+                name: name,
                 type: "CKPT",
-                tags: ["英雄联盟", "无中生有", "过河拆桥", "发", "是", "怕"],
+                tags: [],
                 creationTime: 1703670704326,
                 modifyTime: 1703670678694,
                 size: 1,
             });
+
         }
         return l;
     }

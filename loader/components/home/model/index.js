@@ -1,5 +1,18 @@
 import ModelList from "./list/index.js";
 import ModelDetail from "./detail/index.js";
+import { api } from "/scripts/api.js";
+async function update_config(model, key, old_data) {
+  try {
+    const body = new FormData();
+    body.append("data", JSON.stringify(model));
+    body.append("old_data", JSON.stringify(old_data));
+    body.append("key", key);
+    api.api_base = "";
+    api.fetchApi("/cs/update_config", { method: "POST", body });
+  } catch (error) {
+    alert(error);
+  }
+}
 
 export default {
   components: { ModelList, ModelDetail },
@@ -23,86 +36,61 @@ export default {
       immediate: true,
       deep: true,
     },
+    allList: {
+      handler(newValue) {
+        this.$parent.$emit("updateTag", newValue);
+      },
+      immediate: true,
+      deep: true,
+    }
   },
   data() {
-    let l = [
-      {
-        cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
-        level: "S",
-        name: "了",
-        type: "CKPT",
-        tags: ["asdasd", "asddasd", "asdas1d", "模", "人"],
-        creationTime: 1703733395793,
-        modifyTime: 1703733395793,
-        size: 2,
-      },
-      {
-        cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
-        level: "A",
-        name: "吗",
-        type: "CKPT",
-        tags: ["英雄联盟", "无中生有", "过河拆桥", "是"],
-        creationTime: 1703670683694,
-        modifyTime: 1703670678694,
-        size: 5,
-      },
-      {
-        cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
-        level: "B",
-        name: "去",
-        type: "CKPT",
-        tags: ["DFFS", "111", "3D", "你"],
-        creationTime: 1703670690694,
-        modifyTime: 1703670678694,
-        size: 1,
-      },
-      {
-        cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
-        level: "D",
-        name: "哦",
-        type: "CKPT",
-        tags: ["2D", "无中生有", "过河拆桥", "和", "型"],
-        creationTime: 1703670695726,
-        modifyTime: 1703670678694,
-        size: 7,
-      },
-      {
-        cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
-        level: "C",
-        name: "怕",
-        type: "CKPT",
-        tags: ["英雄联盟", "无中生有", "过河拆桥", "发", "是", "怕"],
-        creationTime: 1703670704326,
-        modifyTime: 1703670678694,
-        size: 6,
-      },
-    ];
+    let l = [];
     let node = window._node;
+    let selectedWidget = null;
     if (node) {
       l = node.CSgetModelLists();
+      selectedWidget = node.CSgetSelModelWidget();
     }
     return {
       allList: l,
       list: [],
       selectedModel: null,
+      selectedWidget: selectedWidget,
     };
   },
   methods: {
+    // Use model
+    useModel(model) {
+      let node = window._node;
+      if (node) {
+        node.CSsetModelWidget(model.name);
+        window.parent.postMessage({ type: "close_loader_page" }, "*");
+      }
+    },
     // Change name
     modifyName(value) {
+      let old_data = this.selectedModel.name;
       this.selectedModel.name = value;
+      update_config(this.selectedModel, "name", old_data);
     },
     // Change level
     changeLevel(level) {
+      let old_data = this.selectedModel.level;
       this.selectedModel.level = level;
+      update_config(this.selectedModel, "level", old_data);
     },
     // Add tag
     addTag(value) {
+      let old_data = this.selectedModel.tags;
       this.selectedModel.tags.push(value);
+      update_config(this.selectedModel, "tags", old_data);
     },
     // Delete tag
     deleteTag(index) {
+      let old_data = this.selectedModel.tags;
       this.selectedModel.tags.splice(index, 1);
+      update_config(this.selectedModel, "tags", old_data);
     },
     // Modify cover
     modifyCover(coverSrc) {
@@ -125,7 +113,18 @@ export default {
       });
       this.sortList(searchParameter.sort, newList);
       this.list = newList;
-      this.selectedModel = this.list[0] || false;
+      this.selectedModel = false;
+      if (this.selectedWidget === null) {
+        this.selectedModel = this.list[0] || false;
+        return;
+      }
+      for (let i = 0; i < this.list.length; i++) {
+        if (this.list[i].name === this.selectedWidget) {
+          this.selectedModel = this.list[i] || false;
+          return;
+        }
+      }
+
     },
     // Sort data based on conditions
     sortList(orderValue, newList) {
@@ -173,8 +172,8 @@ export default {
   },
   template: `
             <div class="model_display">
-                <ModelList v-if="list.length >0" :list="list" :selected-model="selectedModel" :column="column" @changeSelectedModel="changeSelectedModel" />
-                <ModelDetail :model="selectedModel" @modifyCover="modifyCover" @changeLevel="changeLevel" @modifyName="modifyName" @addTag="addTag" @deleteTag="deleteTag" />
+                <ModelList v-if="list.length >0" :list="list" :selected-model="selectedModel" :column="column" @changeSelectedModel="changeSelectedModel" @useModel="useModel" />
+                <ModelDetail :model="selectedModel" @modifyCover="modifyCover" @changeLevel="changeLevel" @modifyName="modifyName" @addTag="addTag" @deleteTag="deleteTag"  @useModel="useModel" />
                 <div v-if="list.length === 0" class="empty">
                   <p v-if="searchParameter.key">{{$t('home.searchValue')}}: {{searchParameter.key}}</p>
                   {{$t('noResult')}}
