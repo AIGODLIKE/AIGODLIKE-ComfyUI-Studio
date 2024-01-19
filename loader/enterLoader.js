@@ -10,7 +10,7 @@ function enterLoader() {
 }
 
 function callBack() {
-  console.log("enterLoader", this._node);
+  // console.log("enterLoader", this._node);
   window.removeEventListener("message", message);
   var realpath = "./extensions/ComfyUI-Studio/index.html";
   const html = `<iframe id="loader_iframe" src="${realpath}" frameborder="0"></iframe>`;
