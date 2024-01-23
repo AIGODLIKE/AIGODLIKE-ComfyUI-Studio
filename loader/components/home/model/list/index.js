@@ -1,7 +1,7 @@
 import { getLevelInf } from "../../../../static/js/public.js";
 
 export default {
-  props: ["list", "selectedModel", "column"],
+  props: ["curList", "selectedModel", "column"],
   data() {
     return {};
   },
@@ -22,7 +22,7 @@ export default {
   },
   template: `
               <div class="model_list" :style="{'--column':column}">
-                  <div v-for="(item,index) in list" :key = index class="model_item" :class="{'selected':item === selectedModel }" @click="changeModel(item)" @dblclick="useModel(item)" >
+                  <div v-for="(item,index) in curList" :key = index class="model_item" :class="{'selected':item === selectedModel }" @click="changeModel(item)" @dblclick="useModel(item)" >
                       <div class="img_container" :style="{'--height':6 / column * 8.7 + 'vw'}">
                          <img :src="item.cover" alt="cover" />
                       </div>

@@ -2,6 +2,7 @@ import Language from "../../components/settings/language/index.js";
 import ModelShield from "../../components/settings/modelShielding/index.js";
 
 export default {
+  name: "Settings",
   components: {
     Language,
     ModelShield,

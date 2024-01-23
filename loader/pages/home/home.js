@@ -4,6 +4,7 @@ import Model from "../../components/home/model/index.js";
 import Foot from "../../components/home/foot/index.js";
 
 export default {
+  name: "Home",
   components: {
     Head,
     Classification,
@@ -11,7 +12,16 @@ export default {
     Foot,
   },
   data() {
+    let l = [];
+    let node = window._node;
+    let selectedWidget = null;
+    if (node) {
+      l = node.CSgetModelLists();
+      selectedWidget = node.CSgetSelModelWidget();
+    }
     return {
+      allList: l,
+      selectedWidget,
       searchParameter: {
         key: "",
         sort: "",
@@ -20,6 +30,15 @@ export default {
       },
       column: 0,
     };
+  },
+  watch: {
+    allList: {
+      handler(newValue) {
+        this.$emit("updateTag", newValue);
+      },
+      immediate: true,
+      deep: true,
+    }
   },
   mounted() {
     const language = localStorage.getItem("language") || "cn";
@@ -43,8 +62,8 @@ export default {
                <div class="content">
                 <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" />
                 <Classification @changeSearchParameter="changeSearchParameter" />
-                <Model :column="column" :search-parameter="searchParameter" />
+                <Model :column="column" :allList="allList" :selectedWidget="selectedWidget" :search-parameter="searchParameter" />
               </div>
-              <Foot />
+              <Foot :allList="allList" />
              </div>`,
 };

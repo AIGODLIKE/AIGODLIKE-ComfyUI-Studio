@@ -107,8 +107,37 @@ const IMPL = {
     },
 }
 class ModelConfig {
-    static dirty = {};
+    static filter_dirty = {};
+    static filter = {};
+    static config_dirty = {};
     static config = {};
+    static fetchFilter(loader) {
+        let fetch_all = false;
+        if (Object.keys(ModelConfig.filter).length == 0) {
+            fetch_all = true;
+        }
+        var request = new XMLHttpRequest();
+        request.open("post", "/cs/fetch_filter", false);
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            if (request.status != 200)
+                return;
+            if (fetch_all) {
+                var filters = JSON.parse(request.responseText);
+                for (let key in filters) {
+                    ModelConfig.filter[key] = filters[key];
+                    ModelConfig.filter_dirty[key] = false;
+                }
+                return;
+            } else {
+                var resp = JSON.parse(request.responseText);
+                ModelConfig.filter[loader] = resp;
+                ModelConfig.filter_dirty[loader] = false;
+            }
+        };
+        let body = { loader: loader, fetch_all: fetch_all };
+        request.send(JSON.stringify(body));
+    }
     static fetchConfig(mtype, models) {
         var request = new XMLHttpRequest();
         request.open("post", "/cs/fetch_config", false);
@@ -119,20 +148,10 @@ class ModelConfig {
                 return;
             var resp = JSON.parse(request.responseText);
             ModelConfig.config[mtype] = resp;
+            ModelConfig.config_dirty[mtype] = false;
         };
         let body = { mtype: mtype, models: models };
         request.send(JSON.stringify(body));
-        // return new Promise(function (resolve, reject) {
-        //     const res = fetch("/cs/fetch_config", { method: "POST", body: JSON.stringify({ mtype: mtype }) });
-        //     res.then(r => r.json()).then(json => {
-        //         if (json.status === "ok") {
-        //             ModelConfig.config[mtype] = json.data;
-        //             resolve(json.data);
-        //         } else {
-        //             reject(json);
-        //         }
-        //     });
-        // });
     }
     static async updateConfig() { }
 }
@@ -178,6 +197,20 @@ class BluePrints {
     CSgetModelWidgets() {
         return IMPL[this.constructor.type].getWidgets(this);
     }
+    CSgetModelFilters(cur=false) {
+        let loader = this.constructor.type;
+        if (ModelConfig.filter_dirty[loader] || !ModelConfig.filter.hasOwnProperty(loader)) {
+            ModelConfig.fetchFilter(loader);
+        }
+        if (cur) {
+            return ModelConfig.filter[loader] || [];
+        }
+        let filters = [];
+        for (let key in ModelConfig.filter) {
+            filters.push({ name: key, modelList: ModelConfig.filter[key] });
+        }
+        return filters;
+    }
     CSgetModelLists() {
         // console.log(this);
         let l = [];
@@ -186,9 +219,8 @@ class BluePrints {
             return l;
         }
         let mtype = this.CSgetModelWidgetType();
-        if (ModelConfig.dirty[mtype] || !ModelConfig.dirty.hasOwnProperty(mtype)) {
+        if (ModelConfig.config_dirty[mtype] || !ModelConfig.config_dirty.hasOwnProperty(mtype)) {
             ModelConfig.fetchConfig(mtype, modelList);
-            ModelConfig.dirty[mtype] = false;
         }
         let modelConfigs = ModelConfig.config[mtype];
         for (let i = 0; i < modelList.length; i++) {
@@ -198,14 +230,15 @@ class BluePrints {
                 continue;
             }
             l.push({
-                cover: "https://t7.baidu.com/it/u=737555197,308540855&fm=193&f=GIF",
-                level: "C",
+                cover: "",
+                level: "D",
                 name: name,
                 type: "CKPT",
+                mtype: mtype,
                 tags: [],
-                creationTime: 1703670704326,
-                modifyTime: 1703670678694,
-                size: 1,
+                creationTime: 1703733395793,
+                modifyTime: 1703733395793,
+                size: 0,
             });
 
         }

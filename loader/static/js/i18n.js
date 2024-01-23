@@ -80,6 +80,11 @@ const message = {
         ],
         renderText: "一键渲染缩略图",
       },
+      foot: {
+        text: ({named}) => {
+          return `共计模型${named('modelCount')}个，其中${named('noThumbnailCount')}个无缩略图`;
+        }
+      },
       searchValue: "关键词",
       modelDetail: {
         title: "基本信息",
@@ -193,6 +198,11 @@ const message = {
           },
         ],
         renderText: "render",
+      },
+      foot: {
+        text: ({named}) => {
+          return `Total ${named('modelCount')} models, ${named('noThumbnailCount')} models without thumbnails`;
+        }
       },
       searchValue: "keyword",
       modelDetail: {
@@ -308,6 +318,11 @@ const message = {
           },
         ],
         renderText: "壹鍵渲染縮略圖",
+      },
+      foot: {
+        text: ({named}) => {
+          return `共計模型${named('modelCount')}個，其中${named('noThumbnailCount')}個無縮略圖`;
+        }
       },
       searchValue: "關鍵詞",
       modelDetail: {

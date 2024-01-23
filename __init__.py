@@ -31,25 +31,52 @@ CONFIG_PATH = CUR_PATH.joinpath("model-config.json")
 
 
 class ConfigManager:
-    @staticmethod
-    def load_config():
-        if not CONFIG_PATH.exists():
+    def __init__(self, path: Path = None) -> None:
+        self.details = {}
+        self.filters = {}
+        self.path = path if path else CONFIG_PATH
+        self.init_config()
+
+    def init_config(self, config: dict[str, list[dict]] = None):
+        if config is None:
+            config = self.load_config()
+        self.details = config.get("details", {})
+        self.filters = config.get("filters", {})
+
+    def get_detail(self, mtype: str) -> list[dict]:
+        if mtype not in self.details:
+            self.details[mtype] = []
+        return self.details.get(mtype)
+
+    def get_filter(self, loader: str) -> list[dict]:
+        if loader not in self.filters:
+            self.filters[loader] = []
+        return self.filters.get(loader)
+
+    def load_config(self):
+        if not self.path.exists():
             return {}
         try:
-            config: dict[str, list[dict]] = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+            config: dict[str, list[dict]] = json.loads(self.path.read_text(encoding="utf-8"))
         except Exception as e:
             sys.stderr.write(f"ComfyUI-Studio Fetch config: {e}\n")
             sys.stderr.flush()
             config = {}
         return config
 
-    @staticmethod
-    def save_config(config: dict[str, list[dict]]):
+    def dump_config(self, config: dict[str, list[dict]] = None):
+        if not self.path.parent.exists():
+            self.path.parent.mkdir(parents=True)
+        if config is None:
+            config = {"details": self.details, "filters": self.filters}
         try:
-            CONFIG_PATH.write_text(json.dumps(config, indent=4, ensure_ascii=False), encoding="utf-8")
+            self.path.write_text(json.dumps(config, indent=4, ensure_ascii=False), encoding="utf-8")
         except Exception as e:
             sys.stderr.write(f"ComfyUI-Studio Fetch config: {e}\n")
             sys.stderr.flush()
+
+
+CFG_MANAGER = ConfigManager()
 
 
 class ModelManager:
@@ -195,8 +222,7 @@ async def upload_thumbnail(request: web.Request):
         with open(img_path, "wb") as f:
             f.write(image.file.read())
         # 保存缩略图路径到配置文件
-        config = ConfigManager.load_config()
-        model_configs = config.get(mtype, [])
+        model_configs = CFG_MANAGER.get_detail(mtype)
         for mcfg in model_configs:
             name = mcfg.get("name", "")
             if not name:
@@ -205,7 +231,7 @@ async def upload_thumbnail(request: web.Request):
                 continue
             mcfg["cover"] = img_path.as_posix()
             break
-        ConfigManager.save_config(config)
+        CFG_MANAGER.dump_config()
         return web.Response(status=200)
     else:
         return web.Response(status=400)
@@ -229,9 +255,9 @@ async def update_config(request: web.Request):
         sys.stderr.write("ComfyUI-Studio Update config: model type is empty\n")
         sys.stderr.flush()
         return web.Response(status=200)
-    sys.stdout.write(f"Update Config: {data}\n")
-    sys.stdout.write(f"Update Config: {key}\n")
-    sys.stdout.flush()
+    # sys.stdout.write(f"Update Config: {data}\n")
+    # sys.stdout.write(f"Update Config: {key}\n")
+    # sys.stdout.flush()
     mname = data.get("name", "")
     update_data = data.get(key, None)
     if not update_data:
@@ -244,8 +270,7 @@ async def update_config(request: web.Request):
         mname = old_data
         ModelManager.model_rename(mtype, old_data, update_data)
 
-    config = ConfigManager.load_config()
-    model_configs = config.get(mtype, [])
+    model_configs = CFG_MANAGER.get_detail(mtype)
     for mcfg in model_configs:
         name = mcfg.get("name", "")
         if not name:
@@ -254,7 +279,7 @@ async def update_config(request: web.Request):
             continue
         mcfg[key] = update_data
         break
-    ConfigManager.save_config(config)
+    CFG_MANAGER.dump_config()
     return web.Response(status=200)
 
 
@@ -275,7 +300,6 @@ async def fetch_config(request: web.Request):
     # mtype = body.get("mtype", "")
     # sys.stdout.write(f"Fetch Model Config: {mtype}\n")
     # sys.stdout.flush()
-    total_config = ConfigManager.load_config()
     example_cfg = {
         "cover": "xxxx.png",
         "level": "D",
@@ -285,9 +309,9 @@ async def fetch_config(request: web.Request):
         "tags": [],
         "creationTime": 1703733395793,
         "modifyTime": 1703733395793,
-        "size": 1
+        "size": 0
     }
-    model_configs = total_config.get(mtype, [])
+    model_configs = CFG_MANAGER.get_detail(mtype)
     old_model_map = {x.get("name", ""): x for x in model_configs}
     ret_model_map = {}
     append = False
@@ -300,7 +324,7 @@ async def fetch_config(request: web.Request):
             append = True
         mcfg = old_model_map[name]
         old_cover = mcfg.get("cover", "")
-        if not thumbnail_exists(old_cover):
+        if not old_cover or not thumbnail_exists(old_cover):
             img_path = ModelManager.find_thumbnail(name, mtype)
             mcfg["cover"] = urllib.parse.quote(path_to_url(img_path))
         ret_model_map[name] = mcfg
@@ -311,10 +335,54 @@ async def fetch_config(request: web.Request):
         mcfg["size"] = model_path.stat().st_size / 1024**2  # MB
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
-    total_config[mtype] = model_configs
     if append:
-        ConfigManager.save_config(total_config)
+        CFG_MANAGER.dump_config()
     json_data = json.dumps(ret_model_map)
+    return web.Response(status=200, body=json_data)
+
+
+@server.PromptServer.instance.routes.post("/cs/update_filter")
+async def update_filter(request: web.Request):
+    post = await request.post()
+    data = post.get("data")
+    try:
+        data = json.loads(data)
+        if not isinstance(data, list):
+            raise Exception("data is not list")
+    except Exception as e:
+        sys.stderr.write(f"ComfyUI-Studio Update filter: {e}\n")
+        sys.stderr.flush()
+        return web.Response(status=200)
+
+    loader = post.get("loader", "")
+    if not loader:
+        sys.stderr.write("ComfyUI-Studio Update filter: loader type is empty\n")
+        sys.stderr.flush()
+        return web.Response(status=200)
+    filters = CFG_MANAGER.get_filter(loader)
+    filters.clear()
+    filters.extend(data)
+    CFG_MANAGER.dump_config()
+    return web.Response(status=200)
+
+
+@server.PromptServer.instance.routes.post("/cs/fetch_filter")
+async def fetch_filter(request: web.Request):
+    body = await request.read()
+    body = json.loads(body)
+    loader = body.get("loader")
+    if not loader:
+        sys.stderr.write("ComfyUI-Studio Fetch filter: loader type is empty\n")
+        sys.stderr.flush()
+        return web.Response(status=200, body="{}")
+    fetch_all = body.get("fetch_all", False)
+    filters = CFG_MANAGER.get_filter(loader)
+    if not filters:
+        CFG_MANAGER.dump_config()
+    sys.stderr.flush()
+    if fetch_all:
+        filters = CFG_MANAGER.filters
+    json_data = json.dumps(filters)
     return web.Response(status=200, body=json_data)
 
 

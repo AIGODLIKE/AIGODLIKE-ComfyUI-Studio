@@ -1,33 +1,36 @@
+import { api } from "/scripts/api.js";
+async function update_filter(filter, loader, old_data) {
+  try {
+    const body = new FormData();
+    body.append("data", JSON.stringify(filter));
+    body.append("old_data", JSON.stringify(old_data));
+    body.append("loader", loader);
+    api.api_base = "";
+    api.fetchApi("/cs/update_filter", { method: "POST", body });
+  } catch (error) {
+    alert(error);
+  }
+}
 export default {
   data() {
+    let l = [];
+    let node = window._node;
+    if (node) {
+      l = node.CSgetModelFilters();
+    }
     return {
       value: "",
       isAddModel: false,
-      list: [
-        {
-          name: " Checkpoint Loader",
-          modelList: [
-            { name: "Q.ckpt" },
-            { name: "c.ckpt" },
-            { name: "d.ckpt" },
-          ],
-        },
-        {
-          name: " BBCF Loader",
-          modelList: [
-            { name: "Q.ckpt" },
-            { name: "c.ckpt" },
-            { name: "d.ckpt" },
-          ],
-        },
-      ],
+      list: l,
       selectedData: {},
     };
   },
   methods: {
     // Delete blocked model names
     deleteModel(data, index) {
+      let old_data = [...data.modelList];
       data.modelList.splice(index, 1);
+      update_filter(data.modelList, data.name, old_data);
     },
     // Enter to trigger the add masking model event
     handleKeyDown(e) {
@@ -59,7 +62,9 @@ export default {
         });
         return;
       }
-      this.selectedData.modelList.push({ name: this.value });
+      let old_data = [...this.selectedData.modelList];
+      this.selectedData.modelList.push(this.value);
+      update_filter(this.selectedData.modelList, this.selectedData.name, old_data);
       this.value = "";
       this.selectedData = {};
       this.isAddModel = false;
@@ -84,8 +89,8 @@ export default {
                             <div class="item_name">{{loader.name}}</div>
                             <div class="shield_model_list">
                                 <div class="list_area">
-                                    <div v-for="(model,modelIndex) in loader.modelList" :key="model.name" class="model">
-                                        {{ model.name }}
+                                    <div v-for="(model,modelIndex) in loader.modelList" :key="model" class="model">
+                                        {{ model }}
                                     <em class="iconfont icon-close"  @click="deleteModel(loader,modelIndex)"></em>
                                     </div>
                                     <div class="add_icon" @click="editInput(loaderIndex)">

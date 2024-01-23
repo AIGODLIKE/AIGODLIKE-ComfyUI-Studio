@@ -17,6 +17,16 @@ async function update_config(model, key, old_data) {
 export default {
   components: { ModelList, ModelDetail },
   props: {
+    allList: {
+      default: () => {
+        return [];
+      },
+      type: Array,
+    },
+    selectedWidget: {
+      default: null,
+      type: String,
+    },
     column: {
       default: 0,
       type: Number,
@@ -36,27 +46,11 @@ export default {
       immediate: true,
       deep: true,
     },
-    allList: {
-      handler(newValue) {
-        this.$parent.$emit("updateTag", newValue);
-      },
-      immediate: true,
-      deep: true,
-    }
   },
   data() {
-    let l = [];
-    let node = window._node;
-    let selectedWidget = null;
-    if (node) {
-      l = node.CSgetModelLists();
-      selectedWidget = node.CSgetSelModelWidget();
-    }
     return {
-      allList: l,
-      list: [],
+      curList: [],
       selectedModel: null,
-      selectedWidget: selectedWidget,
     };
   },
   methods: {
@@ -109,22 +103,30 @@ export default {
         const tag =
           searchParameter.tags.length === 0 ||
           x.tags.find((tagItem) => searchParameter.tags.includes(tagItem));
+        let node = window._node;
+        if (node) {
+          let filters = node.CSgetModelFilters(true);
+          if (filters?.includes(x.name)) {
+            return false;
+          }
+        }
         return key && level && tag;
       });
       this.sortList(searchParameter.sort, newList);
-      this.list = newList;
+      this.curList = newList;
       this.selectedModel = false;
       if (this.selectedWidget === null) {
-        this.selectedModel = this.list[0] || false;
+        this.selectedModel = this.curList[0] || false;
         return;
       }
-      for (let i = 0; i < this.list.length; i++) {
-        if (this.list[i].name === this.selectedWidget) {
-          this.selectedModel = this.list[i] || false;
+      for (let i = 0; i < this.curList.length; i++) {
+        if (this.curList[i].name === this.selectedWidget) {
+          this.selectedModel = this.curList[i] || false;
           return;
         }
       }
-
+      // selectedWidget 可能不在 curList 中(被屏蔽了)
+      this.selectedModel = this.curList[0] || false;
     },
     // Sort data based on conditions
     sortList(orderValue, newList) {
@@ -172,9 +174,9 @@ export default {
   },
   template: `
             <div class="model_display">
-                <ModelList v-if="list.length >0" :list="list" :selected-model="selectedModel" :column="column" @changeSelectedModel="changeSelectedModel" @useModel="useModel" />
+                <ModelList v-if="curList.length > 0" :curList="curList" :selected-model="selectedModel" :column="column" @changeSelectedModel="changeSelectedModel" @useModel="useModel" />
                 <ModelDetail :model="selectedModel" @modifyCover="modifyCover" @changeLevel="changeLevel" @modifyName="modifyName" @addTag="addTag" @deleteTag="deleteTag"  @useModel="useModel" />
-                <div v-if="list.length === 0" class="empty">
+                <div v-if="curList.length === 0" class="empty">
                   <p v-if="searchParameter.key">{{$t('home.searchValue')}}: {{searchParameter.key}}</p>
                   {{$t('noResult')}}
                 </div>

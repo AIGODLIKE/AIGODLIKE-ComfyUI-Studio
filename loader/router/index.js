@@ -3,10 +3,7 @@ import SettingsPage from "../pages/settings/index.js";
 
 const routes = [
   { path: "", redirect: "/home" },
-  {
-    path: "/home",
-    component: homePage,
-  },
+  { path: "/home", component: homePage, },
   { path: "/settings", component: SettingsPage },
 ];
 const router = new VueRouter({
