@@ -1,3 +1,13 @@
+// fake vue: avoid pre load error
+if (typeof Vue === "undefined") {
+  var Vue = {
+    component: function () { },
+    prototype: {
+      $message: function () { },
+    },
+  };
+}
+
 Vue.component("Left", {
   props: ["title"],
   data() {

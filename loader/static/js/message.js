@@ -1,3 +1,6 @@
+if (typeof Vue === "undefined") {
+  await import("./vue.js");
+}
 import Message from "../../components/public/message.js";
 let modal = null;
 function getMessageInstance() {
