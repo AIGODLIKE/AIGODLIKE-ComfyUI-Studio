@@ -13,6 +13,7 @@ import gc
 import execution
 import folder_paths
 import urllib.parse
+from copy import deepcopy
 from functools import lru_cache
 from aiohttp import web
 from pathlib import Path
@@ -337,7 +338,7 @@ async def fetch_config(request: web.Request):
         old_cover = mcfg.get("cover", "")
         if not old_cover or not thumbnail_exists(old_cover):
             img_path = ModelManager.find_thumbnail(name, mtype)
-            mcfg["cover"] = urllib.parse.quote(path_to_url(img_path))
+            mcfg["cover"] = img_path
             CFG_MANAGER.dirty = True
         ret_model_map[name] = mcfg
         mcfg["mtype"] = mtype
@@ -347,6 +348,9 @@ async def fetch_config(request: web.Request):
         mcfg["size"] = model_path.stat().st_size / 1024**2  # MB
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
+    ret_model_map = deepcopy(ret_model_map)
+    for mcfg in ret_model_map.values():
+        mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
     if CFG_MANAGER.dirty:
         CFG_MANAGER.dump_config()
     json_data = json.dumps(ret_model_map)
@@ -425,11 +429,12 @@ def path_to_url(path):
 
 def add_static_resource(prefix, path, pprefix=MOUNT_ROOT):
     app = server.PromptServer.instance.app
+    prefix = path_to_url(prefix)
     prefix = pprefix + urllib.parse.quote(prefix)
     prefix = path_to_url(prefix)
     # sys.stdout.write("Add static path : " + path + "\n")
     # sys.stdout.write("Add static mpath: " + prefix + "\n")
-    # sys.stdout.write("-" * len("Add static mpath: " + prefix + "\n"))
+    # sys.stdout.write("-" * len("Add static mpath: " + prefix) + "\n")
     # sys.stdout.flush()
     route = web.static(prefix, path, follow_symlinks=True)
     app.add_routes([route])
