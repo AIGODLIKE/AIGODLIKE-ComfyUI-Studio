@@ -1,14 +1,20 @@
 import ModelList from "./list/index.js";
 import ModelDetail from "./detail/index.js";
 import { api } from "/scripts/api.js";
-async function update_config(model, key, old_data) {
+async function update_config(model, key, old_data, cb = resp => { }) {
   try {
     const body = new FormData();
     body.append("data", JSON.stringify(model));
-    body.append("old_data", JSON.stringify(old_data));
+    // 如果 old_data为基本类型 则直接赋值
+    if (typeof old_data !== "object") {
+      body.append("old_data", old_data);
+    } else {
+      body.append("old_data", JSON.stringify(old_data));
+    }
     body.append("key", key);
     api.api_base = "";
-    api.fetchApi("/cs/update_config", { method: "POST", body });
+    let resp = await api.fetchApi("/cs/update_config", { method: "POST", body });
+    cb(resp);
   } catch (error) {
     alert(error);
   }
@@ -63,10 +69,19 @@ export default {
       }
     },
     // Change name
-    modifyName(value) {
-      let old_data = this.selectedModel.name;
-      this.selectedModel.name = value;
-      update_config(this.selectedModel, "name", old_data);
+    modifyName(model, value) {
+      let old_data = model.name;
+      model.name = value;
+      async function cb(resp) {
+        if (resp.status === 200) {
+          let json = await resp.json();
+          if (!json.hasOwnProperty("status") || !json.status) {
+            model.name = old_data;
+            alert("修改失败");
+          }
+        }
+      }
+      update_config(model, "name", old_data, cb);
     },
     // Change level
     changeLevel(level) {

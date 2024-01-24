@@ -32,6 +32,15 @@ export default {
         this.$refs.nameInput.focus();
       });
     },
+    nameInputKeyDown(e) {
+      if (e.key === "Enter") {
+        this.changeName(e);
+      } else if (e.key === "Escape") {
+        this.isReadonly = true;
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    },
     // Submit a new name
     changeName(e) {
       e.preventDefault();
@@ -177,7 +186,7 @@ export default {
               </div>
               <div v-if="isReadonly" class="model_name" @click="editName" title="点击修改">{{model.name}}</div>
               <div v-else class="name_input">
-                <input ref="nameInput" type="value" :value="model.name" @blur="blurInput" />
+                <input ref="nameInput" type="value" :value="model.name" @blur="blurInput"  @keydown="nameInputKeyDown"/>
                 <span @mousedown="changeName($event)"><em class="iconfont icon-edit"></em></span> 
               </div>
               <div class="level_group">

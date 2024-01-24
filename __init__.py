@@ -32,6 +32,7 @@ CONFIG_PATH = CUR_PATH.joinpath("model-config.json")
 
 class ConfigManager:
     def __init__(self, path: Path = None) -> None:
+        self.dirty = False
         self.details = {}
         self.filters = {}
         self.path = path if path else CONFIG_PATH
@@ -43,9 +44,9 @@ class ConfigManager:
         self.details = config.get("details", {})
         self.filters = config.get("filters", {})
 
-    def get_detail(self, mtype: str) -> list[dict]:
+    def get_detail(self, mtype: str) -> dict[dict]:
         if mtype not in self.details:
-            self.details[mtype] = []
+            self.details[mtype] = {}
         return self.details.get(mtype)
 
     def get_filter(self, loader: str) -> list[dict]:
@@ -131,25 +132,29 @@ class ModelManager:
         """
         重命名模型
         """
+        # 模型重命名
         model_path = ModelManager.find_model(mtype, old_name)
         new_model_path = model_path.with_name(new_name)
         model_path.rename(new_model_path)
-        for p in ModelManager.get_paths(mtype):
-            old_model_path = Path(p).joinpath(old_name)
-            if not old_model_path.exists():
-                continue
-            new_model_path = Path(p).joinpath(new_name)
-            old_model_path.rename(new_model_path)
-            break
-        return
-        # 重命名缩略图
-        for p in ModelManager.get_paths(mtype):
-            old_img_path = Path(p).joinpath(old_name + ".png")
-            if not old_img_path.exists():
-                continue
-            new_img_path = Path(p).joinpath(new_name + ".png")
-            old_img_path.rename(new_img_path)
-            break
+        # detail / filters 重命名
+        try:
+            detail = CFG_MANAGER.get_detail(mtype)
+            if old_name in detail:
+                mcfg = detail.pop(old_name)
+                mcfg["name"] = new_name
+                detail[new_name] = mcfg
+                cover = mcfg.get("cover", "")
+                if cover and Path(cover).exists():
+                    cover = Path(cover)
+                    new_cover_name = cover.name.replace(old_name, new_name)
+                    new_cover = cover.with_name(new_cover_name)
+                    cover.rename(new_cover)
+                    mcfg["cover"] = new_cover.as_posix()
+            if old_name in CFG_MANAGER.filters:
+                CFG_MANAGER.filters[new_name] = CFG_MANAGER.filters.pop(old_name)
+        except Exception:
+            import traceback
+            traceback.print_exc()
 
     @staticmethod
     def find_thumbnail(model_name, mtype) -> str:
@@ -202,85 +207,94 @@ class ModelManager:
 async def upload_thumbnail(request: web.Request):
     post = await request.post()
     image = post.get("image")
-    itype = post.get("type")
     mtype = post.get("mtype")
     mname = post.get("name")
-    sys.stdout.write(f"Upload Thumbnail: {itype} {mtype} {mname}\n")
-    sys.stdout.flush()
-    if image and image.file:
-        img_name = image.filename
-        if not img_name:
-            return web.Response(status=400)
-        # 获取模型所在路径
-        model_path = ModelManager.find_model(mtype, mname)
-        if not model_path.exists():
-            return web.Response(status=400)
-        # 移除同名的 .png, .jpg, .jpeg, .gif 缩略图
-        # ModelManager.remove_thumbnails(mtype, mname)
-        # 保存缩略图到模型所在路径
-        img_path = model_path.with_suffix(Path(img_name).suffix)
-        with open(img_path, "wb") as f:
-            f.write(image.file.read())
-        # 保存缩略图路径到配置文件
-        model_configs = CFG_MANAGER.get_detail(mtype)
-        for mcfg in model_configs:
-            name = mcfg.get("name", "")
-            if not name:
-                continue
-            if name != mname:
-                continue
-            mcfg["cover"] = img_path.as_posix()
-            break
+    # itype = post.get("type")
+    # sys.stdout.write(f"Upload Thumbnail: {itype} {mtype} {mname}\n")
+    # sys.stdout.flush()
+    ret_json = {"status": False, "msg": ""}
+    if not image or not image.file:
+        # 无效图片
+        ret_json["msg"] = "Invalid image"
+        return web.Response(status=400, body=json.dumps(ret_json))
+    img_name = image.filename
+    if not img_name:
+        # 无文件名
+        ret_json["msg"] = "Invalid image name"
+        return web.Response(status=400, body=json.dumps(ret_json))
+    model_path = ModelManager.find_model(mtype, mname)
+    if not model_path.exists():
+        # 模型不存在
+        ret_json["msg"] = "Model not found"
+        return web.Response(status=400, body=json.dumps(ret_json))
+    # 移除同名的 .png, .jpg, .jpeg, .gif 缩略图 ?
+    # ModelManager.remove_thumbnails(mtype, mname)
+    # 保存缩略图到模型所在路径
+    img_path = model_path.with_suffix(Path(img_name).suffix)
+    with open(img_path, "wb") as f:
+        f.write(image.file.read())
+    # 保存缩略图路径到配置文件
+    model_configs = CFG_MANAGER.get_detail(mtype)
+    if mname in model_configs:
+        mcfg = model_configs[mname]
+        mcfg["cover"] = img_path.as_posix()
         CFG_MANAGER.dump_config()
-        return web.Response(status=200)
-    else:
-        return web.Response(status=400)
+    ret_json["status"] = True
+    return web.Response(status=200, body=json.dumps(ret_json))
 
 
 @server.PromptServer.instance.routes.post("/cs/update_config")
 async def update_config(request: web.Request):
     post = await request.post()
     data = post.get("data")
+    ret_json = {"status": False, "msg": ""}
     try:
         data = json.loads(data)
         if not isinstance(data, dict):
-            raise Exception("data is not dict")
+            ret_json["msg"] = "data is not dict"
+            sys.stderr.write(f"Update Config: data is not dict {data}\n")
+            return web.Response(status=200, body=json.dumps(ret_json))
     except Exception as e:
         sys.stderr.write(f"ComfyUI-Studio Update config: {e}\n")
-        sys.stderr.flush()
-        return web.Response(status=200)
+        ret_json["msg"] = str(e)
+        return web.Response(status=200, body=json.dumps(ret_json))
     key = post.get("key")
     mtype = data.get("mtype", "")
     if not mtype:
         sys.stderr.write("ComfyUI-Studio Update config: model type is empty\n")
-        sys.stderr.flush()
-        return web.Response(status=200)
+        ret_json["msg"] = "model type is empty"
+        return web.Response(status=200, body=json.dumps(ret_json))
     # sys.stdout.write(f"Update Config: {data}\n")
     # sys.stdout.write(f"Update Config: {key}\n")
     # sys.stdout.flush()
     mname = data.get("name", "")
     update_data = data.get(key, None)
     if not update_data:
-        return web.Response(status=200)
+        ret_json["msg"] = "update data is empty"
+        return web.Response(status=200, body=json.dumps(ret_json))
+    
+    ret_json["status"] = True
+    
     if key == "name":
         # 更新模型名称
         old_data = post.get("old_data", "")
         if not old_data:
+            ret_json["status"] = False
+            ret_json["msg"] = "old data is empty"
             return web.Response(status=200)
         mname = old_data
-        ModelManager.model_rename(mtype, old_data, update_data)
+        try:
+            ModelManager.model_rename(mtype, old_data, update_data)
+        except Exception as e:
+            ret_json["status"] = False
+            ret_json["msg"] = "Model Rename failed:" + str(e)
 
     model_configs = CFG_MANAGER.get_detail(mtype)
-    for mcfg in model_configs:
-        name = mcfg.get("name", "")
-        if not name:
-            continue
-        if name != mname:
-            continue
+    if mname in model_configs:
+        mcfg = model_configs[mname]
         mcfg[key] = update_data
-        break
     CFG_MANAGER.dump_config()
-    return web.Response(status=200)
+    return web.Response(status=200, body=json.dumps(ret_json))
 
 
 @server.PromptServer.instance.routes.post("/cs/fetch_config")
@@ -311,22 +325,20 @@ async def fetch_config(request: web.Request):
         "modifyTime": 1703733395793,
         "size": 0
     }
-    model_configs = CFG_MANAGER.get_detail(mtype)
-    old_model_map = {x.get("name", ""): x for x in model_configs}
+    old_model_map = CFG_MANAGER.get_detail(mtype)
     ret_model_map = {}
-    append = False
     for name in models:
         if name not in old_model_map:
             mcfg = example_cfg.copy()
             mcfg["name"] = name
-            model_configs.append(mcfg)
             old_model_map[name] = mcfg
-            append = True
+            CFG_MANAGER.dirty = True
         mcfg = old_model_map[name]
         old_cover = mcfg.get("cover", "")
         if not old_cover or not thumbnail_exists(old_cover):
             img_path = ModelManager.find_thumbnail(name, mtype)
             mcfg["cover"] = urllib.parse.quote(path_to_url(img_path))
+            CFG_MANAGER.dirty = True
         ret_model_map[name] = mcfg
         mcfg["mtype"] = mtype
         model_path = ModelManager.find_model(mtype, name)
@@ -335,7 +347,7 @@ async def fetch_config(request: web.Request):
         mcfg["size"] = model_path.stat().st_size / 1024**2  # MB
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
-    if append:
+    if CFG_MANAGER.dirty:
         CFG_MANAGER.dump_config()
     json_data = json.dumps(ret_model_map)
     return web.Response(status=200, body=json_data)
