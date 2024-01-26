@@ -60,7 +60,7 @@ export default {
   },
   template: `<div class="home_page">
                <div class="content">
-                <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" />
+                <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :allList="allList" />
                 <Classification @changeSearchParameter="changeSearchParameter" />
                 <Model :column="column" :allList="allList" :selectedWidget="selectedWidget" :search-parameter="searchParameter" />
               </div>

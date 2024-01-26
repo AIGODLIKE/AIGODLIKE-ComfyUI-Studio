@@ -19,6 +19,7 @@ from aiohttp import web
 from pathlib import Path
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
+from .utils import read_json
 """
 1. 上传图片到缩略图文件夹
 2. 获取模型管理配置
@@ -59,7 +60,7 @@ class ConfigManager:
         if not self.path.exists():
             return {}
         try:
-            config: dict[str, list[dict]] = json.loads(self.path.read_text(encoding="utf-8"))
+            config: dict[str, list[dict]] = read_json(self.path)
         except Exception as e:
             sys.stderr.write(f"ComfyUI-Studio Fetch config: {e}\n")
             sys.stderr.flush()
@@ -72,7 +73,7 @@ class ConfigManager:
         if config is None:
             config = {"details": self.details, "filters": self.filters}
         try:
-            self.path.write_text(json.dumps(config, indent=4, ensure_ascii=False), encoding="utf-8")
+            self.path.write_text(json.dumps(config, indent=4, ensure_ascii=False), encoding="utf8")
         except Exception as e:
             sys.stderr.write(f"ComfyUI-Studio Fetch config: {e}\n")
             sys.stderr.flush()
@@ -273,9 +274,9 @@ async def update_config(request: web.Request):
     if not update_data:
         ret_json["msg"] = "update data is empty"
         return web.Response(status=200, body=json.dumps(ret_json))
-    
+
     ret_json["status"] = True
-    
+
     if key == "name":
         # 更新模型名称
         old_data = post.get("old_data", "")
@@ -400,6 +401,33 @@ async def fetch_filter(request: web.Request):
         filters = CFG_MANAGER.filters
     json_data = json.dumps(filters)
     return web.Response(status=200, body=json_data)
+
+
+@server.PromptServer.instance.routes.post("/cs/fetch_workflow")
+async def fetch_workflow(request: web.Request):
+    post = await request.post()
+    mtype = post.get("mtype")
+    if not mtype:
+        sys.stderr.write("ComfyUI-Studio Fetch workflow: workflow type is empty\n")
+        sys.stderr.flush()
+        return web.Response(status=200, body="{}")
+
+    def _find_workflow(mtype, root=CUR_PATH.joinpath("workflow")):
+        # 查找 mtype 对应的缩略图渲染工作流, 工作流均位于 workflow 目录下
+        # 1. 用户 workflow 为 mtype.json
+        # 2. 默认 workflow 为 mtype_def.json
+        # 3. 优先查找 用户定义 workflow
+        usr_workflow = root.joinpath(f"{mtype}.json")
+        if usr_workflow.exists():
+            return read_json(usr_workflow)
+        def_workflow = root.joinpath(f"{mtype}_def.json")
+        if def_workflow.exists():
+            return read_json(def_workflow)
+        return {}
+
+    ret_json = _find_workflow(mtype)
+
+    return web.Response(status=200, body=json.dumps(ret_json))
 
 
 @server.PromptServer.instance.routes.post("/cs/test")
