@@ -1,24 +1,13 @@
-import os
 import json
-import platform
 import sys
-import numpy as np
-import builtins
-import torch
-import shutil
-import hashlib
 import atexit
 import server
-import gc
-import execution
+import time
 import folder_paths
 import urllib.parse
 from copy import deepcopy
-from functools import lru_cache
 from aiohttp import web
 from pathlib import Path
-from PIL import Image
-from PIL.PngImagePlugin import PngInfo
 from .utils import read_json
 """
 1. 上传图片到缩略图文件夹
@@ -352,6 +341,7 @@ async def fetch_config(request: web.Request):
     ret_model_map = deepcopy(ret_model_map)
     for mcfg in ret_model_map.values():
         mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
+        mcfg["cover"] += f"?t={time.time()}"
     if CFG_MANAGER.dirty:
         CFG_MANAGER.dump_config()
     json_data = json.dumps(ret_model_map)
