@@ -341,6 +341,8 @@ async def fetch_config(request: web.Request):
     ret_model_map = deepcopy(ret_model_map)
     for mcfg in ret_model_map.values():
         mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
+        if not mcfg["cover"]:
+            continue
         mcfg["cover"] += f"?t={time.time()}"
     if CFG_MANAGER.dirty:
         CFG_MANAGER.dump_config()
