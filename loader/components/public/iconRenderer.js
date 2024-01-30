@@ -22,9 +22,9 @@ class IconRenderer {
         this.rendering_setter = null;
         this._progress_value = 0;
         this.progress_value_setter = null;
-        
+
         this.stopped = false;
-        
+
         this.executed_cb_user = null;
         api.api_base = "";
         api.addEventListener("progress", this.progress.bind(this));
@@ -39,43 +39,33 @@ class IconRenderer {
         api.addEventListener("error", this.error.bind(this));
     }
     progress({ detail }) {
-        console.log("progress", detail.value / detail.max);
+        // console.log("progress", detail.value / detail.max);
         this.progress_value = detail.value / detail.max;
     }
     executed({ detail }) {
-        console.log("executed", detail);
+        // console.log("executed", detail);
         this.executed_cb(detail);
     }
     execution_start({ detail }) {
-        console.log("execution_start", detail);
+        // console.log("execution_start", detail);
     }
     executing({ detail }) {
-        console.log("executing", detail);
-        if (detail == null) {
-            // 退出渲染
-            this.markEndLoop();
-        }
+        // console.log("executing", detail);
     }
     execution_error({ detail }) {
-        console.log("execution_error", detail);
+        // console.log("execution_error", detail);
         this.markEndLoop();
     }
     execution_cached({ detail }) {
-        console.log("execution_cached", detail);
+        // console.log("execution_cached", detail);
     }
     execution_interrupted({ detail }) {
-        console.log("execution_interrupted", detail);
+        // console.log("execution_interrupted", detail);
         this.markEndLoop();
     }
-    open({ detail }) {
-        console.log("open", detail);
-    }
-    close({ detail }) {
-        console.log("close", detail);
-        this.markEndLoop();
-    }
+    open({ detail }) {}
+    close({ detail }) {}
     error({ detail }) {
-        console.log("error", detail);
         this.markEndLoop();
     }
     async executed_cb(detail) {
@@ -90,9 +80,7 @@ class IconRenderer {
 
             const src = [`/view?filename=${name}`, `type=${type}`, `subfolder=${subfolder}`, `&t=${+new Date()}`].join("&");
             await this.executed_cb_user(src, name);
-        } catch (e) {
-            // console.log(e);
-        }
+        } catch (e) {}
         this.markEndLoop();
     }
     async waitForOneLoop() {
@@ -145,7 +133,7 @@ class IconRenderer {
     }
 
     async executed_cb_user_factory(model, src, name) {
-        console.log(model.name, src);
+        // console.log(model.name, src);
         // 从src 读取image 为File 对象
         const file = await this.fetch_image(src, name);
         // 如果 读图报错 则不上传缩略图
@@ -174,7 +162,7 @@ class IconRenderer {
         try {
             await this.render_ex(inputNode, modelList);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
         this.endRender();
     }

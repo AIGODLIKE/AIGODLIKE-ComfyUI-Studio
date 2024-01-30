@@ -89,7 +89,15 @@ export default {
             alert(this.$t("home.head.renderingAlert"));
             return;
           }
-          renderer.render(window._node, this.allList);
+          const curList = this.allList.filter((x) => {
+            let filters = window._node?.CSgetModelFilters(true);
+            if (filters?.includes(x.name)) {
+              return false;
+            }
+            return true;
+          });
+
+          renderer.render(window._node, curList);
         },
         refuse: () => {},
       });
