@@ -228,6 +228,7 @@ class IconRenderer {
 
     stop() {
         this.stopped = true;
+        api.clearItems("queue");
         api.interrupt();
     }
 }
