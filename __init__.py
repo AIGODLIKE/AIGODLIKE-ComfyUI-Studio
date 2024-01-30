@@ -419,6 +419,9 @@ async def fetch_workflow(request: web.Request):
 
     return web.Response(status=200, body=json.dumps(ret_json))
 
+@server.PromptServer.instance.routes.post("/cs/fetch_ext_name")
+async def fetch_ext_name(request: web.Request):
+    return web.Response(status=200, body=CUR_PATH.name)
 
 @server.PromptServer.instance.routes.post("/cs/test")
 async def test(request: web.Request):
@@ -442,6 +445,7 @@ def path_to_url(path):
         path = "/" + path
     while path.startswith("//"):
         path = path[1:]
+    path = path.replace("//", "/")
     return path
 
 
@@ -450,10 +454,6 @@ def add_static_resource(prefix, path, pprefix=MOUNT_ROOT):
     prefix = path_to_url(prefix)
     prefix = pprefix + urllib.parse.quote(prefix)
     prefix = path_to_url(prefix)
-    # sys.stdout.write("Add static path : " + path + "\n")
-    # sys.stdout.write("Add static mpath: " + prefix + "\n")
-    # sys.stdout.write("-" * len("Add static mpath: " + prefix) + "\n")
-    # sys.stdout.flush()
     route = web.static(prefix, path, follow_symlinks=True)
     app.add_routes([route])
 
@@ -465,7 +465,7 @@ def init():
             if not Path(path).exists():
                 continue
             add_static_resource(path, path, "")
-    add_static_resource("curpath", CUR_PATH.as_posix())
+    add_static_resource("", CUR_PATH.as_posix())
 
 
 init()

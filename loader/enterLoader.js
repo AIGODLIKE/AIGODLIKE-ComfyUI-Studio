@@ -12,7 +12,7 @@ function enterLoader() {
 function callBack() {
   // console.log("enterLoader", this._node);
   window.removeEventListener("message", message);
-  var realpath = "./extensions/ComfyUI-Studio/index.html";
+  var realpath = "/cs/loader/index.html";
   const html = `<iframe id="loader_iframe" src="${realpath}" frameborder="0"></iframe>`;
   document.body.insertAdjacentHTML("beforeend", html);
   let w = document.getElementById("loader_iframe").contentWindow;
@@ -43,7 +43,7 @@ function styleInit() {
     iframe {
       position: absolute;
       left: 0;
-      right: 0;
+      top: 0;
       width: 100%;
       height: 100%;
       z-index: 9999;
@@ -52,7 +52,7 @@ function styleInit() {
     .cs {
       position: absolute;
       left: 0;
-      right: 0;
+      top: 0;
       width: 5vw;
       height: 5vw;
       background: #00ffff;
