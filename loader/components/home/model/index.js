@@ -1,7 +1,7 @@
 import ModelList from "./list/index.js";
 import ModelDetail from "./detail/index.js";
 import { api } from "/scripts/api.js";
-async function update_config(model, key, old_data, cb = resp => { }) {
+async function update_config(model, key, old_data, cb = (resp) => {}) {
   try {
     const body = new FormData();
     body.append("data", JSON.stringify(model));
@@ -13,7 +13,10 @@ async function update_config(model, key, old_data, cb = resp => { }) {
     }
     body.append("key", key);
     api.api_base = "";
-    let resp = await api.fetchApi("/cs/update_config", { method: "POST", body });
+    let resp = await api.fetchApi("/cs/update_config", {
+      method: "POST",
+      body,
+    });
     cb(resp);
   } catch (error) {
     alert(error);
@@ -190,7 +193,7 @@ export default {
   template: `
             <div class="model_display">
                 <ModelList v-if="curList.length > 0" :curList="curList" :selected-model="selectedModel" :column="column" @changeSelectedModel="changeSelectedModel" @useModel="useModel" />
-                <ModelDetail :model="selectedModel" @modifyCover="modifyCover" @changeLevel="changeLevel" @modifyName="modifyName" @addTag="addTag" @deleteTag="deleteTag"  @useModel="useModel" />
+                <ModelDetail v-if="curList.length > 0" :model="selectedModel" @modifyCover="modifyCover" @changeLevel="changeLevel" @modifyName="modifyName" @addTag="addTag" @deleteTag="deleteTag"  @useModel="useModel" />
                 <div v-if="curList.length === 0" class="empty">
                   <p v-if="searchParameter.key">{{$t('home.searchValue')}}: {{searchParameter.key}}</p>
                   {{$t('noResult')}}

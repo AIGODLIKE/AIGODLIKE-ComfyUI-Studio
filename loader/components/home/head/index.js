@@ -16,7 +16,7 @@ const ext = {
     } catch (error) {
       // console.error(error);
     }
-  }
+  },
 };
 ext.register();
 
@@ -79,12 +79,27 @@ export default {
     },
     // One click rendering
     rendering() {
-      let renderer = window.parent.app.CSIconRender;
-      renderer.render(window._node, this.allList);
+      this.$confirmBox({
+        describe: "渲染并覆盖所有缩略图？",
+        accept: () => {
+          let renderer = window.parent.app.CSIconRender;
+          renderer.render(window._node, this.allList);
+        },
+        refuse: () => {},
+      });
     },
     // Close the entire page
     closePage() {
-      window.parent.postMessage({ type: "close_loader_page" }, "*");
+      this.$confirmBox({
+        describe: "关闭窗口并终止正在执行的任务？",
+        accept: () => {
+          // 点击确认调用
+          window.parent.postMessage({ type: "close_loader_page" }, "*");
+        },
+        refuse: () => {
+          // 点击取消调用
+        },
+      });
     },
   },
   template: `<div class="head">
