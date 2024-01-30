@@ -23,7 +23,7 @@ export default {
   template: `
               <div class="model_list" :style="{'--column':column}">
                   <div v-for="(item,index) in curList" :key = index class="model_item" :class="{'selected':item === selectedModel }" @click="changeModel(item)" @dblclick="useModel(item)" >
-                      <div class="img_container" :style="{'--height':6 / column * 8.7 + 'vw'}">
+                      <div class="img_container" :style="{'--height': (73.05 - (column * 0.55)) / column + 'vw' }">
                          <img :src="item.cover" alt="cover" />
                       </div>
                       <div class="model_des" :style="{'--height':6 / column * 3 + 'vw'}">

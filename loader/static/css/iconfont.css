@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-yes:before {
+  content: "\e64b";
+}
+
 .icon-close2:before {
   content: "\e6b1";
 }
@@ -27,6 +31,10 @@
 
 .icon-home:before {
   content: "\e6b0";
+}
+
+.icon-no:before {
+  content: "\e685";
 }
 
 .icon-add:before {

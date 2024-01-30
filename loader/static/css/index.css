@@ -318,7 +318,7 @@ body .loader_page .home_page .content .model_display .model_list .model_item {
 }
 body .loader_page .home_page .content .model_display .model_list .model_item .img_container {
   width: 100%;
-  height: var(--height);
+  height: calc(var(--height) - 4px);
   font-size: 0;
   transition: 0.3s;
 }

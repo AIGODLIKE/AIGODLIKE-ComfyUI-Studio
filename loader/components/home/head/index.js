@@ -16,7 +16,7 @@ const ext = {
     } catch (error) {
       // console.error(error);
     }
-  }
+  },
 };
 ext.register();
 
@@ -79,12 +79,42 @@ export default {
     },
     // One click rendering
     rendering() {
-      let renderer = window.parent.app.CSIconRender;
-      renderer.render(window._node, this.allList);
+      this.$confirmBox({
+        describe: this.$t("home.head.renderAllThumbnails"),
+        refuseText: this.$t("confirmBox.refuseText"),
+        acceptText: this.$t("confirmBox.acceptText"),
+        accept: () => {
+          let renderer = window.parent.app.CSIconRender;
+          if (renderer.rendering) {
+            alert(this.$t("home.head.renderingAlert"));
+            return;
+          }
+          renderer.render(window._node, this.allList);
+        },
+        refuse: () => {},
+      });
     },
     // Close the entire page
     closePage() {
-      window.parent.postMessage({ type: "close_loader_page" }, "*");
+      let renderer = window.parent.app.CSIconRender;
+      if (!renderer?.rendering) {
+        window.parent.postMessage({ type: "close_loader_page" }, "*");
+        return;
+      }
+      this.$confirmBox({
+        describe: this.$t("home.head.closePageConfirm"),
+        refuseText: this.$t("confirmBox.refuseText"),
+        acceptText: this.$t("confirmBox.acceptText"),
+        accept: () => {
+          // 点击确认调用
+          let renderer = window.parent.app.CSIconRender;
+          renderer.stop();
+          window.parent.postMessage({ type: "close_loader_page" }, "*");
+        },
+        refuse: () => {
+          // 点击取消调用
+        },
+      });
     },
   },
   template: `<div class="head">
