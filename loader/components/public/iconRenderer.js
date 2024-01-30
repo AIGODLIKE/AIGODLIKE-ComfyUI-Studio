@@ -1,7 +1,30 @@
 import { api } from "/scripts/api.js";
 class IconRenderer {
+    get rendering() {
+        return this._rendering;
+    }
+    set rendering(v) {
+        this._rendering = v;
+        this.rendering_setter?.(v);
+    }
+    get progress_value() {
+        return this._progress_value;
+    }
+    set progress_value(v) {
+        this._progress_value = v;
+        this.progress_value_setter?.(v);
+    }
+
     constructor(app) {
-        this.finished = true;
+        this.loop_finished = true;
+
+        this._rendering = false;
+        this.rendering_setter = null;
+        this._progress_value = 0;
+        this.progress_value_setter = null;
+        
+        this.stopped = false;
+        
         this.executed_cb_user = null;
         api.api_base = "";
         api.addEventListener("progress", this.progress.bind(this));
@@ -10,12 +33,14 @@ class IconRenderer {
         api.addEventListener("executing", this.executing.bind(this));
         api.addEventListener("execution_error", this.execution_error.bind(this));
         api.addEventListener("execution_cached", this.execution_cached.bind(this));
+        api.addEventListener("execution_interrupted", this.execution_interrupted.bind(this));
         api.addEventListener("open", this.open.bind(this));
         api.addEventListener("close", this.close.bind(this));
         api.addEventListener("error", this.error.bind(this));
     }
     progress({ detail }) {
         console.log("progress", detail.value / detail.max);
+        this.progress_value = detail.value / detail.max;
     }
     executed({ detail }) {
         console.log("executed", detail);
@@ -26,6 +51,10 @@ class IconRenderer {
     }
     executing({ detail }) {
         console.log("executing", detail);
+        if (detail == null) {
+            // 退出渲染
+            this.markEndLoop();
+        }
     }
     execution_error({ detail }) {
         console.log("execution_error", detail);
@@ -33,6 +62,10 @@ class IconRenderer {
     }
     execution_cached({ detail }) {
         console.log("execution_cached", detail);
+    }
+    execution_interrupted({ detail }) {
+        console.log("execution_interrupted", detail);
+        this.markEndLoop();
     }
     open({ detail }) {
         console.log("open", detail);
@@ -55,7 +88,7 @@ class IconRenderer {
             // let fmt = app.getPreviewFormatParam();
             // const src1 = api.apiURL(`/view?filename=${name}&type=${type}&subfolder=${subfolder}${fmt}`);
 
-            const src = [`/view?filename=${name}`, `type=${type}`, `subfolder=${subfolder}`, `&t=${+new Date()}`].join('&');
+            const src = [`/view?filename=${name}`, `type=${type}`, `subfolder=${subfolder}`, `&t=${+new Date()}`].join("&");
             await this.executed_cb_user(src, name);
         } catch (e) {
             // console.log(e);
@@ -63,17 +96,18 @@ class IconRenderer {
         this.markEndLoop();
     }
     async waitForOneLoop() {
-        while (this.finished !== true) {
-            await new Promise(resolve => setTimeout(resolve, 100));
+        while (this.loop_finished !== true) {
+            await new Promise((resolve) => setTimeout(resolve, 100));
         }
     }
     markNewLoop() {
-        this.finished = false;
+        this.progress_value = 0;
+        this.loop_finished = false;
     }
     markEndLoop() {
-        this.finished = true;
+        this.loop_finished = true;
+        this.progress_value = 0;
     }
-
 
     // -----------------------------------------------------------
 
@@ -96,7 +130,7 @@ class IconRenderer {
             var xhr = new XMLHttpRequest();
             let url = new URL(src, window.location.origin);
             xhr.open("GET", url);
-            xhr.setRequestHeader('Accept', 'image/jpeg');
+            xhr.setRequestHeader("Accept", "image/jpeg");
             xhr.responseType = "blob";
             xhr.onload = () => {
                 blob = xhr.response;
@@ -104,7 +138,7 @@ class IconRenderer {
                 resolve(file);
             };
             xhr.onerror = (e) => {
-                reject(e)
+                reject(e);
             };
             xhr.send();
         });
@@ -124,7 +158,10 @@ class IconRenderer {
             body.append("type", model.type);
             body.append("mtype", model.mtype);
             body.append("name", model.name);
-            await api.fetchApi("/cs/upload_thumbnail", { method: "POST", body });
+            await api.fetchApi("/cs/upload_thumbnail", {
+                method: "POST",
+                body,
+            });
             model.cover = src;
         } catch (error) {
             alert(error);
@@ -132,6 +169,29 @@ class IconRenderer {
     }
 
     async render(inputNode, modelList) {
+        if (this.rendering || !this.loop_finished) return;
+        this.startRender();
+        try {
+            await this.render_ex(inputNode, modelList);
+        } catch (e) {
+            console.log(e);
+        }
+        this.endRender();
+    }
+
+    startRender() {
+        this.stopped = false;
+        this.rendering = true;
+        this.progress_value = 0;
+    }
+
+    endRender() {
+        this.stopped = false;
+        this.rendering = false;
+        this.progress_value = 0;
+    }
+
+    async render_ex(inputNode, modelList) {
         if (!modelList || !modelList.length) {
             return;
         }
@@ -140,6 +200,9 @@ class IconRenderer {
         for await (let model of modelList) {
             inputNode.CSsetModelWidget(model.name);
             await this.waitForOneLoop();
+            if (this.stopped) {
+                break;
+            }
             this.markNewLoop();
             this.executed_cb_user = this.executed_cb_user_factory.bind(this, model);
             await app.queuePrompt(1);
@@ -152,8 +215,7 @@ class IconRenderer {
                     let nodeError = lastNodeErrors[k];
                     msg.push(nodeError.class_type);
                     for (let e of nodeError.errors) {
-                        if (!e.message)
-                            continue
+                        if (!e.message) continue;
                         msg.push("    " + e.message);
                     }
                 }
@@ -161,6 +223,12 @@ class IconRenderer {
                 break;
             }
         }
+        await this.waitForOneLoop(); // 等待最后一个执行完成
+    }
+
+    stop() {
+        this.stopped = true;
+        api.interrupt();
     }
 }
 export default IconRenderer;

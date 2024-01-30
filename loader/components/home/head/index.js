@@ -80,9 +80,15 @@ export default {
     // One click rendering
     rendering() {
       this.$confirmBox({
-        describe: "渲染并覆盖所有缩略图？",
+        describe: this.$t("home.head.renderAllThumbnails"),
+        refuseText: this.$t("confirmBox.refuseText"),
+        acceptText: this.$t("confirmBox.acceptText"),
         accept: () => {
           let renderer = window.parent.app.CSIconRender;
+          if (renderer.rendering) {
+            alert(this.$t("home.head.renderingAlert"));
+            return;
+          }
           renderer.render(window._node, this.allList);
         },
         refuse: () => {},
@@ -90,10 +96,19 @@ export default {
     },
     // Close the entire page
     closePage() {
+      let renderer = window.parent.app.CSIconRender;
+      if (!renderer?.rendering) {
+        window.parent.postMessage({ type: "close_loader_page" }, "*");
+        return;
+      }
       this.$confirmBox({
-        describe: "关闭窗口并终止正在执行的任务？",
+        describe: this.$t("home.head.closePageConfirm"),
+        refuseText: this.$t("confirmBox.refuseText"),
+        acceptText: this.$t("confirmBox.acceptText"),
         accept: () => {
           // 点击确认调用
+          let renderer = window.parent.app.CSIconRender;
+          renderer.stop();
           window.parent.postMessage({ type: "close_loader_page" }, "*");
         },
         refuse: () => {

@@ -79,11 +79,16 @@ const message = {
           },
         ],
         renderText: "一键渲染缩略图",
+        renderAllThumbnails: "渲染并覆盖所有缩略图？",
+        renderingAlert: "正在渲染缩略图，请稍后再试",
+        closePageConfirm: "关闭窗口并终止正在执行的任务？",
       },
       foot: {
-        text: ({named}) => {
-          return `共计模型${named('modelCount')}个，其中${named('noThumbnailCount')}个无缩略图`;
-        }
+        text: ({ named }) => {
+          return `共计模型${named("modelCount")}个，其中${named(
+            "noThumbnailCount"
+          )}个无缩略图`;
+        },
       },
       searchValue: "关键词",
       modelDetail: {
@@ -117,6 +122,11 @@ const message = {
       fileNameExists: "文件名存在",
     },
     noResult: "未找到结果",
+    confirmBox: {
+      describe: "你确定要退出当前操作吗",
+      refuseText: "取消",
+      acceptText: "确定",
+    },
   },
   en: {
     home: {
@@ -198,11 +208,16 @@ const message = {
           },
         ],
         renderText: "render",
+        renderAllThumbnails: "Render and overwrite all thumbnails?",
+        renderingAlert: "Rendering thumbnails, please try again later",
+        closePageConfirm: "Close the window and terminate the task?",
       },
       foot: {
-        text: ({named}) => {
-          return `Total ${named('modelCount')} models, ${named('noThumbnailCount')} models without thumbnails`;
-        }
+        text: ({ named }) => {
+          return `Total ${named("modelCount")} models, ${named(
+            "noThumbnailCount"
+          )} models without thumbnails`;
+        },
       },
       searchValue: "keyword",
       modelDetail: {
@@ -237,6 +252,11 @@ const message = {
       fileNameExists: "File name exists",
     },
     noResult: "No results found",
+    confirmBox: {
+      describe: "Are you sure you want to exit the current operation",
+      refuseText: "Cancel",
+      acceptText: "Confirm",
+    },
   },
   tc: {
     home: {
@@ -318,11 +338,16 @@ const message = {
           },
         ],
         renderText: "壹鍵渲染縮略圖",
+        renderAllThumbnails: "渲染並覆蓋所有縮略圖？",
+        renderingAlert: "正在渲染縮略圖，請稍後再試",
+        closePageConfirm: "關閉窗口並終止正在執行的任務？",
       },
       foot: {
-        text: ({named}) => {
-          return `共計模型${named('modelCount')}個，其中${named('noThumbnailCount')}個無縮略圖`;
-        }
+        text: ({ named }) => {
+          return `共計模型${named("modelCount")}個，其中${named(
+            "noThumbnailCount"
+          )}個無縮略圖`;
+        },
       },
       searchValue: "關鍵詞",
       modelDetail: {
@@ -356,6 +381,11 @@ const message = {
       fileNameExists: "文件名存在",
     },
     noResult: "未找到結果",
+    confirmBox: {
+      describe: "你確定要退出當前操作嗎",
+      refuseText: "取消",
+      acceptText: "確定",
+    },
   },
 };
 export default message;

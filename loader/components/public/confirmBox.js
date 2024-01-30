@@ -127,6 +127,8 @@ export default {
     return {
       accept: null,
       refuse: null,
+      acceptText: "確定",
+      refuseText: "取消",
       describe: "你确定要退出当前操作吗",
     };
   },
@@ -147,21 +149,21 @@ export default {
       this.$el.parentNode.removeChild(this.$el);
     },
   },
-  template: `  <div ref="confimrBox" class="confirm_mask_box">
-  <div
-    class="confirm_area"
-  >
-    <div class="describe" v-html="describe"></div>
-    <div class="button_group">
-        <div class="accept button_item"  @click="determine">
-            <span class="icon"> <em class="iconfont icon-yes"></span>
-            <span class="text">确认</span>
-        </div>
-        <div class="refuse button_item" @click="cancel">
-          <span class="text">取消</span>
-          <span class="icon"> <em class="iconfont  icon-no"></span>
-        </div>
-    </div>
-  </div>
-</div>`,
+  template: `
+  <div ref="confimrBox" class="confirm_mask_box">
+	<div class="confirm_area" >
+		<div class="describe" v-html="describe">
+		</div>
+		<div class="button_group">
+			<div class="accept button_item" @click="determine">
+				<span class="icon"><em class="iconfont icon-yes"></span>
+				<span class="text">{{acceptText}}</span>
+			</div>
+			<div class="refuse button_item" @click="cancel">
+				<span class="text">{{refuseText}}</span>
+				<span class="icon"><em class="iconfont icon-no"></span>
+			</div>
+		</div>
+	</div>
+  </div>`,
 };
