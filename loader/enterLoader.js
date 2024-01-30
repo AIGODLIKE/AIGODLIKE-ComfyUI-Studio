@@ -1,14 +1,5 @@
 import { app } from "../../../../scripts/app.js";
 import BluePrints from "./blueprints.js";
-function enterLoader() {
-  window.removeEventListener("message", message);
-  const html = `<iframe id="loader_iframe" src="./index.html" frameborder="0">
-  </iframe>`;
-  document.body.insertAdjacentHTML("beforeend", html);
-
-  window.addEventListener("message", message);
-}
-
 function callBack() {
   // console.log("enterLoader", this._node);
   window.removeEventListener("message", message);
@@ -48,14 +39,6 @@ function styleInit() {
       height: 100%;
       z-index: 9999;
       background: #000000;
-    }
-    .cs {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 5vw;
-      height: 5vw;
-      background: #00ffff;
     }
   `;
   document.head.appendChild(style);
