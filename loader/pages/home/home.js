@@ -20,11 +20,6 @@ export default {
       selectedWidget = node.CSgetSelModelWidget();
     }
     let renderer = window.parent.app.CSIconRender;
-    if (renderer) {
-      renderer.rendering_setter = (value) => {
-        this.footShow = value;
-      };
-    }
     return {
       allList: l,
       selectedWidget,
@@ -35,7 +30,7 @@ export default {
         tags: [],
       },
       column: 0,
-      footShow: false,
+      renderer: renderer,
     };
   },
   watch: {
@@ -71,6 +66,6 @@ export default {
                 <Classification @changeSearchParameter="changeSearchParameter" />
                 <Model :column="column" :allList="allList" :selectedWidget="selectedWidget" :search-parameter="searchParameter" />
               </div>
-              <Foot :allList="allList" v-show="footShow"/>
+              <Foot :allList="allList" v-show="renderer.rendering"/>
              </div>`,
 };
