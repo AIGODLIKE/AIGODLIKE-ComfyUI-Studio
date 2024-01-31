@@ -1,48 +1,48 @@
 // fake vue: avoid pre load error
 if (typeof Vue === "undefined") {
-  var Vue = {
-    component: function () { },
-    prototype: {
-      $message: function () { },
-    },
-  };
+    var Vue = {
+        component: function () {},
+        prototype: {
+            $message: function () {},
+        },
+    };
 }
 
 Vue.component("Left", {
-  props: ["title"],
-  data() {
-    return {
-      selectedIndex: 0,
-      list: [
-        {
-          icon: "icon-home",
-          path: "/home",
+    props: ["title"],
+    data() {
+        return {
+            selectedIndex: 0,
+            list: [
+                {
+                    icon: "icon-home",
+                    path: "/home",
+                },
+                {
+                    icon: "icon-setting",
+                    path: "/settings",
+                },
+            ],
+        };
+    },
+    computed: {
+        language() {
+            return this.$store.state.config.language;
         },
-        {
-          icon: "icon-setting",
-          path: "/settings",
+    },
+    methods: {
+        // Change the selected menu
+        changeMenu(item, index) {
+            this.selectedIndex = index;
+            this.$router.push(item.path);
         },
-      ],
-    };
-  },
-  computed: {
-    language() {
-      return this.$store.state.config.language;
+        // Change language
+        changeLanguage(language) {
+            this.$i18n.locale = language;
+            this.$store.commit("config/updateLanguage", language);
+        },
     },
-  },
-  methods: {
-    // Change the selected menu
-    changeMenu(item, index) {
-      this.selectedIndex = index;
-      this.$router.push(item.path);
-    },
-    // Change language
-    changeLanguage(language) {
-      this.$i18n.locale = language;
-      this.$store.commit("config/updateLanguage", language);
-    },
-  },
-  template: `<div class="left_menu">
+    template: `<div class="left_menu">
                 <img class="item" src="./static/image/logo.webp">
                 <ul>
                     <li v-for="(item,index) in list" :key=index class="item" :class="{selected:index === selectedIndex}"

@@ -122,34 +122,34 @@ const styleInnerHtml = `
 `;
 
 export default {
-  name: "ConfirmBox",
-  data() {
-    return {
-      accept: null,
-      refuse: null,
-      acceptText: "確定",
-      refuseText: "取消",
-      describe: "你确定要退出当前操作吗",
-    };
-  },
-  mounted() {
-    const style = document.createElement("style");
-    style.innerHTML = styleInnerHtml;
-    this.$refs.confimrBox.appendChild(style);
-  },
-  methods: {
-    determine() {
-      this.accept && this.accept();
-      this.$destroy();
-      this.$el.parentNode.removeChild(this.$el);
+    name: "ConfirmBox",
+    data() {
+        return {
+            accept: null,
+            refuse: null,
+            acceptText: "確定",
+            refuseText: "取消",
+            describe: "你确定要退出当前操作吗",
+        };
     },
-    cancel() {
-      this.refuse && this.refuse();
-      this.$destroy();
-      this.$el.parentNode.removeChild(this.$el);
+    mounted() {
+        const style = document.createElement("style");
+        style.innerHTML = styleInnerHtml;
+        this.$refs.confimrBox.appendChild(style);
     },
-  },
-  template: `
+    methods: {
+        determine() {
+            this.accept && this.accept();
+            this.$destroy();
+            this.$el.parentNode.removeChild(this.$el);
+        },
+        cancel() {
+            this.refuse && this.refuse();
+            this.$destroy();
+            this.$el.parentNode.removeChild(this.$el);
+        },
+    },
+    template: `
   <div ref="confimrBox" class="confirm_mask_box">
 	<div class="confirm_area" >
 		<div class="describe" v-html="describe">

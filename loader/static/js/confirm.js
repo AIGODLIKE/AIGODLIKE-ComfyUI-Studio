@@ -1,5 +1,5 @@
 if (typeof Vue === "undefined") {
-  await import("./vue.js");
+    await import("./vue.js");
 }
 import confirmBox from "../../components/public/confirmBox.js";
 
@@ -12,12 +12,12 @@ import confirmBox from "../../components/public/confirmBox.js";
 };
 */
 Vue.prototype.$confirmBox = function (option) {
-  const ConfirmBox = Vue.extend(confirmBox);
-  const instance = new ConfirmBox({
-    data: {
-      ...option,
-    },
-  });
-  const modal = instance.$mount();
-  document.body.appendChild(modal.$el);
+    const ConfirmBox = Vue.extend(confirmBox);
+    const instance = new ConfirmBox({
+        data: {
+            ...option,
+        },
+    });
+    const modal = instance.$mount();
+    document.body.appendChild(modal.$el);
 };

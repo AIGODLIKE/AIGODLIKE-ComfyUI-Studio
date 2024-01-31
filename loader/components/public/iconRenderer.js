@@ -40,7 +40,7 @@ class IconRenderer {
     }
     progress({ detail }) {
         // console.log("progress", detail.value / detail.max);
-        this.progress_value = detail.value / detail.max * 100;
+        this.progress_value = (detail.value / detail.max) * 100;
     }
     executed({ detail }) {
         // console.log("executed", detail);

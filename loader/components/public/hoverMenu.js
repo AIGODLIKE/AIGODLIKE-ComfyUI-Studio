@@ -54,50 +54,50 @@ const styleInnerHtml = `
 }
   `;
 export default {
-  props: {
-    icon: {
-      default: "",
-      type: String,
+    props: {
+        icon: {
+            default: "",
+            type: String,
+        },
+        value: {
+            default: 0,
+            type: Number,
+        },
+        list: {
+            default: () => {
+                return [];
+            },
+            type: Array,
+        },
+        fontSize: {
+            default: "1rem",
+            type: String,
+        },
     },
-    value: {
-      default: 0,
-      type: Number,
+    data() {
+        return {
+            index: 0,
+            isExpand: false,
+        };
     },
-    list: {
-      default: () => {
-        return [];
-      },
-      type: Array,
+    watch: {
+        value(newValue) {
+            this.selectItem(newValue);
+        },
     },
-    fontSize: {
-      default: "1rem",
-      type: String,
+    mounted() {
+        const style = document.createElement("style");
+        style.innerHTML = styleInnerHtml;
+        this.$refs.hoverMenu.appendChild(style);
+        this.selectItem(this.value);
     },
-  },
-  data() {
-    return {
-      index: 0,
-      isExpand: false,
-    };
-  },
-  watch: {
-    value(newValue) {
-      this.selectItem(newValue);
+    methods: {
+        selectItem(index) {
+            this.index = index;
+            this.$emit("changeValue", index);
+        },
     },
-  },
-  mounted() {
-    const style = document.createElement("style");
-    style.innerHTML = styleInnerHtml;
-    this.$refs.hoverMenu.appendChild(style);
-    this.selectItem(this.value);
-  },
-  methods: {
-    selectItem(index) {
-      this.index = index;
-      this.$emit("changeValue", index);
-    },
-  },
-  template: `<div ref="hoverMenu" class="hover_menu" :style="{fontSize: fontSize}">
+    template: `<div ref="hoverMenu" class="hover_menu" :style="{fontSize: fontSize}">
                 <div class="default_value">
                     <em v-if="icon" class="iconfont" :class="icon"></em> 
                     {{list[index]?.name || ''}}
