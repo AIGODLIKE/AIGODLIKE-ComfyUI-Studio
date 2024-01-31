@@ -1,82 +1,82 @@
 import { api } from "/scripts/api.js";
 async function update_filter(filter, loader, old_data) {
-    try {
-        const body = new FormData();
-        body.append("data", JSON.stringify(filter));
-        body.append("old_data", JSON.stringify(old_data));
-        body.append("loader", loader);
-        api.api_base = "";
-        api.fetchApi("/cs/update_filter", { method: "POST", body });
-    } catch (error) {
-        alert(error);
-    }
+  try {
+    const body = new FormData();
+    body.append("data", JSON.stringify(filter));
+    body.append("old_data", JSON.stringify(old_data));
+    body.append("loader", loader);
+    api.api_base = "";
+    api.fetchApi("/cs/update_filter", { method: "POST", body });
+  } catch (error) {
+    alert(error);
+  }
 }
 export default {
-    data() {
-        let l = [];
-        let node = window._node;
-        if (node) {
-            l = node.CSgetModelFilters();
-        }
-        return {
-            value: "",
-            isAddModel: false,
-            list: l,
-            selectedData: {},
-        };
+  data() {
+    let l = [];
+    let node = window._node;
+    if (node) {
+      l = node.CSgetModelFilters();
+    }
+    return {
+      value: "",
+      isAddModel: false,
+      list: l,
+      selectedData: {},
+    };
+  },
+  methods: {
+    // Delete blocked model names
+    deleteModel(data, index) {
+      let old_data = [...data.modelList];
+      data.modelList.splice(index, 1);
+      update_filter(data.modelList, data.name, old_data);
     },
-    methods: {
-        // Delete blocked model names
-        deleteModel(data, index) {
-            let old_data = [...data.modelList];
-            data.modelList.splice(index, 1);
-            update_filter(data.modelList, data.name, old_data);
-        },
-        // Enter to trigger the add masking model event
-        handleKeyDown(e) {
-            if (e.key === "Enter") {
-                this.addName();
-            }
-        },
-        // Open the masked model input box
-        editInput(index) {
-            this.selectedData = this.list[index];
-            this.isAddModel = true;
-            this.$nextTick(() => {
-                this.$refs.modelInput.focus();
-            });
-        },
-        // Add shielding model name
-        addName() {
-            if (!this.value) {
-                this.$message({
-                    type: "error",
-                    message: this.$t("messages.fileNameError"),
-                });
-                return;
-            }
-            if (this.selectedData.modelList.find((x) => x.name === this.value)) {
-                this.$message({
-                    type: "error",
-                    message: this.$t("messages.fileNameExists"),
-                });
-                return;
-            }
-            let old_data = [...this.selectedData.modelList];
-            this.selectedData.modelList.push(this.value);
-            update_filter(this.selectedData.modelList, this.selectedData.name, old_data);
-            this.value = "";
-            this.selectedData = {};
-            this.isAddModel = false;
-        },
-        // Turn off blocking model input boxes
-        cancelEdit() {
-            this.value = "";
-            this.selectedData = {};
-            this.isAddModel = false;
-        },
+    // Enter to trigger the add masking model event
+    handleKeyDown(e) {
+      if (e.key === "Enter") {
+        this.addName();
+      }
     },
-    template: `<div class="model_shield setting_items">
+    // Open the masked model input box
+    editInput(index) {
+      this.selectedData = this.list[index];
+      this.isAddModel = true;
+      this.$nextTick(() => {
+        this.$refs.modelInput.focus();
+      });
+    },
+    // Add shielding model name
+    addName() {
+      if (!this.value) {
+        this.$message({
+          type: "error",
+          message: this.$t("messages.fileNameError"),
+        });
+        return;
+      }
+      if (this.selectedData.modelList.find((x) => x.name === this.value)) {
+        this.$message({
+          type: "error",
+          message: this.$t("messages.fileNameExists"),
+        });
+        return;
+      }
+      let old_data = [...this.selectedData.modelList];
+      this.selectedData.modelList.push(this.value);
+      update_filter(this.selectedData.modelList, this.selectedData.name, old_data);
+      this.value = "";
+      this.selectedData = {};
+      this.isAddModel = false;
+    },
+    // Turn off blocking model input boxes
+    cancelEdit() {
+      this.value = "";
+      this.selectedData = {};
+      this.isAddModel = false;
+    },
+  },
+  template: `<div class="model_shield setting_items">
                 <h1>{{$t("settings.modelShield.title")}}</h1>
                 <p>{{$t("settings.modelShield.describe")}}<p>
                 <div class="shield_table">

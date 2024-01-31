@@ -81,59 +81,59 @@ const styleInnerHtml = `
   }
 `;
 export default {
-    name: "MessageTips",
-    data() {
-        return {
-            timer: null,
-            isFirst: true,
-            id: 0,
-            pt: 0,
-            messageList: [],
-            destroyedTimer: false,
-        };
+  name: "MessageTips",
+  data() {
+    return {
+      timer: null,
+      isFirst: true,
+      id: 0,
+      pt: 0,
+      messageList: [],
+      destroyedTimer: false,
+    };
+  },
+  mounted() {
+    const style = document.createElement("style");
+    style.innerHTML = styleInnerHtml;
+    this.$refs.messageBox.appendChild(style);
+  },
+  methods: {
+    add(option, callback) {
+      clearTimeout(this.destroyedTimer);
+      this.destroyedTimer = false;
+      if (this.messageList.length >= 4) {
+        this.messageList.shift();
+      }
+      this.messageList.push({
+        id: this.id,
+        isLeave: false,
+        ...option,
+      });
+      this.id++;
+      if (this.isFirst) {
+        this.addDelete(callback);
+        this.isFirst = false;
+      }
     },
-    mounted() {
-        const style = document.createElement("style");
-        style.innerHTML = styleInnerHtml;
-        this.$refs.messageBox.appendChild(style);
+    exposed() {
+      return {
+        add: this.add,
+      };
     },
-    methods: {
-        add(option, callback) {
-            clearTimeout(this.destroyedTimer);
-            this.destroyedTimer = false;
-            if (this.messageList.length >= 4) {
-                this.messageList.shift();
-            }
-            this.messageList.push({
-                id: this.id,
-                isLeave: false,
-                ...option,
-            });
-            this.id++;
-            if (this.isFirst) {
-                this.addDelete(callback);
-                this.isFirst = false;
-            }
-        },
-        exposed() {
-            return {
-                add: this.add,
-            };
-        },
-        addDelete(callback) {
-            this.timer = setInterval(() => {
-                this.messageList.shift();
-                if (this.messageList.length === 0) {
-                    clearInterval(this.timer);
-                    this.isFirst = true;
-                    this.destroyedTimer = setTimeout(() => {
-                        callback();
-                    }, 500);
-                }
-            }, 2000);
-        },
+    addDelete(callback) {
+      this.timer = setInterval(() => {
+        this.messageList.shift();
+        if (this.messageList.length === 0) {
+          clearInterval(this.timer);
+          this.isFirst = true;
+          this.destroyedTimer = setTimeout(() => {
+            callback();
+          }, 500);
+        }
+      }, 2000);
     },
-    template: `
+  },
+  template: `
   <div ref="messageBox" class="messageBox" :style="{'padding-top':pt +'px'}">
   <transition-group name="message" tag="div">
     <div

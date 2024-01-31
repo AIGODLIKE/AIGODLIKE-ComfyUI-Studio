@@ -4,63 +4,63 @@ import Model from "../../components/home/model/index.js";
 import Foot from "../../components/home/foot/index.js";
 
 export default {
-    name: "Home",
-    components: {
-        Head,
-        Classification,
-        Model,
-        Foot,
+  name: "Home",
+  components: {
+    Head,
+    Classification,
+    Model,
+    Foot,
+  },
+  data() {
+    let l = [];
+    let node = window._node;
+    let selectedWidget = null;
+    if (node) {
+      l = node.CSgetModelLists();
+      selectedWidget = node.CSgetSelModelWidget();
+    }
+    let renderer = window.parent.app.CSIconRender;
+    return {
+      allList: l,
+      selectedWidget,
+      searchParameter: {
+        key: "",
+        sort: "",
+        level: "",
+        tags: [],
+      },
+      column: 0,
+      renderer: renderer,
+    };
+  },
+  watch: {
+    allList: {
+      handler(newValue) {
+        this.$emit("updateTag", newValue);
+      },
+      immediate: true,
+      deep: true,
     },
-    data() {
-        let l = [];
-        let node = window._node;
-        let selectedWidget = null;
-        if (node) {
-            l = node.CSgetModelLists();
-            selectedWidget = node.CSgetSelModelWidget();
-        }
-        let renderer = window.parent.app.CSIconRender;
-        return {
-            allList: l,
-            selectedWidget,
-            searchParameter: {
-                key: "",
-                sort: "",
-                level: "",
-                tags: [],
-            },
-            column: 0,
-            renderer: renderer,
-        };
+  },
+  mounted() {
+    const language = localStorage.getItem("language") || "cn";
+    this.$i18n.locale = language;
+    this.$store.commit("config/updateLanguage", language);
+  },
+  methods: {
+    // Change the quantity displayed in a row
+    changeColumn(value) {
+      this.column = value;
     },
-    watch: {
-        allList: {
-            handler(newValue) {
-                this.$emit("updateTag", newValue);
-            },
-            immediate: true,
-            deep: true,
-        },
+    // Change filtering criteria
+    changeSearchParameter(value) {
+      this.searchParameter = {
+        ...this.searchParameter,
+        ...value,
+      };
     },
-    mounted() {
-        const language = localStorage.getItem("language") || "cn";
-        this.$i18n.locale = language;
-        this.$store.commit("config/updateLanguage", language);
-    },
-    methods: {
-        // Change the quantity displayed in a row
-        changeColumn(value) {
-            this.column = value;
-        },
-        // Change filtering criteria
-        changeSearchParameter(value) {
-            this.searchParameter = {
-                ...this.searchParameter,
-                ...value,
-            };
-        },
-    },
-    template: `<div class="home_page">
+  },
+  template: `<div class="home_page">
                <div class="content">
                 <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :allList="allList" />
                 <Classification @changeSearchParameter="changeSearchParameter" />
