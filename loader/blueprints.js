@@ -163,7 +163,7 @@ class BluePrints {
         if (!IMPL.hasOwnProperty(node.constructor.type)) {
             return;
         }
-        let btn = node.addWidget("button", "模型管理器", null, callBack);
+        let btn = node.addWidget("button", "+", null, callBack);
         btn._node = node;
         BluePrints.prototype.CSwrapNode(node);
         const f = node.onSerialize;
