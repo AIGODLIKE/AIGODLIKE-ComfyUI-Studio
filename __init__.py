@@ -130,6 +130,8 @@ class ModelManager:
         # detail / filters 重命名
         try:
             detail = CFG_MANAGER.get_detail(mtype)
+            obase_name = Path(old_name).stem
+            nbase_name = Path(new_name).stem
             if old_name in detail:
                 mcfg = detail.pop(old_name)
                 mcfg["name"] = new_name
@@ -137,7 +139,7 @@ class ModelManager:
                 cover = mcfg.get("cover", "")
                 if cover and Path(cover).exists():
                     cover = Path(cover)
-                    new_cover_name = cover.name.replace(old_name, new_name)
+                    new_cover_name = cover.name.replace(obase_name, nbase_name)
                     new_cover = cover.with_name(new_cover_name)
                     cover.rename(new_cover)
                     mcfg["cover"] = new_cover.as_posix()
