@@ -198,7 +198,7 @@ export default {
                   <input type="file" id="file_input" accept="image/*" @change="inputCover($event)" />
                 </div>
               </div>
-              <div v-if="isReadonly" class="model_name" @click="editName" title="点击修改">{{model.name}}</div>
+              <div v-if="isReadonly" class="model_name" @click="editName" title="点击修改"><p>{{model.name}}</p></div>
               <div v-else class="name_input">
                 <input ref="nameInput" type="value" :value="model.name" @blur="blurInput"  @keydown="nameInputKeyDown"/>
                 <span @mousedown="changeName($event)"><em class="iconfont icon-edit"></em></span> 

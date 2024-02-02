@@ -74,6 +74,7 @@
     margin: 0.5vw 0;
     transition: 0.2s;
     min-height: 2.1vw;
+    min-width: 0;
     display: flex;
     align-items: center;
     padding-left: 0.5vw;
@@ -81,6 +82,11 @@
     font-weight: bold;
     &:hover {
       color: #bfbfbf;
+    }
+    p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
   .name_input {
