@@ -143,6 +143,10 @@ export default {
     // Rendering an image
     renderPic() {
       if (this.model) {
+        if (this.renderer?.rendering) {
+          alert(this.$t("home.head.renderingAlert"));
+          return;
+        }
         this.renderer.render(this.node, [this.model]);
       }
     },

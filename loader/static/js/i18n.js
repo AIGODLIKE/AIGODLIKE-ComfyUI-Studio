@@ -83,6 +83,9 @@ const message = {
         renderingAlert: "正在渲染缩略图，请稍后再试",
         closePageConfirm: "关闭窗口并终止正在执行的任务？",
       },
+      model:{
+        useModelConfirm: "设置模型将退出缩略图渲染,是否确定?",
+      },
       foot: {
         text: ({ named }) => {
           return `共计模型${named("modelCount")}个，其中${named("noThumbnailCount")}个无缩略图`;
@@ -210,6 +213,9 @@ const message = {
         renderingAlert: "Rendering thumbnails, please try again later",
         closePageConfirm: "Close the window and terminate the task?",
       },
+      model:{
+        useModelConfirm: "Using model will exit the thumbnail rendering, are you sure?",
+      },
       foot: {
         text: ({ named }) => {
           return `Total ${named("modelCount")} models, ${named("noThumbnailCount")} models without thumbnails`;
@@ -336,6 +342,9 @@ const message = {
         renderAllThumbnails: "渲染並覆蓋所有縮略圖？",
         renderingAlert: "正在渲染縮略圖，請稍後再試",
         closePageConfirm: "關閉窗口並終止正在執行的任務？",
+      },
+      model:{
+        useModelConfirm: "使用模型將退出縮略圖渲染,是否確定?",
       },
       foot: {
         text: ({ named }) => {

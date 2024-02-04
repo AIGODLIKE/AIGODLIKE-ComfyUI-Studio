@@ -76,10 +76,26 @@ export default {
   methods: {
     // Use model
     useModel(model) {
-      if (this.node) {
-        this.node.CSsetModelWidget(model.name);
+      let renderer = this.renderer;
+      let node = this.node;
+      if (!node) return;
+      if (!renderer?.rendering) {
+        node.CSsetModelWidget(model.name);
         window.parent.postMessage({ type: "close_loader_page" }, "*");
+        return;
       }
+      this.$confirmBox({
+        describe: this.$t("home.model.useModelConfirm"),
+        refuseText: this.$t("confirmBox.refuseText"),
+        acceptText: this.$t("confirmBox.acceptText"),
+        accept: () => {
+          // 点击确认调用
+          renderer?.stop();
+          node.CSsetModelWidget(model.name);
+          window.parent.postMessage({ type: "close_loader_page" }, "*");
+        },
+        refuse: () => {},
+      });
     },
     // Change name
     modifyName(model, value) {
