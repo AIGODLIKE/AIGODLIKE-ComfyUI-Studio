@@ -33,6 +33,7 @@ Vue.component("Left", {
   methods: {
     // Change the selected menu
     changeMenu(item, index) {
+      if (index === this.selectedIndex) return;
       this.selectedIndex = index;
       this.$router.push(item.path);
     },
