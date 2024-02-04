@@ -23,6 +23,38 @@
       import "./static/js/message.js";
       import "./static/js/confirm.js";
       Vue.use(VueI18n);
+      Vue.mixin({
+        computed: {
+          graph() {
+            return window.parent.graph;
+          },
+          nodeId: {
+            get() {
+              return this.$store.state.prop.nodeId;
+            },
+            set(nodeId) {
+              this.$store.commit("prop/setNodeId", nodeId);
+            },
+          },
+          node: {
+            get() {
+              return this.graph.getNodeById(this.nodeId);
+            },
+            set(node) {
+              if (node && node.id) this.nodeId = node.id;
+              else this.nodeId = null;
+            },
+          },
+          renderer: {
+            get() {
+              return this.$store.state.prop.renderer;
+            },
+            set(renderer) {
+              this.$store.commit("prop/setRenderer", renderer);
+            },
+          },
+        },
+      });
       var i18n = new VueI18n({
         locale: "cn",
         fallbackLocale: "cn",

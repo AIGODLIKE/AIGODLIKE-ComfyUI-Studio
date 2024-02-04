@@ -48,6 +48,12 @@ export default {
     },
   },
   watch: {
+    allList: {
+      handler(newValue) {
+        this.filterList(this.searchParameter);
+      },
+      immediate: true,
+    },
     searchParameter: {
       handler(newValue) {
         this.filterList(newValue);
@@ -65,9 +71,8 @@ export default {
   methods: {
     // Use model
     useModel(model) {
-      let node = window._node;
-      if (node) {
-        node.CSsetModelWidget(model.name);
+      if (this.node) {
+        this.node.CSsetModelWidget(model.name);
         window.parent.postMessage({ type: "close_loader_page" }, "*");
       }
     },
@@ -118,9 +123,8 @@ export default {
         const key = x.name.includes(searchParameter.key);
         const level = searchParameter.level === 0 || x.level === searchParameter.level;
         const tag = searchParameter.tags.length === 0 || x.tags.find((tagItem) => searchParameter.tags.includes(tagItem));
-        let node = window._node;
-        if (node) {
-          let filters = node.CSgetModelFilters(true);
+        if (this.node) {
+          let filters = this.node.CSgetModelFilters(true);
           if (filters?.includes(x.name)) {
             return false;
           }

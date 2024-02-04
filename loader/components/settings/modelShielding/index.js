@@ -13,17 +13,19 @@ async function update_filter(filter, loader, old_data) {
 }
 export default {
   data() {
-    let l = [];
-    let node = window._node;
-    if (node) {
-      l = node.CSgetModelFilters();
-    }
     return {
       value: "",
       isAddModel: false,
-      list: l,
       selectedData: {},
     };
+  },
+  computed: {
+    list() {
+      if (this.node) {
+        return this.node.CSgetModelFilters();
+      }
+      return [];
+    },
   },
   methods: {
     // Delete blocked model names

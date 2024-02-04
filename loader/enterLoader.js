@@ -1,6 +1,6 @@
 import { app } from "../../../../scripts/app.js";
 import BluePrints from "./blueprints.js";
-
+import IconRenderer from "./components/public/iconRenderer.js";
 function getPage() {
   return document.getElementById("loader_iframe");
 }
@@ -8,7 +8,6 @@ function getPage() {
 function loadPage(){
   let page = getPage();
   if(page) return page;
-  // console.log("enterLoader", this._node);
   window.removeEventListener("message", message);
   var realpath = "/cs/loader/index.html";
   const html = `<iframe id="loader_iframe" src="${realpath}" frameborder="0"></iframe>`;
@@ -16,8 +15,6 @@ function loadPage(){
   page = getPage();
   page.style.display = "none";
   let w = page.contentWindow;
-  // w._node = this._node;
-  w._node = null;
   window.addEventListener("message", message);
   // w.focus();
   w.addEventListener("keydown", (e) => {
@@ -28,10 +25,12 @@ function loadPage(){
 }
 
 function callBack() {
-  // console.log("enterLoader", this._node);
   let page = loadPage();
   page.style.display = "block";
-  page.contentWindow._node = this._node;
+  window.CSvm.node = this._node;
+  if(!window.CSvm.renderer){
+    window.CSvm.renderer = new IconRenderer();
+  }
   page.focus();
 }
 

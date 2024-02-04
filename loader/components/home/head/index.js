@@ -4,11 +4,6 @@ import IconRenderer from "../../public/iconRenderer.js";
 const ext = {
   is_rendering: false,
   name: "ComfyUI-Studio.head",
-  async setup(app) {
-    if (!app.CSIconRender) {
-      app.CSIconRender = new IconRenderer(app);
-    }
-  },
   async register() {
     try {
       const { app } = await import("/scripts/app.js");
@@ -84,27 +79,27 @@ export default {
         refuseText: this.$t("confirmBox.refuseText"),
         acceptText: this.$t("confirmBox.acceptText"),
         accept: () => {
-          let renderer = window.parent.app.CSIconRender;
-          if (renderer.rendering) {
+          let renderer = this.renderer;
+          if (this.renderer?.rendering) {
             alert(this.$t("home.head.renderingAlert"));
             return;
           }
           const curList = this.allList.filter((x) => {
-            let filters = window._node?.CSgetModelFilters(true);
+            let filters = this.node?.CSgetModelFilters(true);
             if (filters?.includes(x.name)) {
               return false;
             }
             return true;
           });
 
-          renderer.render(window._node, curList);
+          renderer?.render(this.node, curList);
         },
         refuse: () => {},
       });
     },
     // Close the entire page
     closePage() {
-      let renderer = window.parent.app.CSIconRender;
+      let renderer = this.renderer;
       if (!renderer?.rendering) {
         window.parent.postMessage({ type: "close_loader_page" }, "*");
         return;
@@ -115,8 +110,8 @@ export default {
         acceptText: this.$t("confirmBox.acceptText"),
         accept: () => {
           // 点击确认调用
-          let renderer = window.parent.app.CSIconRender;
-          renderer.stop();
+          let renderer = this.renderer;
+          renderer?.stop();
           window.parent.postMessage({ type: "close_loader_page" }, "*");
         },
         refuse: () => {

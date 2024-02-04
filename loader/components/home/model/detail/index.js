@@ -4,11 +4,6 @@ import IconRenderer from "../../../public/iconRenderer.js";
 const ext = {
   is_rendering: false,
   name: "ComfyUI-Studio.model.detail",
-  async setup(app) {
-    if (!app.CSIconRender) {
-      app.CSIconRender = new IconRenderer(app);
-    }
-  },
   async register() {
     try {
       const { app } = await import("/scripts/app.js");
@@ -148,8 +143,7 @@ export default {
     // Rendering an image
     renderPic() {
       if (this.model) {
-        let renderer = window.parent.app.CSIconRender;
-        renderer.render(window._node, [this.model]);
+        this.renderer.render(this.node, [this.model]);
       }
     },
     // Click to trigger the image acquisition event

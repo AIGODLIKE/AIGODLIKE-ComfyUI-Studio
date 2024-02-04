@@ -17,12 +17,15 @@ export default {
     },
   },
   data() {
-    let renderer = window.parent.app.CSIconRender;
     return {
       modelCount: 9999999,
       noThumbnailCount: 0,
-      renderer: renderer,
     };
+  },
+  computed:{
+    progress(){
+      return this.renderer?.progress_value;
+    }
   },
   methods: {
     // Update the model count / preview count
@@ -43,7 +46,7 @@ export default {
   template: `<div class="foot">
                 <span>{{makeSpanText()}}</span>
                 <div class="progress">
-                    <div class="value" :style="{'width':renderer.progress_value + '%'}"></div>
+                    <div class="value" :style="{'width':progress + '%'}"></div>
                 </div>
              </div>`,
 };

@@ -12,17 +12,7 @@ export default {
     Foot,
   },
   data() {
-    let l = [];
-    let node = window._node;
-    let selectedWidget = null;
-    if (node) {
-      l = node.CSgetModelLists();
-      selectedWidget = node.CSgetSelModelWidget();
-    }
-    let renderer = window.parent.app.CSIconRender;
     return {
-      allList: l,
-      selectedWidget,
       searchParameter: {
         key: "",
         sort: "",
@@ -30,8 +20,21 @@ export default {
         tags: [],
       },
       column: 0,
-      renderer: renderer,
     };
+  },
+  computed: {
+    allList() {
+      if (this.node) {
+        return this.node.CSgetModelLists();
+      }
+      return [];
+    },
+    selectedWidget() {
+      return this.node?.CSgetSelModelWidget();
+    },
+    rendering(){
+      return this.renderer?.rendering;
+    }
   },
   watch: {
     allList: {
@@ -62,10 +65,10 @@ export default {
   },
   template: `<div class="home_page">
                <div class="content">
-                <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :allList="allList" />
+                <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :all-list="allList" />
                 <Classification @changeSearchParameter="changeSearchParameter" />
-                <Model :column="column" :allList="allList" :selectedWidget="selectedWidget" :search-parameter="searchParameter" />
+                <Model :column="column" :all-list="allList" :selected-widget="selectedWidget" :search-parameter="searchParameter" />
               </div>
-              <Foot :allList="allList" v-show="renderer.rendering"/>
+              <Foot :all-list="allList" v-show="rendering"/>
              </div>`,
 };

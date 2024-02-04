@@ -36,9 +36,8 @@ export default {
     //   });
     //   index++;
     // }
-    let node = window._node;
-    if (node) {
-      let modelLists = node.CSgetModelLists();
+    if (this.node) {
+      let modelLists = this.node.CSgetModelLists();
       if (modelLists) {
         this.updateTag(modelLists);
       }
