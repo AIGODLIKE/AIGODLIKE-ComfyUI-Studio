@@ -54,6 +54,11 @@ export default {
       },
       immediate: true,
     },
+    curList: {
+      handler(newValue) {
+        this.$store.commit("prop/setCurModelList", newValue);
+      },
+    },
     searchParameter: {
       handler(newValue) {
         this.filterList(newValue);

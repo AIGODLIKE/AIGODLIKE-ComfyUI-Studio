@@ -3,6 +3,7 @@ const prop = {
   state: () => ({
     nodeId: null,
     renderer: null,
+    curModelList: null,
   }),
   mutations: {
     setNodeId(state, nodeId) {
@@ -10,6 +11,9 @@ const prop = {
     },
     setRenderer(state, renderer) {
       state.renderer = renderer;
+    },
+    setCurModelList(state, curModelList) {
+      state.curModelList = curModelList;
     },
   },
 };

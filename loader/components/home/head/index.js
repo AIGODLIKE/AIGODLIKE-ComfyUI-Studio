@@ -84,13 +84,7 @@ export default {
             alert(this.$t("home.head.renderingAlert"));
             return;
           }
-          const curList = this.allList.filter((x) => {
-            let filters = this.node?.CSgetModelFilters(true);
-            if (filters?.includes(x.name)) {
-              return false;
-            }
-            return true;
-          });
+          const curList = this.$store.state.prop.curModelList;
 
           renderer?.render(this.node, curList);
         },
