@@ -153,7 +153,9 @@ class ModelManager:
     def find_thumbnail(model_name, mtype) -> str:
         img_suffixes = (".jpg", ".jpeg", ".png", ".gif")
         for p in ModelManager.get_paths(mtype):
-            model_names = [Path(model_name).stem, Path(model_name).name]
+            # a\\b.ckpt a/b.ckpt
+            pm = Path(model_name)
+            model_names = [pm.with_suffix("").as_posix(), pm.stem, pm.name]
             for model_name in model_names:
                 for suffix in img_suffixes:
                     img_name = model_name + suffix
