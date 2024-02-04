@@ -28,7 +28,10 @@
         fallbackLocale: "cn",
         messages: message,
       });
-      new Vue({ i18n, router, store }).$mount("#loader_page");
+      const vm = new Vue({ i18n, router, store }).$mount("#loader_page");
+      // for litegraph btn translate
+      window.parent.CSvm = vm;
+      window.CSvm = vm;
     </script>
   </body>
 </html>

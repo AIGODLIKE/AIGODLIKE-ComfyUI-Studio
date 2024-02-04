@@ -1,15 +1,25 @@
 import { app } from "../../../../scripts/app.js";
 import BluePrints from "./blueprints.js";
-function callBack() {
+
+function getPage() {
+  return document.getElementById("loader_iframe");
+}
+
+function loadPage(){
+  let page = getPage();
+  if(page) return page;
   // console.log("enterLoader", this._node);
   window.removeEventListener("message", message);
   var realpath = "/cs/loader/index.html";
   const html = `<iframe id="loader_iframe" src="${realpath}" frameborder="0"></iframe>`;
   document.body.insertAdjacentHTML("beforeend", html);
-  let w = document.getElementById("loader_iframe").contentWindow;
-  w._node = this._node;
+  page = getPage();
+  page.style.display = "none";
+  let w = page.contentWindow;
+  // w._node = this._node;
+  w._node = null;
   window.addEventListener("message", message);
-  w.focus();
+  // w.focus();
   w.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       w.parent.postMessage({ type: "close_loader_page" }, "*");
@@ -17,9 +27,19 @@ function callBack() {
   });
 }
 
+function callBack() {
+  // console.log("enterLoader", this._node);
+  let page = loadPage();
+  page.style.display = "block";
+  page.contentWindow._node = this._node;
+  page.focus();
+}
+
 function message(event) {
   if (event.data.type === "close_loader_page") {
-    document.body.removeChild(document.getElementById("loader_iframe"));
+    let page = getPage();
+    page.style.display = "none";
+    // document.body.removeChild(document.getElementById("loader_iframe"));
   }
 }
 
@@ -47,6 +67,7 @@ function styleInit() {
 const ext = {
   name: "AIGODLIKE.MMM",
   async init(app) {
+    loadPage();
     styleInit();
   },
   async setup(app) { },

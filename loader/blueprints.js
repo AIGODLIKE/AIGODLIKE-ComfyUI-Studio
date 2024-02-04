@@ -164,6 +164,16 @@ class BluePrints {
             return;
         }
         let btn = node.addWidget("button", "+", null, callBack);
+        Object.defineProperty(btn, "label", {
+            get(){
+                const vm = window.CSvm;
+                if(vm?.$t){
+                    return vm.$t("modelManagerBtn");
+                }
+                return "+";
+            },
+            set(_){}
+        });
         btn._node = node;
         BluePrints.prototype.CSwrapNode(node);
         const f = node.onSerialize;

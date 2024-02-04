@@ -124,6 +124,7 @@ const message = {
       refuseText: "取消",
       acceptText: "确定",
     },
+    modelManagerBtn: "ComfyUI-Studio 模型管理器",
   },
   en: {
     home: {
@@ -250,6 +251,7 @@ const message = {
       refuseText: "Cancel",
       acceptText: "Confirm",
     },
+    modelManagerBtn: "ComfyUI-Studio Model Manager",
   },
   tc: {
     home: {
@@ -376,6 +378,7 @@ const message = {
       refuseText: "取消",
       acceptText: "確定",
     },
+    modelManagerBtn: "ComfyUI-Studio 模型管理器",
   },
 };
 export default message;
