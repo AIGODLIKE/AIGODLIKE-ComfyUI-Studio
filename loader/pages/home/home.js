@@ -27,13 +27,13 @@ export default {
     selectedWidget() {
       return this.node?.CSgetSelModelWidget();
     },
-    rendering(){
+    rendering() {
       return this.renderer?.rendering;
-    }
+    },
   },
   watch: {
     nodeId: {
-      handler(){
+      handler() {
         this.allList = this.node?.CSgetModelLists() || [];
       },
       immediate: true,

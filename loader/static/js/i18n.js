@@ -83,7 +83,7 @@ const message = {
         renderingAlert: "正在渲染缩略图，请稍后再试",
         closePageConfirm: "关闭窗口并终止正在执行的任务？",
       },
-      model:{
+      model: {
         useModelConfirm: "设置模型将退出缩略图渲染,是否确定?",
         dirTagCantDelete: "文件夹标签不能删除",
       },
@@ -214,7 +214,7 @@ const message = {
         renderingAlert: "Rendering thumbnails, please try again later",
         closePageConfirm: "Close the window and terminate the task?",
       },
-      model:{
+      model: {
         useModelConfirm: "Using model will exit the thumbnail rendering, are you sure?",
         dirTagCantDelete: "Folder tag cannot be deleted",
       },
@@ -345,7 +345,7 @@ const message = {
         renderingAlert: "正在渲染縮略圖，請稍後再試",
         closePageConfirm: "關閉窗口並終止正在執行的任務？",
       },
-      model:{
+      model: {
         useModelConfirm: "使用模型將退出縮略圖渲染,是否確定?",
         dirTagCantDelete: "文件夾標簽不能刪除",
       },

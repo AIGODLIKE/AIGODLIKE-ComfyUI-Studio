@@ -22,10 +22,10 @@ export default {
       noThumbnailCount: 0,
     };
   },
-  computed:{
-    progress(){
+  computed: {
+    progress() {
       return this.renderer?.progress_value;
-    }
+    },
   },
   methods: {
     // Update the model count / preview count

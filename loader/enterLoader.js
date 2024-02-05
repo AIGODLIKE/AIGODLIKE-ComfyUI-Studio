@@ -5,9 +5,9 @@ function getPage() {
   return document.getElementById("loader_iframe");
 }
 
-function loadPage(){
+function loadPage() {
   let page = getPage();
-  if(page) return page;
+  if (page) return page;
   window.removeEventListener("message", message);
   var realpath = "/cs/loader/index.html";
   const html = `<iframe id="loader_iframe" src="${realpath}" frameborder="0"></iframe>`;
@@ -28,7 +28,7 @@ function callBack() {
   let page = loadPage();
   page.style.display = "block";
   window.CSvm.node = this._node;
-  if(!window.CSvm.renderer){
+  if (!window.CSvm.renderer) {
     window.CSvm.renderer = new IconRenderer();
   }
   page.focus();
@@ -69,7 +69,7 @@ const ext = {
     loadPage();
     styleInit();
   },
-  async setup(app) { },
+  async setup(app) {},
   async addCustomNodeDefs(defs, app) {
     // Add custom node definitions
     // These definitions will be configured and registered automatically
