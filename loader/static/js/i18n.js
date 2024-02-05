@@ -85,6 +85,7 @@ const message = {
       },
       model:{
         useModelConfirm: "设置模型将退出缩略图渲染,是否确定?",
+        dirTagCantDelete: "文件夹标签不能删除",
       },
       foot: {
         text: ({ named }) => {
@@ -215,6 +216,7 @@ const message = {
       },
       model:{
         useModelConfirm: "Using model will exit the thumbnail rendering, are you sure?",
+        dirTagCantDelete: "Folder tag cannot be deleted",
       },
       foot: {
         text: ({ named }) => {
@@ -345,6 +347,7 @@ const message = {
       },
       model:{
         useModelConfirm: "使用模型將退出縮略圖渲染,是否確定?",
+        dirTagCantDelete: "文件夾標簽不能刪除",
       },
       foot: {
         text: ({ named }) => {
