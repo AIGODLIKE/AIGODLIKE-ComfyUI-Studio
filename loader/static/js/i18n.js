@@ -89,7 +89,7 @@ const message = {
       },
       foot: {
         text: ({ named }) => {
-          return `共计模型${named("modelCount")}个，其中${named("noThumbnailCount")}个无缩略图`;
+          return `共计模型${named("modelCount")}个，其中${named("noThumbnailCount")}个无缩略图，正在生成第${named("taskIndex")}/${named("taskCount")}个缩略图`;
         },
       },
       searchValue: "关键词",
@@ -220,7 +220,7 @@ const message = {
       },
       foot: {
         text: ({ named }) => {
-          return `Total ${named("modelCount")} models, ${named("noThumbnailCount")} models without thumbnails`;
+          return `Total ${named("modelCount")} models, ${named("noThumbnailCount")} models without thumbnails. Now ${named("taskIndex")}/${named("taskCount")} thumbnail`;
         },
       },
       searchValue: "keyword",
@@ -351,7 +351,7 @@ const message = {
       },
       foot: {
         text: ({ named }) => {
-          return `共計模型${named("modelCount")}個，其中${named("noThumbnailCount")}個無縮略圖`;
+          return `共計模型${named("modelCount")}個，其中${named("noThumbnailCount")}個無縮略圖，正在生成第${named("taskIndex")}/${named("taskCount")}個縮略圖`;
         },
       },
       searchValue: "關鍵詞",

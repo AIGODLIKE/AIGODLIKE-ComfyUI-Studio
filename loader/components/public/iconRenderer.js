@@ -16,6 +16,8 @@ class IconRenderer {
   }
 
   constructor(app) {
+    this.task_index = 0;
+    this.task_count = 0;
     this.loop_finished = true;
 
     this._rendering = false;
@@ -171,12 +173,16 @@ class IconRenderer {
     this.stopped = false;
     this.rendering = true;
     this.progress_value = 0;
+    this.task_count = 0;
+    this.task_index = 0;
   }
 
   endRender() {
     this.stopped = false;
     this.rendering = false;
     this.progress_value = 0;
+    this.task_count = 0;
+    this.task_index = 0;
   }
 
   async render_ex(inputNode, modelList) {
@@ -185,6 +191,7 @@ class IconRenderer {
     }
     let comfyWindow = window.parent;
     let app = comfyWindow.app;
+    this.task_count = modelList.length;
     for await (let model of modelList) {
       inputNode.CSsetModelWidget(model.name);
       await this.waitForOneLoop();
@@ -192,6 +199,7 @@ class IconRenderer {
         break;
       }
       this.markNewLoop();
+      this.task_index++;
       this.executed_cb_user = this.executed_cb_user_factory.bind(this, model);
       await app.queuePrompt(1);
       // app.lastNodeErrors 可能为 null 或 {}

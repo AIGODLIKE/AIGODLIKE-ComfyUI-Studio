@@ -35,7 +35,7 @@ export default {
     },
     // Make span text
     makeSpanText() {
-      let fmt = this.$t("home.foot.text", { modelCount: this.modelCount, noThumbnailCount: this.noThumbnailCount });
+      let fmt = this.$t("home.foot.text", { modelCount: this.modelCount, noThumbnailCount: this.noThumbnailCount, taskIndex: this.renderer?.task_index, taskCount: this.renderer?.task_count});
       return fmt;
     },
     // Get the percentage of models without thumbnails
