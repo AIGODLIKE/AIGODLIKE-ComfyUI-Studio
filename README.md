@@ -41,6 +41,5 @@ For some custom nodes that have not been developed using standard methods, manua
 |DiffusersLoader|扩散加载器|
 
 ## TODO
-·Add more support for functions
-
-·Improve TAG filtering interaction
+Add more support for functions.
+Improve TAG filtering interaction.
