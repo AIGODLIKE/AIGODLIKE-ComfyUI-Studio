@@ -295,7 +295,11 @@ async def update_config(request: web.Request):
     CFG_MANAGER.dump_config()
     return web.Response(status=200, body=json.dumps(ret_json))
 
+
 def find_rel_path(p, model_paths) -> str:
+    """
+    calc the relative path of p in model_paths
+    """
     if not p:
         return ""
     for p in model_paths:
@@ -303,6 +307,22 @@ def find_rel_path(p, model_paths) -> str:
             continue
         return Path(p).relative_to(p).as_posix()
     return ""
+
+
+def find_tags(string: str, sep="/") -> list[str]:
+    """
+    find tags from string use the sep for split
+    Note: string may contain the \ or / for path separator
+    """
+    if not string:
+        return []
+    string = string.replace("\\", "/")
+    while "//" in string:
+        string = string.replace("//", "/")
+    if string and sep in string:
+        return string.split(sep)[:-1]
+    return []
+
 
 @server.PromptServer.instance.routes.post("/cs/fetch_config")
 async def fetch_config(request: web.Request):
@@ -364,10 +384,10 @@ async def fetch_config(request: web.Request):
     for mcfg in ret_model_map.values():
         # 遍历model_paths 对比 model_path 得到 减去 model_paths 的相对路径
         name = mcfg.get("name", "").replace("\\", "/")
-        if name and "/" in name:
-            dir_tag = name.split("/", maxsplit=1)[0]
-            mcfg["tags"].append(dir_tag)
-            mcfg["dir_tags"] = [dir_tag]
+        dir_tags = find_tags(name)
+        if dir_tags:
+            mcfg["tags"].extend(dir_tags)
+            mcfg["dir_tags"] = dir_tags
         mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
         if not mcfg["cover"]:
             continue
@@ -531,6 +551,7 @@ class LimitResource(web.StaticResource):
     def __repr__(self) -> str:
         name = "'" + self.name + "'" if self.name is not None else ""
         return f'<LimitResource {name} {self._prefix} -> {self._directory!r}>'
+
 
 class LimitRouter(web.StaticDef):
     def __repr__(self) -> str:
