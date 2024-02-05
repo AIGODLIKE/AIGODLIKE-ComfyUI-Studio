@@ -126,6 +126,12 @@ export default {
     },
     // Delete tag
     deleteTag(index) {
+      // 如果 当前删除的tag在 dir_tags中 则不允许删除
+      let tag = this.selectedModel.tags[index];
+      if (this.selectedModel.dir_tags?.includes(tag)) {
+        alert(this.$t("home.model.dirTagCantDelete"));
+        return;
+      }
       let old_data = this.selectedModel.tags;
       this.selectedModel.tags.splice(index, 1);
       update_config(this.selectedModel, "tags", old_data);

@@ -344,7 +344,22 @@ async def fetch_config(request: web.Request):
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
     ret_model_map = deepcopy(ret_model_map)
+    def find_rel_cover(cover, model_paths) -> str:
+        if not cover:
+            return ""
+        for p in model_paths:
+            if not cover.startswith(p):
+                continue
+            return Path(cover).relative_to(p).as_posix()
+        return ""
+    model_paths = ModelManager.get_paths(mtype)
     for mcfg in ret_model_map.values():
+        # 遍历model_paths 对比 cover 得到 减去 model_paths 的相对路径
+        rel_cover = find_rel_cover(mcfg["cover"], model_paths).replace("\\", "/")
+        if rel_cover and "/" in rel_cover:
+            dir_tag = rel_cover.split("/", maxsplit=1)[0]
+            mcfg["tags"].append(dir_tag)
+            mcfg["dir_tags"] = [dir_tag]
         mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
         if not mcfg["cover"]:
             continue
