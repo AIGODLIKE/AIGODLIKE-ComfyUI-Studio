@@ -336,7 +336,7 @@ async def fetch_config(request: web.Request):
     ret_model_map = {}
     for name in models:
         if name not in old_model_map:
-            mcfg = example_cfg.copy()
+            mcfg = deepcopy(example_cfg)
             mcfg["name"] = name
             old_model_map[name] = mcfg
             CFG_MANAGER.dirty = True
