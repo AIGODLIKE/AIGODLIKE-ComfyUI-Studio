@@ -14,17 +14,18 @@ async function update_filter(filter, loader, old_data) {
 export default {
   data() {
     return {
+      list: [],
       value: "",
       isAddModel: false,
       selectedData: {},
     };
   },
-  computed: {
-    list() {
-      if (this.node) {
-        return this.node.CSgetModelFilters();
-      }
-      return [];
+  watch: {
+    nodeId: {
+      handler() {
+        this.list = this.node?.CSgetModelFilters() || [];
+      },
+      immediate: true,
     },
   },
   methods: {

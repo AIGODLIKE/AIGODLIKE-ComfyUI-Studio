@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      allList: [],
       searchParameter: {
         key: "",
         sort: "",
@@ -23,12 +24,6 @@ export default {
     };
   },
   computed: {
-    allList() {
-      if (this.node) {
-        return this.node.CSgetModelLists();
-      }
-      return [];
-    },
     selectedWidget() {
       return this.node?.CSgetSelModelWidget();
     },
@@ -37,12 +32,11 @@ export default {
     }
   },
   watch: {
-    allList: {
-      handler(newValue) {
-        this.$emit("updateTag", newValue);
+    nodeId: {
+      handler(){
+        this.allList = this.node?.CSgetModelLists() || [];
       },
       immediate: true,
-      deep: true,
     },
   },
   mounted() {
@@ -66,7 +60,7 @@ export default {
   template: `<div class="home_page">
                <div class="content">
                 <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :all-list="allList" />
-                <Classification @changeSearchParameter="changeSearchParameter" />
+                <Classification @changeSearchParameter="changeSearchParameter" :all-list="allList" />
                 <Model :column="column" :all-list="allList" :selected-widget="selectedWidget" :search-parameter="searchParameter" />
               </div>
               <Foot :all-list="allList" v-show="rendering"/>

@@ -1,4 +1,12 @@
 export default {
+  props: {
+    allList: {
+      default: () => {
+        return [];
+      },
+      type: Array,
+    },
+  },
   data() {
     return {
       list: [],
@@ -7,42 +15,14 @@ export default {
       selectedList: [],
     };
   },
-  created() {
-    // let index = 0;
-    // const list = [
-    //   "模",
-    //   "型",
-    //   "你",
-    //   "是",
-    //   "上",
-    //   "就",
-    //   "和",
-    //   "发",
-    //   "人",
-    //   "有",
-    //   "怕",
-    // ];
-    // while (index !== 30) {
-    //   const randomLength = Math.floor(Math.random() * 8) + 1;
-    //   let str = "";
-    //   let strIndex = 0;
-    //   while (strIndex < randomLength) {
-    //     const randomPos = Math.floor(Math.random() * 11);
-    //     str += list[randomPos];
-    //     strIndex++;
-    //   }
-    //   this.list.push({
-    //     name: str,
-    //   });
-    //   index++;
-    // }
-    if (this.node) {
-      let modelLists = this.node.CSgetModelLists();
-      if (modelLists) {
-        this.updateTag(modelLists);
-      }
-    }
-    this.$parent.$on("updateTag", this.updateTag);
+  watch: {
+    allList: {
+      handler(list) {
+        this.updateTag(list);
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   methods: {
     // update tag
