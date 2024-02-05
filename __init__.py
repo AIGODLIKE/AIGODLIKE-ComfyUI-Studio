@@ -18,7 +18,7 @@ from .utils import read_json
 """
 CUR_PATH = Path(__file__).parent.absolute()
 MOUNT_ROOT = "/cs/"
-
+IMG_SUFFIXES = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".svg", ".ico", ".apng", ".tif", ".hdr", ".exr"]
 CONFIG_PATH = CUR_PATH.joinpath("model-config.json")
 
 
@@ -120,64 +120,67 @@ class ModelManager:
         return model_cfg[1]
 
     @staticmethod
-    def model_rename(mtype, old_name, new_name):
+    def model_rename(mtype, old_name: str, new_name: str):
         """
         重命名模型
         """
+        ori_oname = old_name
+        ori_nname = new_name
+        old_name = Path(old_name).as_posix()
+        new_name = Path(new_name).as_posix()
         # 模型重命名
         model_path = ModelManager.find_model(mtype, old_name)
-        new_model_path = model_path.with_name(new_name)
+        # Note: 模型名可能是 a\\b.ckpt a/b.ckpt 这种带有路径的模型名
+        # new_model_path = model_path.with_name(new_name)
+        new_model_path = model_path.as_posix().replace(old_name, new_name)
         model_path.rename(new_model_path)
         # detail / filters 重命名
         try:
             detail = CFG_MANAGER.get_detail(mtype)
-            obase_name = Path(old_name).stem
-            nbase_name = Path(new_name).stem
-            if old_name in detail:
-                mcfg = detail.pop(old_name)
-                mcfg["name"] = new_name
-                detail[new_name] = mcfg
+            obase_name = Path(old_name).with_suffix("").as_posix()
+            nbase_name = Path(new_name).with_suffix("").as_posix()
+            if ori_oname in detail:
+                mcfg = detail.pop(ori_oname)
+                mcfg["name"] = ori_nname
+                detail[ori_nname] = mcfg
                 cover = mcfg.get("cover", "")
                 if cover and Path(cover).exists():
                     cover = Path(cover)
-                    new_cover_name = cover.name.replace(obase_name, nbase_name)
-                    new_cover = cover.with_name(new_cover_name)
+                    new_cover = Path(cover.as_posix().replace(obase_name, nbase_name))
+                    # new_cover_name = cover.name.replace(obase_name, nbase_name)
+                    # new_cover = cover.with_name(new_cover_name)
                     cover.rename(new_cover)
                     mcfg["cover"] = new_cover.as_posix()
-            if old_name in CFG_MANAGER.filters:
-                CFG_MANAGER.filters[new_name] = CFG_MANAGER.filters.pop(old_name)
+            if ori_oname in CFG_MANAGER.filters:
+                CFG_MANAGER.filters[ori_nname] = CFG_MANAGER.filters.pop(ori_oname)
         except Exception:
             import traceback
             traceback.print_exc()
 
     @staticmethod
-    def find_thumbnail(model_name, mtype) -> str:
-        img_suffixes = (".jpg", ".jpeg", ".png", ".gif")
+    def find_thumbnail(mname, mtype) -> str:
+        # a\\b.ckpt a/b.ckpt
+        pm = Path(mname)
+        psb_base_names = [pm.with_suffix("").as_posix(), pm.stem, pm.name]
         for p in ModelManager.get_paths(mtype):
-            # a\\b.ckpt a/b.ckpt
-            pm = Path(model_name)
-            model_names = [pm.with_suffix("").as_posix(), pm.stem, pm.name]
-            for model_name in model_names:
-                for suffix in img_suffixes:
-                    img_name = model_name + suffix
+            for pbname in psb_base_names:
+                for suffix in IMG_SUFFIXES:
+                    img_name = pbname + suffix
                     img_path = Path(p).joinpath(img_name)
                     if not img_path.exists():
                         continue
-                    # sys.stderr.write(img_path.as_posix() + " FIND\n")
-                    # sys.stderr.flush()
                     return img_path.as_posix()
         return ""
 
     @staticmethod
-    def remove_thumbnails(mtype, model_name):
+    def remove_thumbnails(mtype, mname):
         """
         移除同名的 .png, .jpg, .jpeg, .gif 缩略图
         """
-        img_suffixes = (".jpg", ".jpeg", ".png", ".gif")
+        model_names = [Path(mname).stem, Path(mname).name]
         for p in ModelManager.get_paths(mtype):
-            model_names = [Path(model_name).stem, Path(model_name).name]
             for model_name in model_names:
-                for suffix in img_suffixes:
+                for suffix in IMG_SUFFIXES:
                     img_name = model_name + suffix
                     img_path = Path(p).joinpath(img_name)
                     if not img_path.exists():
@@ -292,6 +295,14 @@ async def update_config(request: web.Request):
     CFG_MANAGER.dump_config()
     return web.Response(status=200, body=json.dumps(ret_json))
 
+def find_rel_path(p, model_paths) -> str:
+    if not p:
+        return ""
+    for p in model_paths:
+        if not p.startswith(p):
+            continue
+        return Path(p).relative_to(p).as_posix()
+    return ""
 
 @server.PromptServer.instance.routes.post("/cs/fetch_config")
 async def fetch_config(request: web.Request):
@@ -330,6 +341,10 @@ async def fetch_config(request: web.Request):
             old_model_map[name] = mcfg
             CFG_MANAGER.dirty = True
         mcfg = old_model_map[name]
+        # mcfg["name"] 和 mname 不匹配
+        if Path(mcfg.get("name", "")).as_posix() != Path(name).as_posix():
+            mcfg["name"] = name
+            CFG_MANAGER.dirty = True
         old_cover = mcfg.get("cover", "")
         if not old_cover or not thumbnail_exists(old_cover):
             img_path = ModelManager.find_thumbnail(name, mtype)
@@ -344,20 +359,13 @@ async def fetch_config(request: web.Request):
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
     ret_model_map = deepcopy(ret_model_map)
-    def find_rel_cover(cover, model_paths) -> str:
-        if not cover:
-            return ""
-        for p in model_paths:
-            if not cover.startswith(p):
-                continue
-            return Path(cover).relative_to(p).as_posix()
-        return ""
-    model_paths = ModelManager.get_paths(mtype)
+
+    # model_paths = ModelManager.get_paths(mtype)
     for mcfg in ret_model_map.values():
-        # 遍历model_paths 对比 cover 得到 减去 model_paths 的相对路径
-        rel_cover = find_rel_cover(mcfg["cover"], model_paths).replace("\\", "/")
-        if rel_cover and "/" in rel_cover:
-            dir_tag = rel_cover.split("/", maxsplit=1)[0]
+        # 遍历model_paths 对比 model_path 得到 减去 model_paths 的相对路径
+        name = mcfg.get("name", "").replace("\\", "/")
+        if name and "/" in name:
+            dir_tag = name.split("/", maxsplit=1)[0]
             mcfg["tags"].append(dir_tag)
             mcfg["dir_tags"] = [dir_tag]
         mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
