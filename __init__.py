@@ -161,7 +161,8 @@ class ModelManager:
     def find_thumbnail(mname, mtype) -> str:
         # a\\b.ckpt a/b.ckpt
         pm = Path(mname)
-        psb_base_names = [pm.with_suffix("").as_posix(), pm.stem, pm.name]
+        base_name = pm.with_suffix("")
+        psb_base_names = [base_name.as_posix(), base_name.as_posix() + pm.suffix, pm.stem, pm.name]
         for p in ModelManager.get_paths(mtype):
             for pbname in psb_base_names:
                 for suffix in IMG_SUFFIXES:
@@ -312,7 +313,7 @@ def find_rel_path(p, model_paths) -> str:
 def find_tags(string: str, sep="/") -> list[str]:
     """
     find tags from string use the sep for split
-    Note: string may contain the \ or / for path separator
+    Note: string may contain the \\ or / for path separator
     """
     if not string:
         return []
