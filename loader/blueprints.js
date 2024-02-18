@@ -105,6 +105,12 @@ const IMPL = {
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
+  DiffusersLoader: {
+    type: "loras",
+    getWidgets: (n) => n.constructor.nodeData.input.required.lora_name[0],
+    getSelWidget: (n) => n.widgets[1].value,
+    setWidget: (n, v) => (n.widgets[1].value = v),
+  },
 };
 class ModelConfig {
   static filter_dirty = {};
