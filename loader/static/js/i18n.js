@@ -94,12 +94,33 @@ const message = {
       },
       searchValue: "关键词",
       modelDetail: {
-        title: "基本信息",
-        size: "文件大小",
-        type: "文件类型",
-        creationTime: "创建时间",
-        modificationTime: "修改时间",
-        buttonText: "使用此模型",
+        menuTab: [
+          {
+            name: "工作流",
+          },
+          {
+            name: "基本信息",
+          },
+        ],
+        basicInf: {
+          title: "基本信息",
+          size: "文件大小",
+          type: "文件类型",
+          creationTime: "创建时间",
+          modificationTime: "修改时间",
+        },
+        workflow: {
+          copyText: "复制JSON",
+          delete: "删除",
+          addWorkflowButtonText: "添加工作流",
+          noWorkflowTip: "未发现工作流，点击下面添加工作流按钮即可添加",
+          form: {
+            title: "更改名称",
+            confirmText: "确认",
+            cancelText: "取消",
+          },
+        },
+        useButtonText: "使用此模型",
       },
     },
     settings: {
@@ -223,14 +244,35 @@ const message = {
           return `Total ${named("modelCount")} models, ${named("noThumbnailCount")} models without thumbnails. Now ${named("taskIndex")}/${named("taskCount")} thumbnail`;
         },
       },
-      searchValue: "keyword",
+      searchValue: "Keyword",
       modelDetail: {
-        title: "Basic",
-        size: "Size",
-        type: "Type",
-        creationTime: "Create time",
-        modificationTime: "Modify time",
-        buttonText: "Use model",
+        menuTab: [
+          {
+            name: "Workflow",
+          },
+          {
+            name: "Basic information",
+          },
+        ],
+        basicInf: {
+          title: "Basic",
+          size: "Size",
+          type: "Type",
+          creationTime: "Create time",
+          modificationTime: "Modify time",
+        },
+        workflow: {
+          copyText: "Copy JSON",
+          delete: "Delete",
+          addWorkflowButtonText: "Add workflow",
+          noWorkflowTip: "No workflow found, click the add workflow button below to add it",
+          form: {
+            title: "Change name",
+            confirmText: "Confirm",
+            cancelText: "Cancel",
+          },
+        },
+        useButtonText: "Use model",
       },
     },
     settings: {
@@ -356,12 +398,34 @@ const message = {
       },
       searchValue: "關鍵詞",
       modelDetail: {
-        title: "基本信息",
-        size: "文件大小",
-        type: "文件類型",
-        creationTime: "創建時間",
-        modificationTime: "修改時間",
-        buttonText: "使用此模型",
+        menuTab: [
+          {
+            name: "工作流",
+          },
+          {
+            name: "基本信息",
+          },
+        ],
+        basicInf: {
+          title: "基本信息",
+          size: "文件大小",
+          type: "文件類型",
+          creationTime: "創建時間",
+          modificationTime: "修改時間",
+          buttonText: "使用此模型",
+        },
+        workflow: {
+          copyText: "復製JSON",
+          delete: "刪除",
+          addWorkflowButtonText: "添加工作流",
+          noWorkflowTip: "未發現工作流，點擊下面添加工作流按鈕即可添加",
+          form: {
+            title: "更改名稱",
+            confirmText: "确認",
+            cancelText: "取消",
+          },
+        },
+        useButtonText: "使用此模型",
       },
     },
     settings: {
