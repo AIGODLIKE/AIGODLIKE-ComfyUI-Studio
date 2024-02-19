@@ -20,6 +20,7 @@ CUR_PATH = Path(__file__).parent.absolute()
 MOUNT_ROOT = "/cs/"
 IMG_SUFFIXES = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".svg", ".ico", ".apng", ".tif", ".hdr", ".exr"]
 CONFIG_PATH = CUR_PATH.joinpath("model-config.json")
+WK_PATH = CUR_PATH.joinpath("workflow")
 
 
 class ConfigManager:
@@ -380,11 +381,19 @@ async def fetch_config(request: web.Request):
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
     ret_model_map = deepcopy(ret_model_map)
-
+    print("++-------------------------------")
     # model_paths = ModelManager.get_paths(mtype)
     for mcfg in ret_model_map.values():
         # 遍历model_paths 对比 model_path 得到 减去 model_paths 的相对路径
         name = mcfg.get("name", "").replace("\\", "/")
+        # 查找 model对应的 workflow
+        mcfg["workflows"] = []
+        mtype = mcfg.get("mtype", "")
+        wp = WK_PATH.joinpath(mtype, name)
+        if wp.exists():
+            workflows = [p.name for p in wp.iterdir() if p.is_file() and p.suffix == ".json"]
+            mcfg["workflows"] = workflows
+        print(mtype, name, mcfg["workflows"])
         dir_tags = find_tags(name)
         if dir_tags:
             mcfg["tags"].extend(dir_tags)
@@ -446,28 +455,27 @@ async def fetch_filter(request: web.Request):
 
 @server.PromptServer.instance.routes.post("/cs/fetch_workflow")
 async def fetch_workflow(request: web.Request):
+    """
+    根据传入的 mtype mname workflow名 获取对应json
+    """
     post = await request.post()
     mtype = post.get("mtype")
+    mname = post.get("mname")
+    workflow = post.get("workflow")
+    wk_path = WK_PATH.joinpath(mtype, mname, workflow).with_suffix(".json")
+    err_info = ""
     if not mtype:
-        sys.stderr.write("ComfyUI-Studio Fetch workflow: workflow type is empty\n")
+        err_info = "ComfyUI-Studio Fetch workflow: workflow type is empty\n"
+    elif not mname:
+        err_info = "ComfyUI-Studio Fetch workflow: model name is empty\n"
+    elif not workflow:
+        err_info = "ComfyUI-Studio Fetch workflow: workflow name is empty\n"
+    elif not wk_path.exists() or not wk_path.is_file():
+        err_info = f"ComfyUI-Studio Fetch workflow: workflow [{wk_path.as_posix()}] not find\n"
+    if err_info:
+        sys.stderr.write(err_info)
         sys.stderr.flush()
-        return web.Response(status=200, body="{}")
-
-    def _find_workflow(mtype, root=CUR_PATH.joinpath("workflow")):
-        # 查找 mtype 对应的缩略图渲染工作流, 工作流均位于 workflow 目录下
-        # 1. 用户 workflow 为 mtype.json
-        # 2. 默认 workflow 为 mtype_def.json
-        # 3. 优先查找 用户定义 workflow
-        usr_workflow = root.joinpath(f"{mtype}.json")
-        if usr_workflow.exists():
-            return read_json(usr_workflow)
-        def_workflow = root.joinpath(f"{mtype}_def.json")
-        if def_workflow.exists():
-            return read_json(def_workflow)
-        return {}
-
-    ret_json = _find_workflow(mtype)
-
+    ret_json = read_json(wk_path)
     return web.Response(status=200, body=json.dumps(ret_json))
 
 
