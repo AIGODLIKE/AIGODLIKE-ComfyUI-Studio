@@ -1,0 +1,184 @@
+.workflow {
+  padding: 0.5vw;
+  flex: 1;
+  overflow: hidden;
+  background: #1f1f1f;
+  border-radius: 0.5vw;
+  margin-bottom: 0.3vw;
+}
+.workflow .workflow_content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+.workflow .workflow_content .search_area {
+  position: relative;
+}
+.workflow .workflow_content .search_area .search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #383838;
+  height: 1.6vw;
+  min-height: 32px;
+  border-radius: 5px;
+}
+.workflow .workflow_content .search_area .search input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: none;
+  color: #c4c4c4;
+  padding: 0 0.5vw;
+}
+.workflow .workflow_content .search_area .search span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.3vw;
+  height: 100%;
+  cursor: pointer;
+}
+.workflow .workflow_content .search_area .search span em {
+  color: #c4c4c4;
+}
+.workflow .workflow_content .search_area .search span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  width: 0.2vw;
+  height: 70%;
+  background: #1f1f1f;
+  border-radius: 1vw;
+}
+.workflow .workflow_content .search_area .search span:hover em {
+  color: #2a82e4;
+}
+.workflow .workflow_content .search_area .search_key {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 0;
+  top: 0;
+  height: 1.6vw;
+  min-height: 32px;
+  background: #808080;
+  border-radius: 5px;
+  padding: 0 0.5vw;
+  transition: 0.3s;
+}
+.workflow .workflow_content .search_area .search_key p {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+}
+.workflow .workflow_content .search_area:hover .search_key {
+  visibility: hidden;
+  opacity: 0;
+}
+.workflow .workflow_content .workflow_list {
+  margin-top: 0.5vw;
+  flex: 1;
+  display: grid;
+  grid-gap: 0.3vw;
+  grid-auto-rows: 2.4vw;
+  overflow-y: auto;
+  padding: 0 4px 5px 0;
+}
+.workflow .workflow_content .workflow_list .workflow_item {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #3d3d3d;
+  background: #262626;
+  border-radius: 0.3vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  padding: 0 1vw;
+  transition: 0.3s;
+}
+.workflow .workflow_content .workflow_list .workflow_item .name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.workflow .workflow_content .workflow_list .workflow_item .option {
+  display: none;
+}
+.workflow .workflow_content .workflow_list .workflow_item .option em {
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.workflow .workflow_content .workflow_list .workflow_item .option em:nth-of-type(2) {
+  margin-left: 0.4vw;
+}
+.workflow .workflow_content .workflow_list .workflow_item:hover {
+  background: #383838;
+}
+.workflow .workflow_content .workflow_list .workflow_item:hover .option {
+  display: block;
+}
+.workflow .workflow_content .workflow_list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.workflow .workflow_content .workflow_list::-webkit-scrollbar-thumb:vertical {
+  border-radius: 20px;
+  background: #808080;
+}
+.workflow .workflow_content .empty_list {
+  margin-top: 0.5vw;
+  flex: 1;
+}
+.workflow .workflow_content button {
+  margin-top: 5px;
+  width: 100%;
+  height: 2.1vw;
+  border-radius: 0.3vw;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: #383838;
+  transition: 0.3s;
+  color: #ffffff;
+}
+.workflow .workflow_content button:hover {
+  background: #2a82e4;
+}
+.workflow .form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #1818186b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.workflow .form .form_content {
+  width: 20vw;
+  height: 40vw;
+  background: #1a1b1c;
+  border-radius: 0.5vw;
+  box-shadow: 0 0 2px 1px #ffffff;
+  color: #ffffff;
+}
+.workflow .form .form_content .head {
+  border-bottom: 2px solid #000000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.6vw;
+}
+.workflow .form .form_content .head .option em {
+  cursor: pointer;
+  font-size: 1rem;
+}

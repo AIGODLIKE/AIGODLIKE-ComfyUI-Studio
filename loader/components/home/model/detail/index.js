@@ -1,5 +1,7 @@
 import { getLevelInf } from "../../../../static/js/public.js";
 import { api } from "/scripts/api.js";
+import BasicInf from "./basicInf/index.js";
+import Workflow from "./workflow/index.js";
 import IconRenderer from "../../../public/iconRenderer.js";
 const ext = {
   is_rendering: false,
@@ -17,14 +19,17 @@ ext.register();
 
 export default {
   props: ["model"],
+  components: {
+    BasicInf,
+    Workflow,
+  },
   data() {
     return {
       list: [],
       levelList: [],
-      tagValue: "",
+      menuIndex: 0,
       isReadonly: true,
       selectedLevel: "D",
-      isEditTagInput: false,
     };
   },
   created() {
@@ -81,33 +86,9 @@ export default {
       });
       this.selectedLevel = this.model.level;
     },
-    // Create a tag
-    createTag() {
-      if (this.checkTagLegality()) {
-        this.$emit("addTag", this.tagValue);
-        this.tagValue = "";
-        this.isEditTagInput = false;
-      }
-    },
-    // Legality of detecting tags
-    checkTagLegality() {
-      if (this.tagValue === "") {
-        return false;
-      }
-      if (this.model.tags.find((x) => x === this.tagValue)) {
-        this.$message({
-          type: "error",
-          message: this.$t("messages.tagExists"),
-        });
-        return false;
-      }
-      return true;
-    },
-    // Enter event for tag input box
-    handleKeyDown(e) {
-      if (e.key === "Enter") {
-        this.createTag();
-      }
+    // Add a tag
+    addTag(tagValue) {
+      this.$emit("addTag", tagValue);
     },
     // Delete tag
     deleteTag(index) {
@@ -116,29 +97,6 @@ export default {
     // Click to use
     useModel() {
       this.$emit("useModel", this.model);
-    },
-    // Focus event of tag input box
-    editTagInput() {
-      if (!this.isEditTagInput) {
-        this.isEditTagInput = true;
-        this.$nextTick(() => {
-          const tagInput = this.$refs.tagInput;
-          tagInput.focus();
-        });
-      }
-    },
-    // Blur event of tag input box
-    tagInputBlur() {
-      if (this.checkTagLegality()) {
-        this.$emit("addTag", this.tagValue);
-      }
-      this.tagValue = "";
-      this.isEditTagInput = false;
-    },
-    //Timestamp conversion
-    timestampConversion(timeStamp) {
-      const date = new Date(Number(timeStamp));
-      return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ": " + date.getMinutes();
     },
     // Rendering an image
     renderPic() {
@@ -178,6 +136,10 @@ export default {
         this.$emit("modifyCover", filepath);
       }
     },
+    changeMenu(index) {
+      this.menuIndex = index;
+      console.log(this.menuIndex);
+    },
   },
   filters: {
     // 保留小数位数->str
@@ -204,48 +166,12 @@ export default {
               <div class="level_group">
                 <span v-for="(item, index) in levelList" :key="index" class="level_item" :class="{selected:selectedLevel === item.value}" :style="{'--color':item.color}" @click="changeLevel(item)">{{item.value}}</span>
               </div>
-              <div class="model_inf">
-                <p>{{$t("home.modelDetail.title")}}</p>
-                <div class="size inf_item">
-                  <span>{{$t("home.modelDetail.size")}}</span>
-                  <span>{{(model?.size || 0) | numberRound}} MB</span>
-                </div>
-                <div class="type inf_item">
-                  <span>{{$t("home.modelDetail.type")}}</span>
-                  <span>{{model?.type || '未知'}}</span>
-                </div>
-                <div class="create_time inf_item">
-                  <span>{{$t("home.modelDetail.creationTime")}}</span>
-                  <span>{{ timestampConversion(model?.creationTime)  || null}}</span>
-                </div>
-                <div class="modify_time inf_item">
-                  <span>{{$t("home.modelDetail.modificationTime")}}</span>
-                  <span>{{ timestampConversion(model?.modifyTime) || null}}</span>
-                </div>
+              <div class="menu_tab">
+                <div v-for="(item,index) in $t('home.modelDetail.menuTab')" :key="index" class="menu_item" :class="{'active_menu': index === menuIndex }" @click="changeMenu(index)">{{item.name}}</div>
               </div>
-              <div class="classify_input_container">
-                <div class="classify_input">
-                  <div v-for="(item, index) in model.tags" :key="item" class="tag">
-                  {{ item }}
-                 <em class="iconfont icon-close"  @click="deleteTag(index)"></em>
-                </div>
-                <div class="tag_input" @click="editTagInput" :class="{expand:isEditTagInput}">
-                  <input
-                    v-if="isEditTagInput"
-                    ref="tagInput"
-                    v-model="tagValue"
-                    type="text"
-                    placeholder="Enter"
-                    maxlength="16"
-                    @keydown="handleKeyDown($event)"
-                    @blur="tagInputBlur"
-                  />
-                  <em class="iconfont icon-add"></em>
-                </div>
-                
-                </div>
-              </div>
-              <button class="use_button" @click="useModel">{{$t("home.modelDetail.buttonText")}}</button>
+              <Workflow v-if="menuIndex === 0" />
+              <BasicInf v-else  @addTag="addTag" @deleteTag="deleteTag" :model="model" />
+              <button class="use_button" @click="useModel">{{$t("home.modelDetail.useButtonText")}}</button>
           </div>
   `,
 };

@@ -147,28 +147,47 @@
 .model_detail .level_group .level_item:hover {
   background: var(--color);
 }
-.model_detail .model_inf {
-  margin-top: 0.5vw;
+.model_detail .menu_tab {
+  display: flex;
+  margin: 0.5vw 0;
+  padding: 0 0.8vw;
+}
+.model_detail .menu_tab .active_menu {
+  color: #ffffff !important;
+}
+.model_detail .menu_tab .menu_item {
+  color: #808080;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.model_detail .menu_tab .menu_item:nth-of-type(2) {
+  margin-left: 1.3vw;
+}
+.model_detail .basic_inf {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.model_detail .basic_inf .model_inf {
   display: grid;
   grid-gap: 0.5vw;
   width: 100%;
   padding: 0 0.8vw;
 }
-.model_detail .model_inf p {
-  font-weight: bold;
-}
-.model_detail .model_inf .inf_item {
+.model_detail .basic_inf .model_inf .inf_item {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
   font-size: 1rem;
 }
-.model_detail .model_inf .inf_item span {
+.model_detail .basic_inf .model_inf .inf_item span {
   font-weight: bold;
   color: #bfbfbf;
 }
-.model_detail .classify_input_container {
+.model_detail .basic_inf .classify_input_container {
   flex: 1;
   overflow: hidden;
   padding: 0.5vw 0.3vw 0.5vw 0.5vw;
@@ -176,7 +195,7 @@
   border-radius: 0.3vw;
   margin: 0.5vw 0;
 }
-.model_detail .classify_input_container .classify_input {
+.model_detail .basic_inf .classify_input_container .classify_input {
   width: 100%;
   height: 100%;
   overflow-y: auto;
@@ -186,7 +205,7 @@
   align-content: flex-start;
   padding-right: 0.3vw;
 }
-.model_detail .classify_input_container .classify_input .tag {
+.model_detail .basic_inf .classify_input_container .classify_input .tag {
   cursor: default;
   display: flex;
   color: #ffffff;
@@ -198,31 +217,31 @@
   font-weight: bold;
   align-items: center;
 }
-.model_detail .classify_input_container .classify_input .tag em {
+.model_detail .basic_inf .classify_input_container .classify_input .tag em {
   color: #808080;
   cursor: pointer;
   margin-left: 0.4vw;
   transition: color 0.25s;
   font-size: 0.7rem;
 }
-.model_detail .classify_input_container .classify_input .tag em:hover {
+.model_detail .basic_inf .classify_input_container .classify_input .tag em:hover {
   color: red;
 }
-.model_detail .classify_input_container .classify_input .expand {
+.model_detail .basic_inf .classify_input_container .classify_input .expand {
   background: #383838 !important;
   border: 1px solid transparent !important;
 }
-.model_detail .classify_input_container .classify_input .expand em {
+.model_detail .basic_inf .classify_input_container .classify_input .expand em {
   color: #ffffff !important;
 }
-.model_detail .classify_input_container .classify_input .tag_input {
+.model_detail .basic_inf .classify_input_container .classify_input .tag_input {
   padding: 0.36vw 0.62vw;
   border: 1px solid #3d3d3d;
   border-radius: 0.36vw;
   background: #1f1f1f;
   cursor: pointer;
 }
-.model_detail .classify_input_container .classify_input .tag_input input {
+.model_detail .basic_inf .classify_input_container .classify_input .tag_input input {
   width: 0;
   overflow: hidden;
   color: #ffffff;
@@ -230,28 +249,149 @@
   padding: 0;
   animation: tag_input_enter 0.3s forwards;
 }
-.model_detail .classify_input_container .classify_input .tag_input em {
+.model_detail .basic_inf .classify_input_container .classify_input .tag_input em {
   color: #3d3d3d;
 }
-.model_detail .classify_input_container .classify_input .tag_input:hover {
+.model_detail .basic_inf .classify_input_container .classify_input .tag_input:hover {
   background: #262626;
   border: 1px solid #262626;
 }
-.model_detail .classify_input_container .classify_input .tag_input:hover em {
+.model_detail .basic_inf .classify_input_container .classify_input .tag_input:hover em {
   color: #ffffff;
 }
-.model_detail .classify_input_container .classify_input::-webkit-scrollbar {
+.model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar {
   width: 8px;
 }
-.model_detail .classify_input_container .classify_input::-webkit-scrollbar-thumb:vertical {
+.model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar-thumb:vertical {
   border-radius: 20px;
   background: #808080;
 }
-.model_detail .classify_input_container .classify_input::-webkit-scrollbar-track {
+.model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar-track {
   background-color: transparent;
 }
-.model_detail .classify_input_container .classify_input::-webkit-scrollbar-corner {
+.model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar-corner {
   background-color: transparent;
+}
+.model_detail .workflow {
+  padding: 0.5vw;
+  flex: 1;
+  overflow: hidden;
+  background: #1f1f1f;
+  border-radius: 0.5vw;
+  margin-bottom: 0.3vw;
+}
+.model_detail .workflow .workflow_content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+.model_detail .workflow .workflow_content .search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #383838;
+  height: 1.6vw;
+  min-height: 32px;
+  border-radius: 5px;
+}
+.model_detail .workflow .workflow_content .search input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: none;
+  color: #c4c4c4;
+  padding: 0 0.5vw;
+}
+.model_detail .workflow .workflow_content .search span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.3vw;
+  height: 100%;
+  cursor: pointer;
+}
+.model_detail .workflow .workflow_content .search span em {
+  color: #c4c4c4;
+}
+.model_detail .workflow .workflow_content .search span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  width: 0.2vw;
+  height: 70%;
+  background: #1f1f1f;
+  border-radius: 1vw;
+}
+.model_detail .workflow .workflow_content .search span:hover em {
+  color: #2a82e4;
+}
+.model_detail .workflow .workflow_content .workflow_list {
+  margin-top: 0.5vw;
+  flex: 1;
+  display: grid;
+  grid-gap: 0.3vw;
+  grid-auto-rows: 2.4vw;
+  overflow-y: auto;
+  padding: 0 4px 5px 0;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #3d3d3d;
+  background: #262626;
+  border-radius: 0.3vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  padding: 0 1vw;
+  transition: 0.3s;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item .name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item .option {
+  display: none;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item .option em {
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item .option em:nth-of-type(2) {
+  margin-left: 0.4vw;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item:hover {
+  background: #383838;
+}
+.model_detail .workflow .workflow_content .workflow_list .workflow_item:hover .option {
+  display: block;
+}
+.model_detail .workflow .workflow_content .workflow_list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.model_detail .workflow .workflow_content .workflow_list::-webkit-scrollbar-thumb:vertical {
+  border-radius: 20px;
+  background: #808080;
+}
+.model_detail .workflow .workflow_content button {
+  margin-top: 5px;
+  width: 100%;
+  height: 2.1vw;
+  border-radius: 0.3vw;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: #383838;
+  transition: 0.3s;
+  color: #ffffff;
+}
+.model_detail .workflow .workflow_content button:hover {
+  background: #2a82e4;
 }
 .model_detail .use_button {
   width: 100%;
