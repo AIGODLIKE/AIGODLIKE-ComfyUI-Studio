@@ -505,6 +505,8 @@ async def save_workflow(request: web.Request):
         err_info = "ComfyUI-Studio Save workflow: workflow data is empty\n"
     else:
         try:
+            if not wk_path.parent.exists():
+                wk_path.parent.mkdir(parents=True)
             wk_path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
             ret_json["saved"] = True
             sys.stdout.write(f"ComfyUI-Studio Save workflow: [{wk_name}] success\n")
