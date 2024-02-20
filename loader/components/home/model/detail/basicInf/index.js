@@ -73,6 +73,12 @@ export default {
       return true;
     },
   },
+  filters: {
+    // 保留小数位数->str
+    numberRound(num, decimal = 2) {
+      return Math.round(num * Math.pow(10, decimal)) / Math.pow(10, decimal);
+    },
+  },
   template: `<div class="basic_inf">
                 <div class="model_inf">
                   <div class="size inf_item">
