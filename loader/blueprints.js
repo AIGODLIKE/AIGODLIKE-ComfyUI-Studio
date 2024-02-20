@@ -105,6 +105,12 @@ const IMPL = {
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
+  "xxxxx 有空格的节点名": {
+    type: "loras",
+    getWidgets: (n) => n.constructor.nodeData.input.required.lora_name[0],
+    getSelWidget: (n) => n.widgets[1].value,
+    setWidget: (n, v) => (n.widgets[1].value = v),
+  },
 };
 class ModelConfig {
   static filter_dirty = {};
@@ -145,7 +151,22 @@ class ModelConfig {
     request.onload = function () {
       if (request.status != 200) return;
       var resp = JSON.parse(request.responseText);
-      ModelConfig.config[mtype] = resp;
+      // 如果mtype 不存在则赋值, 否则原位更新
+      if (!ModelConfig.config[mtype]) {
+        ModelConfig.config[mtype] = resp;
+      } else {
+        let config = ModelConfig.config[mtype];
+        // 原位更新
+        for (let key in resp) {
+          if (!config[key]) {
+            config[key] = resp[key];
+          } else {
+            for (let key2 in resp[key]) {
+              config[key][key2] = resp[key][key2];
+            }
+          }
+        }
+      }
       ModelConfig.config_dirty[mtype] = false;
     };
     let body = { mtype: mtype, models: models };
@@ -218,6 +239,14 @@ class BluePrints {
       filters.push({ name: key, modelList: ModelConfig.filter[key] });
     }
     return filters;
+  }
+  CSupdateModelConfig(widget) {
+    // 未指定则仅更新当前
+    if(!widget){
+      widget = this.CSgetSelModelWidget();
+    }
+    let mtype = this.CSgetModelWidgetType();
+    ModelConfig.fetchConfig(mtype, [widget]);
   }
   CSgetModelLists() {
     // console.log(this);

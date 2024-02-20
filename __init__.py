@@ -20,6 +20,7 @@ CUR_PATH = Path(__file__).parent.absolute()
 MOUNT_ROOT = "/cs/"
 IMG_SUFFIXES = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".svg", ".ico", ".apng", ".tif", ".hdr", ".exr"]
 CONFIG_PATH = CUR_PATH.joinpath("model-config.json")
+WK_PATH = CUR_PATH.joinpath("workflow")
 
 
 class ConfigManager:
@@ -134,7 +135,7 @@ class ModelManager:
         # new_model_path = model_path.with_name(new_name)
         new_model_path = model_path.as_posix().replace(old_name, new_name)
         model_path.rename(new_model_path)
-        # detail / filters 重命名
+        # detail / filters / workflow 重命名
         try:
             detail = CFG_MANAGER.get_detail(mtype)
             obase_name = Path(old_name).with_suffix("").as_posix()
@@ -153,6 +154,10 @@ class ModelManager:
                     mcfg["cover"] = new_cover.as_posix()
             if ori_oname in CFG_MANAGER.filters:
                 CFG_MANAGER.filters[ori_nname] = CFG_MANAGER.filters.pop(ori_oname)
+            old_wp = WK_PATH.joinpath(mtype, ori_oname)
+            new_wp = WK_PATH.joinpath(mtype, ori_nname)
+            if old_wp.exists():
+                old_wp.rename(new_wp)
         except Exception:
             import traceback
             traceback.print_exc()
@@ -380,11 +385,17 @@ async def fetch_config(request: web.Request):
         mcfg["creationTime"] = model_path.stat().st_ctime * 1000
         mcfg["modifyTime"] = model_path.stat().st_mtime * 1000
     ret_model_map = deepcopy(ret_model_map)
-
     # model_paths = ModelManager.get_paths(mtype)
     for mcfg in ret_model_map.values():
         # 遍历model_paths 对比 model_path 得到 减去 model_paths 的相对路径
         name = mcfg.get("name", "").replace("\\", "/")
+        # 查找 model对应的 workflow
+        mcfg["workflows"] = []
+        mtype = mcfg.get("mtype", "")
+        wp = WK_PATH.joinpath(mtype, name)
+        if wp.exists():
+            workflows = [p.name for p in wp.iterdir() if p.is_file() and p.suffix == ".json"]
+            mcfg["workflows"] = workflows
         dir_tags = find_tags(name)
         if dir_tags:
             mcfg["tags"].extend(dir_tags)
@@ -446,28 +457,100 @@ async def fetch_filter(request: web.Request):
 
 @server.PromptServer.instance.routes.post("/cs/fetch_workflow")
 async def fetch_workflow(request: web.Request):
-    post = await request.post()
-    mtype = post.get("mtype")
+    """
+    根据传入的 mtype mname workflow名 获取对应json
+    """
+    body = await request.read()
+    body = json.loads(body)
+    mtype = body.get("mtype")
+    mname = body.get("mname")
+    workflow = body.get("workflow")
+    wk_path = WK_PATH.joinpath(mtype, mname, workflow).with_suffix(".json")
+    err_info = ""
     if not mtype:
-        sys.stderr.write("ComfyUI-Studio Fetch workflow: workflow type is empty\n")
+        err_info = "ComfyUI-Studio Fetch workflow: workflow type is empty\n"
+    elif not mname:
+        err_info = "ComfyUI-Studio Fetch workflow: model name is empty\n"
+    elif not workflow:
+        err_info = "ComfyUI-Studio Fetch workflow: workflow name is empty\n"
+    elif not wk_path.exists() or not wk_path.is_file():
+        err_info = f"ComfyUI-Studio Fetch workflow: workflow [{wk_path.as_posix()}] not find\n"
+    if err_info:
+        sys.stderr.write(err_info)
         sys.stderr.flush()
-        return web.Response(status=200, body="{}")
+    ret_json = read_json(wk_path)
+    return web.Response(status=200, body=json.dumps(ret_json))
 
-    def _find_workflow(mtype, root=CUR_PATH.joinpath("workflow")):
-        # 查找 mtype 对应的缩略图渲染工作流, 工作流均位于 workflow 目录下
-        # 1. 用户 workflow 为 mtype.json
-        # 2. 默认 workflow 为 mtype_def.json
-        # 3. 优先查找 用户定义 workflow
-        usr_workflow = root.joinpath(f"{mtype}.json")
-        if usr_workflow.exists():
-            return read_json(usr_workflow)
-        def_workflow = root.joinpath(f"{mtype}_def.json")
-        if def_workflow.exists():
-            return read_json(def_workflow)
-        return {}
+@server.PromptServer.instance.routes.post("/cs/save_workflow")
+async def save_workflow(request: web.Request):
+    """
+    根据传入的 mtype mname workflow数据 保存对应json
+    """
+    body = await request.read()
+    body = json.loads(body)
+    mtype = body.get("mtype")
+    mname = body.get("mname")
+    data = body.get("data")
+    wk_name = body.get("name")
+    wk_path = WK_PATH.joinpath(mtype, mname, wk_name).with_suffix(".json")
+    err_info = ""
+    ret_json = {"saved": False}
+    if not mtype:
+        err_info = "ComfyUI-Studio Save workflow: workflow type is empty\n"
+    elif not mname:
+        err_info = "ComfyUI-Studio Save workflow: model name is empty\n"
+    elif not wk_name:
+        err_info = "ComfyUI-Studio Save workflow: workflow name is empty\n"
+    elif not data:
+        err_info = "ComfyUI-Studio Save workflow: workflow data is empty\n"
+    else:
+        try:
+            if not wk_path.parent.exists():
+                wk_path.parent.mkdir(parents=True)
+            wk_path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            ret_json["saved"] = True
+            sys.stdout.write(f"ComfyUI-Studio Save workflow: [{wk_name}] success\n")
+        except Exception as e:
+            err_info = f"ComfyUI-Studio Save workflow: {e}\n"
+    if err_info:
+        sys.stderr.write(err_info)
+        sys.stderr.flush()
+    return web.Response(status=200, body=json.dumps(ret_json))
 
-    ret_json = _find_workflow(mtype)
-
+@server.PromptServer.instance.routes.post("/cs/remove_workflow")
+async def remove_workflow(request: web.Request):
+    """
+    根据传入的 mtype mname workflow名 删除对应json
+    """
+    body = await request.read()
+    body = json.loads(body)
+    mtype = body.get("mtype")
+    mname = body.get("mname")
+    workflow = body.get("workflow")
+    wk_name = body.get("name")
+    if not wk_name:
+        wk_name = workflow
+    wk_path = WK_PATH.joinpath(mtype, mname, workflow).with_suffix(".json")
+    err_info = ""
+    ret_json = {"removed": False}
+    if not mtype:
+        err_info = "ComfyUI-Studio Remove workflow: workflow type is empty\n"
+    elif not mname:
+        err_info = "ComfyUI-Studio Remove workflow: model name is empty\n"
+    elif not workflow:
+        err_info = "ComfyUI-Studio Remove workflow: workflow name is empty\n"
+    elif not wk_path.exists() or not wk_path.is_file():
+        err_info = f"ComfyUI-Studio Remove workflow: workflow [{wk_path.as_posix()}] not find\n"
+    else:
+        try:
+            wk_path.unlink()
+            ret_json["removed"] = True
+            sys.stdout.write(f"ComfyUI-Studio Remove workflow: [{wk_name}] success\n")
+        except Exception as e:
+            err_info = f"ComfyUI-Studio Remove workflow: {e}\n"
+    if err_info:
+        sys.stderr.write(err_info)
+        sys.stderr.flush()
     return web.Response(status=200, body=json.dumps(ret_json))
 
 

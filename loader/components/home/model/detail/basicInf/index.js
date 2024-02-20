@@ -20,6 +20,13 @@ export default {
     //Timestamp conversion
     timestampConversion(timeStamp) {
       const date = new Date(Number(timeStamp));
+      return date.toLocaleString([], {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ": " + date.getMinutes();
     },
     // Delete tag
@@ -71,6 +78,12 @@ export default {
         return false;
       }
       return true;
+    },
+  },
+  filters: {
+    // 保留小数位数->str
+    numberRound(num, decimal = 2) {
+      return Math.round(num * Math.pow(10, decimal)) / Math.pow(10, decimal);
     },
   },
   template: `<div class="basic_inf">
