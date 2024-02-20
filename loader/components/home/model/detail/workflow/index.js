@@ -66,13 +66,13 @@ export default {
         var resp = JSON.parse(request.responseText);
         if (resp?.saved) {
           this.node.CSupdateModelConfig(this.model.name);
-          this.$message(name + this.$t('home.modelDetail.workflow.saveSuccess'));
+          this.$message(name + " " + this.$t("home.modelDetail.workflow.saveSuccess"));
         } else {
-          this.$message(name + this.$t('home.modelDetail.workflow.saveFail'));
+          this.$message(name + " " + this.$t("home.modelDetail.workflow.saveFail"));
         }
       };
       request.ontimeout = () => {
-        this.$message(name + this.$t('home.modelDetail.workflow.saveTimeout'));
+        this.$message(name + " " + this.$t("home.modelDetail.workflow.saveTimeout"));
       };
       let mtype = this.node.CSgetModelWidgetType();
       let body = { mtype: mtype, mname: this.model?.name, data, name };
@@ -89,13 +89,13 @@ export default {
         var resp = JSON.parse(request.responseText);
         if (resp) {
           navigator.clipboard.writeText(request.responseText);
-          this.$message(item.name + this.$t('home.modelDetail.workflow.copySuccess'));
+          this.$message(item.name + " " + this.$t("home.modelDetail.workflow.copySuccess"));
         } else {
-          this.$message(item.name + this.$t('home.modelDetail.workflow.copyFail'));
+          this.$message(item.name + " " + this.$t("home.modelDetail.workflow.copyFail"));
         }
       };
       request.ontimeout = () => {
-        this.$message(item.name + this.$t('home.modelDetail.workflow.copyTimeout'));
+        this.$message(item.name + " " + this.$t("home.modelDetail.workflow.copyTimeout"));
       };
       let mtype = this.node.CSgetModelWidgetType();
       let body = { mtype: mtype, mname: this.model?.name, workflow: item.workflow, name: item.name };
@@ -112,13 +112,13 @@ export default {
         var resp = JSON.parse(request.responseText);
         if (resp?.removed) {
           this.node.CSupdateModelConfig(this.model.name);
-          this.$message(item.name + this.$t('home.modelDetail.workflow.deleteSuccess'));
+          this.$message(item.name + " " + this.$t("home.modelDetail.workflow.deleteSuccess"));
         } else {
-          this.$message(item.name + this.$t('home.modelDetail.workflow.deleteFail'));
+          this.$message(item.name + " " + this.$t("home.modelDetail.workflow.deleteFail"));
         }
       };
       request.ontimeout = () => {
-        this.$message(item.name + this.$t('home.modelDetail.workflow.deleteTimeout'));
+        this.$message(item.name + " " + this.$t("home.modelDetail.workflow.deleteTimeout"));
       };
       let mtype = this.node.CSgetModelWidgetType();
       let body = { mtype: mtype, mname: this.model?.name, workflow: item.workflow, name: item.name };
