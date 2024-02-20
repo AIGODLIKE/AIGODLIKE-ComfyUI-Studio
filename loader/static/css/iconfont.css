@@ -11,6 +11,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-import:before {
+  content: "\e6b9";
+}
+
 .icon-copy:before {
   content: "\e6b7";
 }

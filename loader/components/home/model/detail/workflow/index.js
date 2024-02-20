@@ -124,6 +124,8 @@ export default {
       let body = { mtype: mtype, mname: this.model?.name, workflow: item.workflow, name: item.name };
       request.send(JSON.stringify(body));
     },
+    // Import
+    import(item) {},
   },
   template: `<div class="workflow">
               <div class="workflow_content">
@@ -141,6 +143,7 @@ export default {
                   <div v-for="(item,index) in filterList" :key="index" class="workflow_item">
                     <span class="name">{{item.name}}</span>
                     <div class="option">
+                      <em class="iconfont icon-import" @click="import(item)" :title="$t('home.modelDetail.workflow.importText')"></em>
                       <em class="iconfont icon-copy" @click="copyText(item)" :title="$t('home.modelDetail.workflow.copyText')"></em>
                       <em class="iconfont icon-delete" @click="deleteItem(index,item)" :title="$t('home.modelDetail.workflow.delete')"></em>
                     </div>

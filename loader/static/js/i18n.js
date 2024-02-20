@@ -110,6 +110,7 @@ const message = {
           modificationTime: "修改时间",
         },
         workflow: {
+          importText: "导入",
           copyText: "复制JSON",
           delete: "删除",
           addWorkflowButtonText: "添加工作流",
@@ -272,6 +273,7 @@ const message = {
           modificationTime: "Modify time",
         },
         workflow: {
+          importText: "import",
           copyText: "Copy JSON",
           delete: "Delete",
           addWorkflowButtonText: "Add workflow",
@@ -435,6 +437,7 @@ const message = {
           buttonText: "使用此模型",
         },
         workflow: {
+          importText: "導入",
           copyText: "復製JSON",
           delete: "刪除",
           addWorkflowButtonText: "添加工作流",
