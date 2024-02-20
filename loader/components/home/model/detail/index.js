@@ -138,7 +138,6 @@ export default {
     },
     changeMenu(index) {
       this.menuIndex = index;
-      console.log(this.menuIndex);
     },
   },
   filters: {
@@ -169,7 +168,7 @@ export default {
               <div class="menu_tab">
                 <div v-for="(item,index) in $t('home.modelDetail.menuTab')" :key="index" class="menu_item" :class="{'active_menu': index === menuIndex }" @click="changeMenu(index)">{{item.name}}</div>
               </div>
-              <Workflow v-if="menuIndex === 0" />
+              <Workflow v-if="menuIndex === 0" :model="model" />
               <BasicInf v-else  @addTag="addTag" @deleteTag="deleteTag" :model="model" />
               <button class="use_button" @click="useModel">{{$t("home.modelDetail.useButtonText")}}</button>
           </div>

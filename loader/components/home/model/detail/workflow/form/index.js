@@ -12,6 +12,7 @@ export default {
     },
     determine() {
       this.$emit("displayForm", false);
+      this.$emit("saveWorkflow", this.value);
     },
     clearInput() {
       this.value = "";
@@ -22,7 +23,7 @@ export default {
               <div class="form_content">
                 <p>{{$t("home.modelDetail.workflow.form.title")}}</p>
                 <div class="input_area">
-                  <input type="text" v-model="value" />
+                  <input type="text" v-model="value" :placeholder="$t('home.modelDetail.workflow.form.placeholder')" />
                   <span class="clear" :class="{'show_clear': value.length > 0}" @click="clearInput"><em class="iconfont icon-close"></em> </span>
                 </div>
                 <div class="button_group">
