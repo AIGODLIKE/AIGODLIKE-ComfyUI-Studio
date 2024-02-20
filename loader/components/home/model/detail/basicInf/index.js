@@ -20,6 +20,13 @@ export default {
     //Timestamp conversion
     timestampConversion(timeStamp) {
       const date = new Date(Number(timeStamp));
+      return date.toLocaleString([], {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
       return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ": " + date.getMinutes();
     },
     // Delete tag
