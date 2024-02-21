@@ -66,6 +66,18 @@ const message = {
         ],
         sizeList: [
           {
+            name: "9列",
+            value: 9,
+          },
+          {
+            name: "8列",
+            value: 8,
+          },
+          {
+            name: "7列",
+            value: 7,
+          },
+          {
             name: "6列",
             value: 6,
           },
@@ -232,6 +244,18 @@ const message = {
         ],
         sizeList: [
           {
+            name: "9 COLUMN",
+            value: 9,
+          },
+          {
+            name: "8 COLUMN",
+            value: 8,
+          },
+          {
+            name: "7 COLUMN",
+            value: 7,
+          },
+          {
             name: "6 COLUMN",
             value: 6,
           },
@@ -397,6 +421,18 @@ const message = {
           },
         ],
         sizeList: [
+          {
+            name: "9列",
+            value: 9,
+          },
+          {
+            name: "8列",
+            value: 8,
+          },
+          {
+            name: "7列",
+            value: 7,
+          },
           {
             name: "6列",
             value: 6,
