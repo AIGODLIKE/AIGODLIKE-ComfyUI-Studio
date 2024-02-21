@@ -38,6 +38,7 @@ function message(event) {
   if (event.data.type === "close_loader_page") {
     let page = getPage();
     page.style.display = "none";
+    window.CSvm.node = null; // reset node
     // document.body.removeChild(document.getElementById("loader_iframe"));
   }
 }
