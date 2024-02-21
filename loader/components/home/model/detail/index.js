@@ -140,12 +140,6 @@ export default {
       this.menuIndex = index;
     },
   },
-  filters: {
-    // 保留小数位数->str
-    numberRound(num, decimal = 2) {
-      return Math.round(num * Math.pow(10, decimal)) / Math.pow(10, decimal);
-    },
-  },
   template: `
             <div v-if="model" class="model_detail">
               <div class="img_container">

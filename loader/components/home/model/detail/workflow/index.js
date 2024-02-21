@@ -56,39 +56,40 @@ export default {
     saveWorkflow(name) {
       // 随机生成
       if (!name) name = `wk-${Math.random().toString(36).substring(2, 10)}`;
+      var node = this.node;
       var data = window.parent.app.graph.serialize();
       var request = new XMLHttpRequest();
-      request.timeout = 500; // 超时
+      // request.timeout = 500; // 超时
       request.open("post", "/cs/save_workflow", true);
       request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       request.onload = () => {
         if (request.status != 200) return;
         var resp = JSON.parse(request.responseText);
         if (resp?.saved) {
-          this.node.CSupdateModelConfig(this.model.name);
+          node.CSupdateModelConfig(this.model.name);
           this.$message(name + " " + this.$t("home.modelDetail.workflow.saveSuccess"));
         } else {
           this.$message(name + " " + this.$t("home.modelDetail.workflow.saveFail"));
         }
       };
-      request.ontimeout = () => {
-        this.$message(name + " " + this.$t("home.modelDetail.workflow.saveTimeout"));
-      };
-      let mtype = this.node.CSgetModelWidgetType();
+      // request.ontimeout = () => {
+      //   this.$message(name + " " + this.$t("home.modelDetail.workflow.saveTimeout"));
+      // };
+      let mtype = node.CSgetModelWidgetType();
       let body = { mtype: mtype, mname: this.model?.name, data, name };
       request.send(JSON.stringify(body));
     },
     // Copy workflow
-    async copyText(item) {
+    copyWorkflow(item) {
       var request = new XMLHttpRequest();
       request.timeout = 500; // 超时
       request.open("post", "/cs/fetch_workflow", true);
       request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      request.onload = () => {
+      request.onload = async () => {
         if (request.status != 200) return;
         var resp = JSON.parse(request.responseText);
         if (resp) {
-          navigator.clipboard.writeText(request.responseText);
+          await navigator.clipboard.writeText(request.responseText);
           this.$message(item.name + " " + this.$t("home.modelDetail.workflow.copySuccess"));
         } else {
           this.$message(item.name + " " + this.$t("home.modelDetail.workflow.copyFail"));
@@ -102,9 +103,10 @@ export default {
       request.send(JSON.stringify(body));
     },
     // Delete workflow
-    deleteItem(index, item) {
+    deleteWorkflow(index, item) {
+      // 异步, 且取消超时等待
       var request = new XMLHttpRequest();
-      request.timeout = 500; // 超时
+      // request.timeout = 500; // 超时
       request.open("post", "/cs/remove_workflow", true);
       request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       request.onload = () => {
@@ -117,15 +119,41 @@ export default {
           this.$message(item.name + " " + this.$t("home.modelDetail.workflow.deleteFail"));
         }
       };
-      request.ontimeout = () => {
-        this.$message(item.name + " " + this.$t("home.modelDetail.workflow.deleteTimeout"));
-      };
+      // request.ontimeout = () => {
+      //   this.$message(item.name + " " + this.$t("home.modelDetail.workflow.deleteTimeout"));
+      // };
       let mtype = this.node.CSgetModelWidgetType();
       let body = { mtype: mtype, mname: this.model?.name, workflow: item.workflow, name: item.name };
       request.send(JSON.stringify(body));
     },
     // Import
-    import(item) {},
+    importWorkflow(item) {
+      var request = new XMLHttpRequest();
+      request.timeout = 500; // 超时
+      request.open("post", "/cs/fetch_workflow", true);
+      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      request.onload = async () => {
+        if (request.status != 200) return;
+        var resp = JSON.parse(request.responseText);
+        if (resp) {
+          try {
+            if (resp.hasOwnProperty("workflow")) resp = resp.workflow;
+            await window.parent.app.loadGraphData(resp);
+            this.$message(item.name + " " + this.$t("home.modelDetail.workflow.importSuccess"));
+          } catch (e) {
+            this.$message(item.name + " " + this.$t("home.modelDetail.workflow.importFail") + `: ${e}`);
+          }
+        } else {
+          this.$message(item.name + " " + this.$t("home.modelDetail.workflow.importFail"));
+        }
+      };
+      request.ontimeout = () => {
+        this.$message(item.name + " " + this.$t("home.modelDetail.workflow.importTimeout"));
+      };
+      let mtype = this.node.CSgetModelWidgetType();
+      let body = { mtype: mtype, mname: this.model?.name, workflow: item.workflow, name: item.name };
+      request.send(JSON.stringify(body));
+    },
   },
   template: `<div class="workflow">
               <div class="workflow_content">
@@ -143,9 +171,9 @@ export default {
                   <div v-for="(item,index) in filterList" :key="index" class="workflow_item">
                     <span class="name">{{item.name}}</span>
                     <div class="option">
-                      <em class="iconfont icon-import" @click="import(item)" :title="$t('home.modelDetail.workflow.importText')"></em>
-                      <em class="iconfont icon-copy" @click="copyText(item)" :title="$t('home.modelDetail.workflow.copyText')"></em>
-                      <em class="iconfont icon-delete" @click="deleteItem(index,item)" :title="$t('home.modelDetail.workflow.delete')"></em>
+                      <em class="iconfont icon-import" @click="importWorkflow(item)" :title="$t('home.modelDetail.workflow.importText')"></em>
+                      <em class="iconfont icon-copy" @click="copyWorkflow(item)" :title="$t('home.modelDetail.workflow.copyText')"></em>
+                      <em class="iconfont icon-delete" @click="deleteWorkflow(index,item)" :title="$t('home.modelDetail.workflow.delete')"></em>
                     </div>
                   </div>
                 </div>
