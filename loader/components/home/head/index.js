@@ -17,6 +17,10 @@ ext.register();
 
 export default {
   props: {
+    columnIndex: {
+      default: 0,
+      type: Number,
+    },
     allList: {
       default: () => {
         return [];
@@ -58,6 +62,7 @@ export default {
     // Change the quantity that can be displayed in a row
     changeColumn(value) {
       const data = this.$t("home.head.sizeList")[value].value;
+      localStorage.setItem("columnIndex", value);
       this.$emit("changeColumn", data);
     },
     // Enter key for search
@@ -123,7 +128,7 @@ export default {
                     </div>
                     <HoverMenu icon="icon-exchange" :list="$t('home.head.categoryList')" @changeValue= "changeSort" />
                     <HoverMenu icon="icon-medal" class="space" :list="$t('home.head.rateList')" @changeValue= "changeLevel" />
-                    <HoverMenu icon="" value="3" :list="$t('home.head.sizeList')" @changeValue= "changeColumn" />
+                    <HoverMenu icon="" :value="columnIndex" :list="$t('home.head.sizeList')" @changeValue= "changeColumn" />
                     <div class="block"></div>
                     <button class="render_button" @click="rendering">{{$t("home.head.renderText")}}</button>
                 </div>

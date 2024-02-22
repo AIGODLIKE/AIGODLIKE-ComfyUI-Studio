@@ -20,7 +20,9 @@ export default {
         level: "",
         tags: [],
       },
+      isLoading: true,
       column: 0,
+      columnIndex: 0,
     };
   },
   computed: {
@@ -41,8 +43,14 @@ export default {
   },
   mounted() {
     const language = localStorage.getItem("language") || "cn";
+    this.columnIndex = JSON.parse(localStorage.getItem("columnIndex"));
+    if (typeof this.columnIndex !== "number") {
+      this.columnIndex = 3;
+    }
+    this.column = this.$t("home.head.sizeList")[this.columnIndex].value;
     this.$i18n.locale = language;
     this.$store.commit("config/updateLanguage", language);
+    this.isLoading = false;
   },
   methods: {
     // Change the quantity displayed in a row
@@ -57,9 +65,9 @@ export default {
       };
     },
   },
-  template: `<div class="home_page">
+  template: `<div v-if="!isLoading" class="home_page">
                <div class="content">
-                <Head  @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :all-list="allList" />
+                <Head :column-index="columnIndex" @changeSearchParameter="changeSearchParameter" @changeColumn="changeColumn" :all-list="allList" />
                 <Classification @changeSearchParameter="changeSearchParameter" :all-list="allList" />
                 <Model :column="column" :all-list="allList" :selected-widget="selectedWidget" :search-parameter="searchParameter" />
               </div>
