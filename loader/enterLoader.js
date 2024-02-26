@@ -28,6 +28,7 @@ function callBack() {
   let page = loadPage();
   page.style.display = "block";
   window.CSvm.node = this._node;
+  window.CSvm.entryWidget = "default";
   if (!window.CSvm.renderer) {
     window.CSvm.renderer = new IconRenderer();
   }
@@ -64,11 +65,68 @@ function styleInit() {
   document.head.appendChild(style);
 }
 
+function popUpReg() {
+  let f = LGraphCanvas.prototype.processNodeWidgets;
+  function processNodeWidgets(node, pos, event, active_widget) {
+    if (!event.shiftKey && event.type === LiteGraph.pointerevents_method + "down") {
+      if (!node.widgets || !node.widgets.length || (!this.allow_interaction && !node.flags.allow_interaction)) {
+        return null;
+      }
+
+      var x = pos[0] - node.pos[0];
+      var y = pos[1] - node.pos[1];
+      var width = node.size[0];
+
+      for (var i = 0; i < node.widgets.length; ++i) {
+        var w = node.widgets[i];
+        // 仅枚举
+        if (!w || w.disabled || w.type !== "combo") continue;
+        var w_height = w.computeSize ? w.computeSize(width)[1] : LiteGraph.NODE_WIDGET_HEIGHT;
+        var w_width = w.width || width;
+        // outside
+        if (w != active_widget && (x < 6 || x > w_width - 12 || y < w.last_y || y > w.last_y + w_height || w.last_y === undefined)) continue;
+
+        var delta = x < 40 ? -1 : x > w_width - 40 ? 1 : 0;
+        if (!delta) {
+          // combo clicked
+          // console.error(node.title, node.constructor.type, w.name, event.type);
+          const default_name2type = {
+            ckpt_name: "checkpoints",
+            vae_name: "vae",
+            clip_name: "clip",
+            gligen_name: "gligen",
+            control_net_name: "controlnet",
+            lora_name: "loras",
+            style_model_name: "style_models",
+            hypernetwork_name: "hypernetworks",
+            unet_name: "unets",
+          };
+          if (node.CSnative || default_name2type[w.name]) {
+            let page = loadPage();
+            page.style.display = "block";
+            window.CSvm.node = node;
+            window.CSvm.entryWidget = w.name;
+            if (!window.CSvm.renderer) {
+              window.CSvm.renderer = new IconRenderer();
+            }
+            page.focus();
+            return w;
+          }
+          continue;
+        }
+      }
+    }
+    return f.call(this, node, pos, event, active_widget);
+  }
+  LGraphCanvas.prototype.processNodeWidgets = processNodeWidgets;
+}
+
 const ext = {
   name: "AIGODLIKE.MMM",
   async init(app) {
     loadPage();
     styleInit();
+    popUpReg();
   },
   async setup(app) {},
   async addCustomNodeDefs(defs, app) {
