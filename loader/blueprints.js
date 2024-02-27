@@ -276,6 +276,7 @@ class BluePrints {
   }
   CSregister(node, callBack) {
     BluePrints.prototype.CSwrapNode(node);
+    if (IMPL[node.constructor.type] === null) return;
     if (!IMPL.hasOwnProperty(node.constructor.type)) {
       IMPL[node.constructor.type] = null;
       node.CSnative = false;
