@@ -13,72 +13,84 @@ Vue.component("Left", {
   data() {
     return {
       selectedIndex: 0,
-      rotationIcon: {},
       rotationList: [
         {
           value: 0,
           icon: "icon-home",
           name: "All",
+          type: "All",
         },
         {
           value: 1,
           icon: "icon-checkpoint",
           name: "Checkpoint",
+          type: "checkpoints",
         },
         {
           value: 2,
           icon: "icon-vae",
           name: "VAE",
+          type: "vae",
         },
         {
           value: 3,
           icon: "icon-clip-version",
           name: "CLIP Vision",
+          type: "clip_vision",
         },
         {
           value: 4,
           icon: "icon-gligen",
           name: "GLIGEN",
+          type: "gligen",
         },
         {
           value: 5,
           icon: "icon-control",
           name: "ControlNET",
+          type: "controlnet",
         },
         {
           value: 6,
           icon: "icon-lora",
           name: "LoRA",
+          type: "loras",
         },
         {
           value: 7,
           icon: "icon-style-model",
           name: "StyleModel",
+          type: "style_models",
         },
         {
           value: 8,
           icon: "icon-upscale",
           name: "Upscale",
+          type: "upscale_models",
         },
         {
           value: 9,
           icon: "icon-hyper",
           name: "HyperNetwork",
+          type: "hypernetworks",
         },
         {
           value: 10,
           icon: "icon-clip",
           name: "CLIP",
+          type: "clip",
         },
         {
           value: 11,
           icon: "icon-unet",
           name: "UNET",
+          type: "unet",
         },
         {
           value: 12,
           icon: "icon-diffuser",
           name: "Diffuser",
+          type: "diffusers",
         },
       ],
     };
@@ -110,9 +122,13 @@ Vue.component("Left", {
     language() {
       return this.$store.state.config.language;
     },
-  },
-  created() {
-    this.rotationIcon = this.rotationList.find((x) => x.value === 0);
+    rotationIcon() {
+      let icon = this.rotationList.find((x) => x.type === this.node?.CSgetModelWidgetType());
+      if (!icon) {
+        icon = this.rotationList[0];
+      }
+      return icon;
+    },
   },
   methods: {
     jumpPage(page) {
