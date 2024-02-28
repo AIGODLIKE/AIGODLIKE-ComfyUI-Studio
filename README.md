@@ -1,4 +1,4 @@
-# AIGODLIKE-ComfyUI-Studio
+C# AIGODLIKE-ComfyUI-Studio
 Improve the interactive experience of using ComfyUI, such as making the loading of ComfyUI models more intuitive and making it easier to create model thumbnails
 ![image](https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Studio/assets/116185401/8c66b314-0447-4ae9-964b-d9043e8e0690)
 
@@ -23,7 +23,7 @@ git clone https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Studio.git
 Find a loader, **left click** on model switch to pop up ComfyUI Studio Manager. If you still need to use the original model list, use **Shift+left** click on model switch to pop up the original model list
 ## List of supported loaders
 1 Standard Node: Automatically supports ComfyUI official nodes and standard named * custom node types, which will be automatically taken over when they need to access the models folder.
-Standard names: ckptname, vad_name, clipname, gligenname, controllinetname, loraname, style_modelname, hypernetworkname, unetname
+Standard names: ckpt_name,vae_name,clip_name,gligen_name,control_net_name,lora_name,style_model_name,hypernetwork_name,unet_name
 
 2 Non-standard nodes: Some developers have redefined the model loader for some purpose, which means that non-standard naming prevents the program from automatically adapting and requires manual adaptation, which requires some time and feedback to be added to the support list
 
