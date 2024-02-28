@@ -24,7 +24,7 @@ Find a loader, **left click** on model switch to pop up ComfyUI Studio Manager. 
 ## List of supported loaders
 1 Standard Node: Automatically supports ComfyUI official nodes and standard named * custom node types, which will be automatically taken over when they need to access the models folder.
 Standard names: ckptname, vad_name, clipname, gligenname, controllinetname, loraname, style_modelname, hypernetworkname, unetname
-2 non-standard nodes: Some developers have redefined the model loader for some purpose, which means that non-standard naming prevents the program from automatically adapting and requires manual adaptation, which requires some time and feedback to be added to the support list
+2 Non-standard nodes: Some developers have redefined the model loader for some purpose, which means that non-standard naming prevents the program from automatically adapting and requires manual adaptation, which requires some time and feedback to be added to the support list
 
 |Node name|节点名称|
 |:----|:----|
