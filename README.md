@@ -22,7 +22,9 @@ git clone https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Studio.git
 ## How to use it
 Find a loader, **left click** on model switch to pop up ComfyUI Studio Manager. If you still need to use the original model list, use **Shift+left** click on model switch to pop up the original model list
 ## List of supported loaders
-For some custom nodes that have not been developed using standard methods, manual configuration is required one by one, which may take some time.
+1 Standard Node: Automatically supports ComfyUI official nodes and standard named * custom node types, which will be automatically taken over when they need to access the models folder.
+Standard names: ckptname, vad_name, clipname, gligenname, controllinetname, loraname, style_modelname, hypernetworkname, unetname
+2 non-standard nodes: Some developers have redefined the model loader for some purpose, which means that non-standard naming prevents the program from automatically adapting and requires manual adaptation, which requires some time and feedback to be added to the support list
 
 |Node name|节点名称|
 |:----|:----|
