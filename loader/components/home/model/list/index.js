@@ -3,7 +3,9 @@ import { getLevelInf } from "../../../../static/js/public.js";
 export default {
   props: ["curList", "selectedModel", "column"],
   data() {
-    return {};
+    return {
+      defaultCover: "./static/image/default.jpg",
+    };
   },
   mounted() {},
   methods: {
@@ -24,7 +26,7 @@ export default {
               <div class="model_list" :style="{'--column':column}">
                   <div v-for="(item,index) in curList" :key = index class="model_item" :class="{'selected':item === selectedModel }" @click="changeModel(item)" @dblclick="useModel(item)" >
                       <div class="img_container" :style="{'--height': (73.05 - (column * 0.55)) / column + 'vw' }">
-                         <img :src="item.cover" alt="cover" />
+                         <img :src="item.cover || defaultCover" alt="cover" />
                       </div>
                       <div class="model_des" :style="{'--height':6 / column * 3 + 'vw'}">
                           <div class="level" :style="{'background':levelInf(item.level)}">{{item.level}}</div>

@@ -16,7 +16,6 @@ const ext = {
   },
 };
 ext.register();
-
 export default {
   props: ["model"],
   components: {
@@ -30,6 +29,7 @@ export default {
       menuIndex: 0,
       isReadonly: true,
       selectedLevel: "D",
+      defaultCover: "./static/image/default.jpg",
     };
   },
   created() {
@@ -143,7 +143,7 @@ export default {
   template: `
             <div v-if="model" class="model_detail">
               <div class="img_container">
-                <img :src="model.cover" />
+                <img :src="model.cover || defaultCover" />
                 <div class="option_group">
                   <span class="icon_container" @click="renderPic"><em class="iconfont icon-camera"></em></span>
                   <span class="block"></span>
