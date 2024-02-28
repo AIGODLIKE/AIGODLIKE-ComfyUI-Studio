@@ -19,6 +19,8 @@ Then run:
 cd ComfyUI/custom_nodes
 git clone https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Studio.git
 ```
+## How to use it
+Find a loader, **left click** on model switch to pop up ComfyUI Studio Manager. If you still need to use the original model list, use **Shift+left** click on model switch to pop up the original model list
 ## List of supported loaders
 For some custom nodes that have not been developed using standard methods, manual configuration is required one by one, which may take some time.
 
