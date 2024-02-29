@@ -15,19 +15,40 @@
     height: 3vw;
   }
   ul {
+    width: 100%;
+    height: calc(100% - 10vw);
+    overflow-y: auto;
     .selected {
       background: #ffc300;
       transition: 0.2s;
     }
     li {
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
       em {
-        font-size: 1.5rem;
+        font-size: 2rem;
+      }
+      span {
+        text-align: center;
+        width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin: 0.2vw 0 -0.5vw 0;
+        font-weight: bold;
+        font-size: 0.6rem;
       }
       &:hover {
         background: #ffc300;
         transition: 0.2s;
       }
+    }
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
     }
   }
   .language {

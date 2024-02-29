@@ -11,6 +11,54 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-checkpoint:before {
+  content: "\e6bb";
+}
+
+.icon-upscale:before {
+  content: "\e6ba";
+}
+
+.icon-gligen:before {
+  content: "\e6bc";
+}
+
+.icon-unet:before {
+  content: "\e6bd";
+}
+
+.icon-hyper:before {
+  content: "\e6be";
+}
+
+.icon-vae:before {
+  content: "\e6bf";
+}
+
+.icon-lora:before {
+  content: "\e6c0";
+}
+
+.icon-clip:before {
+  content: "\e6c1";
+}
+
+.icon-control:before {
+  content: "\e6c2";
+}
+
+.icon-clip-version:before {
+  content: "\e6c3";
+}
+
+.icon-diffuser:before {
+  content: "\e6c4";
+}
+
+.icon-style-model:before {
+  content: "\e6c5";
+}
+
 .icon-import:before {
   content: "\e6b9";
 }

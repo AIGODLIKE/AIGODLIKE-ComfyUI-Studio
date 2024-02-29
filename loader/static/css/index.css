@@ -44,19 +44,42 @@ body .loader_page .left_menu img {
   width: 3vw;
   height: 3vw;
 }
+body .loader_page .left_menu ul {
+  width: 100%;
+  height: calc(100% - 10vw);
+  overflow-y: auto;
+}
 body .loader_page .left_menu ul .selected {
   background: #ffc300;
   transition: 0.2s;
 }
 body .loader_page .left_menu ul li {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 body .loader_page .left_menu ul li em {
-  font-size: 1.5rem;
+  font-size: 2rem;
+}
+body .loader_page .left_menu ul li span {
+  text-align: center;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0.2vw 0 -0.5vw 0;
+  font-weight: bold;
+  font-size: 0.6rem;
 }
 body .loader_page .left_menu ul li:hover {
   background: #ffc300;
   transition: 0.2s;
+}
+body .loader_page .left_menu ul::-webkit-scrollbar {
+  width: 0;
+}
+body .loader_page .left_menu ul::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 body .loader_page .left_menu .language {
   position: absolute;

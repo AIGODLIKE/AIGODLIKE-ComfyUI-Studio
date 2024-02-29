@@ -15,19 +15,42 @@
   width: 3vw;
   height: 3vw;
 }
+.left_menu ul {
+  width: 100%;
+  height: calc(100% - 10vw);
+  overflow-y: auto;
+}
 .left_menu ul .selected {
   background: #ffc300;
   transition: 0.2s;
 }
 .left_menu ul li {
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 .left_menu ul li em {
-  font-size: 1.5rem;
+  font-size: 2rem;
+}
+.left_menu ul li span {
+  text-align: center;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0.2vw 0 -0.5vw 0;
+  font-weight: bold;
+  font-size: 0.6rem;
 }
 .left_menu ul li:hover {
   background: #ffc300;
   transition: 0.2s;
+}
+.left_menu ul::-webkit-scrollbar {
+  width: 0;
+}
+.left_menu ul::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 .left_menu .language {
   position: absolute;
