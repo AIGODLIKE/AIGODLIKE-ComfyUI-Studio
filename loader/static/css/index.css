@@ -21,6 +21,9 @@ body {
   width: 100%;
   height: 100%;
   background-color: #1f1f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 body .loader_page {
   display: flex;
@@ -1212,6 +1215,31 @@ body .loader_page .settings_page .content_wrapper .content .setting_items .model
 body .loader_page .settings_page .content_wrapper .content .setting_items .model_input .input_area .input_box .button_group button:nth-of-type(2):hover {
   background: #ff5733;
 }
+body .loader_page .settings_page .content_wrapper .content .setting_items .window_list {
+  display: grid;
+  grid-gap: 0.5vw;
+  padding: 0.3vw;
+  grid-template-columns: repeat(2, 1fr);
+  background: #262626;
+  border-radius: 0.5vw;
+  margin-top: 0.7vw;
+  border: 1px solid #3d3d3d;
+}
+body .loader_page .settings_page .content_wrapper .content .setting_items .window_list .selected {
+  background: #ffc300 !important;
+}
+body .loader_page .settings_page .content_wrapper .content .setting_items .window_list .window_item {
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0.5vw 0.8vw;
+  border-radius: 0.4vw;
+  white-space: nowrap;
+  font-weight: bold;
+  text-align: center;
+}
+body .loader_page .settings_page .content_wrapper .content .setting_items .window_list .window_item:hover {
+  background: #383838;
+}
 body .loader_page .settings_page .content_wrapper .content::-webkit-scrollbar {
   width: 15px;
 }
@@ -1226,6 +1254,12 @@ body .loader_page .settings_page .foot {
   width: 100%;
   height: 2.2vw;
   border-top: 1px solid #383838;
+}
+body .windowing {
+  width: 90%;
+  height: 90%;
+  border-radius: 0.7vw;
+  border: 2px solid #383838;
 }
 body ul {
   list-style: none;
