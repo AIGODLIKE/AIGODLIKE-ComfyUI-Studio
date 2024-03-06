@@ -167,7 +167,7 @@ class ModelManager:
         # a\\b.ckpt a/b.ckpt
         pm = Path(mname)
         base_name = pm.with_suffix("")
-        psb_base_names = [base_name.as_posix(), base_name.as_posix() + pm.suffix, pm.stem, pm.name]
+        psb_base_names = [base_name.as_posix(), base_name.as_posix() + pm.suffix, base_name.as_posix() + ".preview", pm.stem, pm.name]
         for p in ModelManager.get_paths(mtype):
             for pbname in psb_base_names:
                 for suffix in IMG_SUFFIXES:
@@ -481,6 +481,7 @@ async def fetch_workflow(request: web.Request):
     ret_json = read_json(wk_path)
     return web.Response(status=200, body=json.dumps(ret_json))
 
+
 @server.PromptServer.instance.routes.post("/cs/save_workflow")
 async def save_workflow(request: web.Request):
     """
@@ -516,6 +517,7 @@ async def save_workflow(request: web.Request):
         sys.stderr.write(err_info)
         sys.stderr.flush()
     return web.Response(status=200, body=json.dumps(ret_json))
+
 
 @server.PromptServer.instance.routes.post("/cs/remove_workflow")
 async def remove_workflow(request: web.Request):
