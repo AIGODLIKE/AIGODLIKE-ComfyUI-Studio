@@ -80,7 +80,7 @@ export default {
       let node = this.node;
       if (!node) return;
       if (!renderer?.rendering) {
-        node.CSsetModelWidget(model.name);
+        node.CSsetModelWidget(model.data || model.name);
         window.parent.postMessage({ type: "close_loader_page" }, "*");
         return;
       }
@@ -91,7 +91,7 @@ export default {
         accept: () => {
           // 点击确认调用
           renderer?.stop();
-          node.CSsetModelWidget(model.name);
+          node.CSsetModelWidget(model.data || model.name);
           window.parent.postMessage({ type: "close_loader_page" }, "*");
         },
         refuse: () => {},

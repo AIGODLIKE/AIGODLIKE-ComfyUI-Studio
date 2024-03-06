@@ -365,9 +365,17 @@ class BluePrints {
   CSgetModelLists() {
     // console.log(this);
     let l = [];
-    let modelList = this.CSgetModelWidgets();
+    let modelList = [...this.CSgetModelWidgets()];
     if (!modelList) {
       return l;
+    }
+    let dataList = [...modelList];
+    for (let i = 0; i < modelList.length; i++) {
+      let item = modelList[i];
+      if (typeof item === "object" && typeof item.content === "string") {
+        // 兼容 pysss 的loader类型
+        modelList[i] = item.content;
+      }
     }
     let mtype = this.CSgetModelWidgetType();
     if (ModelConfig.config_dirty[mtype] || !ModelConfig.config_dirty.hasOwnProperty(mtype)) {
@@ -377,6 +385,7 @@ class BluePrints {
     for (let i = 0; i < modelList.length; i++) {
       let name = modelList[i];
       if (modelConfigs?.hasOwnProperty(name)) {
+        modelConfigs[name].data = dataList[i];
         l.push(modelConfigs[name]);
         continue;
       }
@@ -384,6 +393,7 @@ class BluePrints {
         cover: "",
         level: "D",
         name: name,
+        data: name,
         type: "CKPT",
         mtype: mtype,
         tags: [],
