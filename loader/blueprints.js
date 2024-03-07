@@ -9,7 +9,7 @@
 const IMPL = {
   xxx_精简版: {
     type: "loras",
-    getWidgets: (n) => n.constructor.nodeData.input.required.lora_name[0],
+    getWidgets: (n) => n.widgets[1].options?.values || n.constructor.nodeData.input.required.lora_name[0],
     getSelWidget: (n) => n.widgets[1].value,
     setWidget: (n, v) => (n.widgets[1].value = v),
   },
@@ -18,21 +18,21 @@ const IMPL = {
       // 默认使用的模型编辑适配
       default: {
         type: "clip", // 适配的模型类型
-        getWidgets: (n) => n.constructor.nodeData.input.required.clip_name[0],
+        getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.clip_name[0],
         getSelWidget: (n) => n.widgets[0].value,
         setWidget: (n, v) => (n.widgets[0].value = v),
       },
       // clip模型适配
       clip_name: {
         type: "clip",
-        getWidgets: (n) => n.constructor.nodeData.input.required.clip_name[0],
+        getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.clip_name[0],
         getSelWidget: (n) => n.widgets[0].value,
         setWidget: (n, v) => (n.widgets[0].value = v),
       },
       // vae模型适配
       vae_name: {
         type: "clip",
-        getWidgets: (n) => n.constructor.nodeData.input.required.vae_name[0],
+        getWidgets: (n) => n.widgets[1].options?.values || n.constructor.nodeData.input.required.vae_name[0],
         getSelWidget: (n) => n.widgets[1].value,
         setWidget: (n, v) => (n.widgets[1].value = v),
       },
@@ -41,97 +41,97 @@ const IMPL = {
   },
   "xxxxx 有空格的节点名": {
     type: "loras",
-    getWidgets: (n) => n.constructor.nodeData.input.required.lora_name[0],
+    getWidgets: (n) => n.widgets[1].options?.values || n.constructor.nodeData.input.required.lora_name[0],
     getSelWidget: (n) => n.widgets[1].value,
     setWidget: (n, v) => (n.widgets[1].value = v),
   },
   CheckpointLoaderSimple: {
     type: "checkpoints",
-    getWidgets: (n) => n.constructor.nodeData.input.required.ckpt_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.ckpt_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   ImageOnlyCheckpointLoader: {
     type: "checkpoints",
-    getWidgets: (n) => n.constructor.nodeData.input.required.ckpt_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.ckpt_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   unCLIPCheckpointLoader: {
     type: "checkpoints",
-    getWidgets: (n) => n.constructor.nodeData.input.required.ckpt_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.ckpt_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   CheckpointLoader: {
     type: "checkpoints",
-    getWidgets: (n) => n.constructor.nodeData.input.required.ckpt_name[0],
+    getWidgets: (n) => n.widgets[1].options?.values || n.constructor.nodeData.input.required.ckpt_name[0],
     getSelWidget: (n) => n.widgets[1].value,
     setWidget: (n, v) => (n.widgets[1].value = v),
   },
   VAELoader: {
     type: "vae",
-    getWidgets: (n) => n.constructor.nodeData.input.required.vae_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.vae_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   CLIPVisionLoader: {
     type: "clip_vision",
-    getWidgets: (n) => n.constructor.nodeData.input.required.clip_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.clip_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   GLIGENLoader: {
     type: "gligen",
-    getWidgets: (n) => n.constructor.nodeData.input.required.gligen_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.gligen_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   ControlNetLoader: {
     type: "controlnet",
-    getWidgets: (n) => n.constructor.nodeData.input.required.control_net_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.control_net_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   DiffControlNetLoader: {
     type: "controlnet",
-    getWidgets: (n) => n.constructor.nodeData.input.required.control_net_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.control_net_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   LoraLoaderModelOnly: {
     type: "loras",
-    getWidgets: (n) => n.constructor.nodeData.input.required.lora_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.lora_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   LoraLoader: {
     type: "loras",
-    getWidgets: (n) => n.constructor.nodeData.input.required.lora_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.lora_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   StyleModelLoader: {
     type: "style_models",
-    getWidgets: (n) => n.constructor.nodeData.input.required.style_model_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.style_model_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   UpscaleModelLoader: {
     type: "upscale_models",
-    getWidgets: (n) => n.constructor.nodeData.input.required.model_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.model_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   HypernetworkLoader: {
     type: "hypernetworks",
-    getWidgets: (n) => n.constructor.nodeData.input.required.hypernetwork_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.hypernetwork_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   CLIPLoader: {
     type: "clip",
-    getWidgets: (n) => n.constructor.nodeData.input.required.clip_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.clip_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
@@ -141,13 +141,13 @@ const IMPL = {
   // },
   UNETLoader: {
     type: "unet",
-    getWidgets: (n) => n.constructor.nodeData.input.required.unet_name[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.unet_name[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
   DiffusersLoader: {
     type: "diffusers",
-    getWidgets: (n) => n.constructor.nodeData.input.required.model_path[0],
+    getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.model_path[0],
     getSelWidget: (n) => n.widgets[0].value,
     setWidget: (n, v) => (n.widgets[0].value = v),
   },
@@ -155,19 +155,19 @@ const IMPL = {
     adapter: {
       default: {
         type: "clip",
-        getWidgets: (n) => n.constructor.nodeData.input.required.clip_name1[0],
+        getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.clip_name1[0],
         getSelWidget: (n) => n.widgets[0].value,
         setWidget: (n, v) => (n.widgets[0].value = v),
       },
       clip_name1: {
         type: "clip",
-        getWidgets: (n) => n.constructor.nodeData.input.required.clip_name1[0],
+        getWidgets: (n) => n.widgets[0].options?.values || n.constructor.nodeData.input.required.clip_name1[0],
         getSelWidget: (n) => n.widgets[0].value,
         setWidget: (n, v) => (n.widgets[0].value = v),
       },
       clip_name2: {
         type: "clip",
-        getWidgets: (n) => n.constructor.nodeData.input.required.clip_name2[0],
+        getWidgets: (n) => n.widgets[1].options?.values || n.constructor.nodeData.input.required.clip_name2[0],
         getSelWidget: (n) => n.widgets[1].value,
         setWidget: (n, v) => (n.widgets[1].value = v),
       },
@@ -189,6 +189,10 @@ const IMPL = {
     return {
       type,
       getWidgets: (n) => {
+        let wl = n.widgets.filter((w) => w.name === widget_name);
+        if (wl.length !== 0 && wl[0].options?.values) {
+          return wl[0].options.values;
+        }
         // 先从required中找 然后从optional中找
         for (var i in n.constructor.nodeData.input.required) {
           if (i === widget_name) return n.constructor.nodeData.input.required[i][0];
@@ -369,7 +373,24 @@ class BluePrints {
     if (!modelList) {
       return l;
     }
+
+    function pysss_model_list_parse(options) {
+      let l = [];
+      for (var item of options) {
+        if (typeof item === "object" && item.submenu && item.submenu?.options) {
+          // 兼容 pysss 的loader类型
+          l = l.concat(pysss_model_list_parse(item.submenu.options));
+          continue;
+        }
+        l.push(item);
+      }
+      return l;
+    }
+
+    modelList = pysss_model_list_parse(modelList);
+
     let dataList = [...modelList];
+
     for (let i = 0; i < modelList.length; i++) {
       let item = modelList[i];
       if (typeof item === "object" && typeof item.content === "string") {
