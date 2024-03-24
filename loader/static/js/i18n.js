@@ -163,6 +163,20 @@ const message = {
         confirmText: "确认",
         cancelText: "取消",
       },
+      window: {
+        title: "个性化设置",
+        describe: "选择自定义窗口显示方式",
+        list: [
+          {
+            name: "全屏",
+            value: "full",
+          },
+          {
+            name: "窗口化",
+            value: "noFull",
+          },
+        ],
+      },
     },
     messages: {
       tagExists: "tag存在",
@@ -340,6 +354,20 @@ const message = {
         blockInputBoxText: "The complete name of the blocked model file(such as a.ckpt)",
         confirmText: "Confirm",
         cancelText: "Cancel",
+      },
+      window: {
+        title: "Personalized settings",
+        describe: "Choose custom window display method",
+        list: [
+          {
+            name: "Full screen",
+            value: "full",
+          },
+          {
+            name: "Windowing",
+            value: "noFull",
+          },
+        ],
       },
     },
     messages: {
@@ -519,6 +547,20 @@ const message = {
         blockInputBoxText: "請輸入需要屏蔽的模型文件完整名稱(如a.ckpt)",
         confirmText: "確認",
         cancelText: "取消",
+      },
+      window: {
+        title: "个性化設置",
+        describe: "選擇自定義窗口顯示方式",
+        list: [
+          {
+            name: "全屏",
+            value: "full",
+          },
+          {
+            name: "窗口化",
+            value: "noFull",
+          },
+        ],
       },
     },
     messages: {

@@ -193,7 +193,7 @@ class IconRenderer {
     let app = comfyWindow.app;
     this.task_count = modelList.length;
     for await (let model of modelList) {
-      inputNode.CSsetModelWidget(model.name);
+      inputNode.CSsetModelWidget(model.data || model.name);
       await this.waitForOneLoop();
       if (this.stopped) {
         break;

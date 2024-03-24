@@ -15,12 +15,16 @@ html {
     box-sizing: border-box;
   }
 }
+
 body {
   color: #ffffff;
   margin: 0;
   width: 100%;
   height: 100%;
   background-color: #1f1f1f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .loader_page {
     display: flex;
     width: 100%;
@@ -28,6 +32,12 @@ body {
     @import url(../../components/left/index.less);
     @import url(../../pages/home/home.less);
     @import url(../../pages/settings/index.less);
+  }
+  .windowing {
+    width: 90%;
+    height: 90%;
+    border-radius: 0.7vw;
+    border: 2px solid #383838;
   }
   ul {
     list-style: none;

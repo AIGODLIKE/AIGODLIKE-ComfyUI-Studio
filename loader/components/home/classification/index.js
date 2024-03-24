@@ -26,13 +26,13 @@ export default {
   },
   methods: {
     // update tag
-    updateTag(list) {
-      if (!list) return;
+    updateTag(allList) {
+      if (!allList) return;
 
       let tags = new Set();
 
-      for (let i = 0; i < list.length; i++) {
-        let model = list[i];
+      for (let i = 0; i < allList.length; i++) {
+        let model = allList[i];
         for (let j = 0; j < model.tags.length; j++) {
           tags.add(model.tags[j]);
         }

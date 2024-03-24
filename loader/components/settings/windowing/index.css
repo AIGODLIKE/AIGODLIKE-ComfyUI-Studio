@@ -1,17 +1,17 @@
-.language_list {
+.window_list {
   display: grid;
   grid-gap: 0.5vw;
   padding: 0.3vw;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   background: #262626;
   border-radius: 0.5vw;
   margin-top: 0.7vw;
   border: 1px solid #3d3d3d;
 }
-.language_list .selected {
+.window_list .selected {
   background: #ffc300 !important;
 }
-.language_list .language_item {
+.window_list .window_item {
   cursor: pointer;
   transition: background 0.2s;
   padding: 0.5vw 0.8vw;
@@ -20,6 +20,6 @@
   font-weight: bold;
   text-align: center;
 }
-.language_list .language_item:hover {
+.window_list .window_item:hover {
   background: #383838;
 }

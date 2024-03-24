@@ -64,6 +64,12 @@
       // for litegraph btn translate
       window.parent.CSvm = vm;
       window.CSvm = vm;
+      window.onload = () => {
+        const isWindowing = localStorage.getItem("windowing");
+        if (isWindowing === "noFull") {
+          document.getElementById("loader_page").classList.add("windowing");
+        }
+      };
     </script>
   </body>
 </html>
