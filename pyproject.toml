@@ -1,0 +1,13 @@
+[project]
+name = "aigodlike-comfyui-studio"
+description = "Improve the interactive experience of using ComfyUI, such as making the loading of ComfyUI models more intuitive and making it easier to create model thumbnails"
+version = "1.0.0"
+license = "LICENSE"
+
+[project.urls]
+Repository = "https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Studio"
+
+[tool.comfy]
+PublisherId = "aigodlike"
+DisplayName = "AIGODLIKE-ComfyUI-Studio"
+Icon = ""
