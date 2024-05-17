@@ -108,7 +108,7 @@ export default {
                     <div class="input_area">
                         <p class="loader_name">{{selectedData.name || loader名称 }}</p>
                         <div class="input_box">
-                            <input ref="modelInput" type="text" v-model="value" maxlength="32"  @keydown="handleKeyDown($event)" :placeholder="$t('settings.modelShield.blockInputBoxText')" focus />
+                            <input ref="modelInput" type="text" v-model="value" maxlength="256"  @keydown="handleKeyDown($event)" :placeholder="$t('settings.modelShield.blockInputBoxText')" focus />
                             <div class="button_group">
                                 <button @click="addName">{{$t('settings.modelShield.confirmText')}}</button>
                                 <button @click="cancelEdit">{{$t('settings.modelShield.cancelText')}}</button>

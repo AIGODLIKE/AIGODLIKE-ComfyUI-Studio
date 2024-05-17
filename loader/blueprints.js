@@ -206,6 +206,10 @@ const IMPL = {
         if (wl.length !== 0) return wl[0].value;
       },
       setWidget: (n, v) => {
+        if (v.callback) {
+          v.callback();
+          return;
+        }
         let wl = n.widgets.filter((w) => w.name === widget_name);
         if (wl.length !== 0) wl[0].value = v;
       },
