@@ -68,7 +68,7 @@ function styleInit() {
 function popUpReg() {
   let f = LGraphCanvas.prototype.processNodeWidgets;
   function processNodeWidgets(node, pos, event, active_widget) {
-    if (!event.shiftKey && event.type === LiteGraph.pointerevents_method + "down") {
+    if (event.shiftKey && event.type === LiteGraph.pointerevents_method + "down") {
       if (!node.widgets || !node.widgets.length || (!this.allow_interaction && !node.flags.allow_interaction)) {
         return null;
       }
