@@ -1,0 +1,25 @@
+.shortcut_list {
+  display: grid;
+  grid-gap: 0.5vw;
+  padding: 0.3vw;
+  grid-template-columns: repeat(2, 1fr);
+  background: #262626;
+  border-radius: 0.5vw;
+  margin-top: 0.7vw;
+  border: 1px solid #3d3d3d;
+  .selected {
+    background: #ffc300 !important;
+  }
+  .shortcut_item {
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0.5vw 0.8vw;
+    border-radius: 0.4vw;
+    white-space: nowrap;
+    font-weight: bold;
+    text-align: center;
+    &:hover {
+      background: #383838;
+    }
+  }
+}

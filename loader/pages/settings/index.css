@@ -51,6 +51,31 @@
 .settings_page .content_wrapper .content .setting_items .language_list .language_item:hover {
   background: #383838;
 }
+.settings_page .content_wrapper .content .setting_items .shortcut_list {
+  display: grid;
+  grid-gap: 0.5vw;
+  padding: 0.3vw;
+  grid-template-columns: repeat(2, 1fr);
+  background: #262626;
+  border-radius: 0.5vw;
+  margin-top: 0.7vw;
+  border: 1px solid #3d3d3d;
+}
+.settings_page .content_wrapper .content .setting_items .shortcut_list .selected {
+  background: #ffc300 !important;
+}
+.settings_page .content_wrapper .content .setting_items .shortcut_list .shortcut_item {
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0.5vw 0.8vw;
+  border-radius: 0.4vw;
+  white-space: nowrap;
+  font-weight: bold;
+  text-align: center;
+}
+.settings_page .content_wrapper .content .setting_items .shortcut_list .shortcut_item:hover {
+  background: #383838;
+}
 @keyframes tag_input_enter {
   0% {
     width: 0;
@@ -232,20 +257,20 @@
 .settings_page .content_wrapper .content .setting_items .model_input .input_area .input_box .button_group button:nth-of-type(2):hover {
   background: #ff5733;
 }
-.settings_page .content_wrapper .content .setting_items .language_list {
+.settings_page .content_wrapper .content .setting_items .window_list {
   display: grid;
   grid-gap: 0.5vw;
   padding: 0.3vw;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   background: #262626;
   border-radius: 0.5vw;
   margin-top: 0.7vw;
   border: 1px solid #3d3d3d;
 }
-.settings_page .content_wrapper .content .setting_items .language_list .selected {
+.settings_page .content_wrapper .content .setting_items .window_list .selected {
   background: #ffc300 !important;
 }
-.settings_page .content_wrapper .content .setting_items .language_list .language_item {
+.settings_page .content_wrapper .content .setting_items .window_list .window_item {
   cursor: pointer;
   transition: background 0.2s;
   padding: 0.5vw 0.8vw;
@@ -254,7 +279,7 @@
   font-weight: bold;
   text-align: center;
 }
-.settings_page .content_wrapper .content .setting_items .language_list .language_item:hover {
+.settings_page .content_wrapper .content .setting_items .window_list .window_item:hover {
   background: #383838;
 }
 .settings_page .content_wrapper .content::-webkit-scrollbar {
