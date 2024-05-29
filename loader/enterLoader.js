@@ -65,10 +65,22 @@ function styleInit() {
   document.head.appendChild(style);
 }
 
+function shouldPopUp(event, shortcut) {
+  var clicked = event.type === LiteGraph.pointerevents_method + "down";
+  switch (shortcut) {
+    case "click":
+      return !event.shiftKey && clicked;
+    case "shift_click":
+      return event.shiftKey && clicked;
+  }
+  return false;
+}
+
 function popUpReg() {
   let f = LGraphCanvas.prototype.processNodeWidgets;
   function processNodeWidgets(node, pos, event, active_widget) {
-    if (!event.shiftKey && event.type === LiteGraph.pointerevents_method + "down") {
+    var shortcut = window.CSvm?.$store.state.config.shortcut || "click";
+    if (shouldPopUp(event, shortcut)) {
       if (!node.widgets || !node.widgets.length || (!this.allow_interaction && !node.flags.allow_interaction)) {
         return null;
       }

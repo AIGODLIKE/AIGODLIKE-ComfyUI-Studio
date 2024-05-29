@@ -154,6 +154,10 @@ const message = {
         title: "UI语言选项",
         describe: "设置UI语言，让沟通无所不能",
       },
+      shortcut: {
+        title: "模型菜单快捷键",
+        describe: "设置模型菜单快捷键，让操作更加快捷",
+      },
       modelShield: {
         title: "模型屏蔽",
         describe: "你可以决定有一些模型不在特定加载器中显示和进行缩略图渲染(这仅对支持的加载器有用)",
@@ -345,6 +349,10 @@ const message = {
       language: {
         title: "UI Language Options",
         describe: "Set UI language to make communication omnipotent",
+      },
+      shortcut: {
+        title: "Model Menu Shortcut Key",
+        describe: "Set the shortcut key for the model menu",
       },
       modelShield: {
         title: "Model shielding",
@@ -538,6 +546,10 @@ const message = {
       language: {
         title: "UI語言選項",
         describe: "設置UI語言，讓溝通無所不能",
+      },
+      shortcut: {
+        title: "快捷鍵設置",
+        describe: "设置模型菜单快捷键，讓操作更加快捷",
       },
       modelShield: {
         title: "模型屏蔽",

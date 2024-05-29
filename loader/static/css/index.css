@@ -1034,6 +1034,31 @@ body .loader_page .settings_page .content_wrapper .content .setting_items .langu
 body .loader_page .settings_page .content_wrapper .content .setting_items .language_list .language_item:hover {
   background: #383838;
 }
+body .loader_page .settings_page .content_wrapper .content .setting_items .shortcut_list {
+  display: grid;
+  grid-gap: 0.5vw;
+  padding: 0.3vw;
+  grid-template-columns: repeat(2, 1fr);
+  background: #262626;
+  border-radius: 0.5vw;
+  margin-top: 0.7vw;
+  border: 1px solid #3d3d3d;
+}
+body .loader_page .settings_page .content_wrapper .content .setting_items .shortcut_list .selected {
+  background: #ffc300 !important;
+}
+body .loader_page .settings_page .content_wrapper .content .setting_items .shortcut_list .shortcut_item {
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0.5vw 0.8vw;
+  border-radius: 0.4vw;
+  white-space: nowrap;
+  font-weight: bold;
+  text-align: center;
+}
+body .loader_page .settings_page .content_wrapper .content .setting_items .shortcut_list .shortcut_item:hover {
+  background: #383838;
+}
 @keyframes tag_input_enter {
   0% {
     width: 0;
