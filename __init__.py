@@ -22,6 +22,8 @@ IMG_SUFFIXES = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".svg
 CONFIG_PATH = CUR_PATH.joinpath("model-config.json")
 WK_PATH = CUR_PATH.joinpath("workflow")
 
+STATIC_DIR = set()
+
 
 class ConfigManager:
     def __init__(self, path: Path = None) -> None:
@@ -571,6 +573,8 @@ async def test(request: web.Request):
 def thumbnail_exists(path):
     if not Path(path).exists():
         return
+    if not Path(path).as_posix().startswith(tuple(STATIC_DIR)):
+        return
     suffixes = (".jpg", ".jpeg", ".png", ".gif")
     return Path(path).suffix.lower() in suffixes
 
@@ -683,6 +687,7 @@ class LimitRouter(web.StaticDef):
 
 
 def add_static_resource(prefix, path, pprefix=MOUNT_ROOT, limit=False):
+    STATIC_DIR.add(Path(path).as_posix())
     app = server.PromptServer.instance.app
     prefix = path_to_url(prefix)
     prefix = pprefix + urllib.parse.quote(prefix)
