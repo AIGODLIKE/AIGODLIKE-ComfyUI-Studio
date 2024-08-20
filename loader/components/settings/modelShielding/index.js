@@ -1,11 +1,18 @@
-import { api } from "/scripts/api.js";
+// import { api } from "/scripts/api.js";
+
+function getApi() {
+  const api = window.comfyAPI.api.api;
+  api.api_base = "";
+  return api;
+}
+
 async function update_filter(filter, loader, old_data) {
   try {
     const body = new FormData();
     body.append("data", JSON.stringify(filter));
     body.append("old_data", JSON.stringify(old_data));
     body.append("loader", loader);
-    api.api_base = "";
+    const api = getApi();
     api.fetchApi("/cs/update_filter", { method: "POST", body });
   } catch (error) {
     alert(error);

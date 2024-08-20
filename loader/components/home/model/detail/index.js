@@ -1,8 +1,15 @@
 import { getLevelInf } from "../../../../static/js/public.js";
-import { api } from "/scripts/api.js";
+// import { api } from "/scripts/api.js";
 import BasicInf from "./basicInf/index.js";
 import Workflow from "./workflow/index.js";
 import IconRenderer from "../../../public/iconRenderer.js";
+
+function getApi() {
+  const api = window.comfyAPI.api.api;
+  api.api_base = "";
+  return api;
+}
+
 const ext = {
   is_rendering: false,
   name: "ComfyUI-Studio.model.detail",
@@ -127,7 +134,7 @@ export default {
           body.append("type", this.model.type);
           body.append("mtype", this.model.mtype);
           body.append("name", this.model.name);
-          api.api_base = "";
+          const api = getApi();
           api.fetchApi("/cs/upload_thumbnail", { method: "POST", body });
         } catch (error) {
           alert(error);
