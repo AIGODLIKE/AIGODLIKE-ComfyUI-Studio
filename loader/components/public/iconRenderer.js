@@ -1,4 +1,11 @@
-import { api } from "/scripts/api.js";
+// import { api } from "/scripts/api.js";
+
+function getApi() {
+  const api = window.comfyAPI.api.api;
+  api.api_base = "";
+  return api;
+}
+
 class IconRenderer {
   get rendering() {
     return this._rendering;
@@ -28,14 +35,17 @@ class IconRenderer {
     this.stopped = false;
 
     this.executed_cb_user = null;
-    api.api_base = "";
+    const api = getApi();
     api.addEventListener("progress", this.progress.bind(this));
     api.addEventListener("executed", this.executed.bind(this));
     api.addEventListener("execution_start", this.execution_start.bind(this));
     api.addEventListener("executing", this.executing.bind(this));
     api.addEventListener("execution_error", this.execution_error.bind(this));
     api.addEventListener("execution_cached", this.execution_cached.bind(this));
-    api.addEventListener("execution_interrupted", this.execution_interrupted.bind(this));
+    api.addEventListener(
+      "execution_interrupted",
+      this.execution_interrupted.bind(this)
+    );
     api.addEventListener("open", this.open.bind(this));
     api.addEventListener("close", this.close.bind(this));
     api.addEventListener("error", this.error.bind(this));
@@ -98,22 +108,6 @@ class IconRenderer {
     this.loop_finished = true;
     this.progress_value = 0;
   }
-
-  // -----------------------------------------------------------
-
-  // async fetch_workflow(mtype) {
-  //   try {
-  //     const body = new FormData();
-  //     body.append("mtype", mtype);
-  //     api.api_base = "";
-  //     let resp = await api.fetchApi("/cs/fetch_workflow", { method: "POST", body });
-  //     let json = await resp.json();
-  //     return json;
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  // }
-
   async fetch_image(src, name) {
     return new Promise((resolve, reject) => {
       var blob = null;
@@ -148,6 +142,7 @@ class IconRenderer {
       body.append("type", model.type);
       body.append("mtype", model.mtype);
       body.append("name", model.name);
+      const api = getApi();
       await api.fetchApi("/cs/upload_thumbnail", {
         method: "POST",
         body,
@@ -224,6 +219,7 @@ class IconRenderer {
 
   stop() {
     this.stopped = true;
+    const api = getApi();
     api.clearItems("queue");
     api.interrupt();
   }

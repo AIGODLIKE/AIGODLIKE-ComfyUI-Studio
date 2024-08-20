@@ -1,6 +1,13 @@
 import ModelList from "./list/index.js";
 import ModelDetail from "./detail/index.js";
-import { api } from "/scripts/api.js";
+// import { api } from "/scripts/api.js";
+
+function getApi() {
+  const api = window.comfyAPI.api.api;
+  api.api_base = "";
+  return api;
+}
+
 async function update_config(model, key, old_data, cb = (resp) => {}) {
   try {
     const body = new FormData();
@@ -12,7 +19,7 @@ async function update_config(model, key, old_data, cb = (resp) => {}) {
       body.append("old_data", JSON.stringify(old_data));
     }
     body.append("key", key);
-    api.api_base = "";
+    const api = getApi();
     let resp = await api.fetchApi("/cs/update_config", {
       method: "POST",
       body,
