@@ -276,7 +276,7 @@ async def update_config(request: web.Request):
     # sys.stdout.flush()
     mname = data.get("name", "")
     update_data = data.get(key, None)
-    if not update_data:
+    if update_data is None:
         ret_json["msg"] = "update data is empty"
         return web.Response(status=200, body=json.dumps(ret_json))
 
