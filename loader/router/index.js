@@ -6,7 +6,7 @@ const routes = [
   { path: "/home", component: homePage },
   { path: "/settings", component: SettingsPage },
 ];
-const router = new VueRouter({
+const router = window.VueRouter === undefined ? null : new VueRouter({
   mode: "hash",
   routes,
   scrollBehavior: () => ({ y: 0 }), //路由跳转后页面回到顶部

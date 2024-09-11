@@ -1,5 +1,8 @@
 export default {
   name: "WorkflowForm",
+  props: {
+    saveType: "",
+  },
   data() {
     return {
       value: "",
@@ -12,7 +15,11 @@ export default {
     },
     determine() {
       this.$emit("displayForm", false);
-      this.$emit("saveWorkflow", this.value);
+      if (this.saveType === "workflow") {
+        this.$emit("saveWorkflow", this.value);
+      } else if (this.saveType === "note") {
+        this.$emit("saveNote", this.value);
+      }
     },
     clearInput() {
       this.value = "";

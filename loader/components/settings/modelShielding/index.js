@@ -1,7 +1,7 @@
 // import { api } from "/scripts/api.js";
 
 function getApi() {
-  const api = window.comfyAPI.api.api;
+  const api = window.comfyAPI?.api?.api || window.parent.comfyAPI?.api?.api;
   api.api_base = "";
   return api;
 }

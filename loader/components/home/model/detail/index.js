@@ -5,7 +5,7 @@ import Workflow from "./workflow/index.js";
 import IconRenderer from "../../../public/iconRenderer.js";
 
 function getApi() {
-  const api = window.comfyAPI.api.api;
+  const api = window.comfyAPI?.api?.api || window.parent.comfyAPI?.api?.api;
   api.api_base = "";
   return api;
 }
