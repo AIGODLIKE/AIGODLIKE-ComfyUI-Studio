@@ -1,6 +1,7 @@
 C# AIGODLIKE-ComfyUI-Studio
 Improve the interactive experience of using ComfyUI, such as making the loading of ComfyUI models more intuitive and making it easier to create model thumbnails
-![image](https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Studio/assets/116185401/8c66b314-0447-4ae9-964b-d9043e8e0690)
+
+![image](https://github.com/user-attachments/assets/44ec8f54-bd34-420b-9b3c-b1dedffa8b81)
 
 ## Function Introduction
 |Function|Details|
