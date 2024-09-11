@@ -1,0 +1,183 @@
+.note {
+  padding: 0.5vw;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1f1f1f;
+  border-radius: 0.5vw;
+  margin-bottom: 0.3vw;
+  .notes {
+    display: flex;
+    height: 50%;
+    flex-direction: column;
+    flex: 1;
+    .search_area {
+      position: relative;
+      .search {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        background: #383838;
+        height: 1.6vw;
+        min-height: 32px;
+        border-radius: 5px;
+        input {
+          flex: 1;
+          height: 100%;
+          background: transparent;
+          outline: none;
+          border: none;
+          color: #c4c4c4;
+          padding: 0 0.5vw;
+        }
+        span {
+          position: relative;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 2.3vw;
+          height: 100%;
+          cursor: pointer;
+          em {
+            color: #c4c4c4;
+          }
+
+          &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translate(-100%, -50%);
+            width: 0.2vw;
+            height: 70%;
+            background: #1f1f1f;
+            border-radius: 1vw;
+          }
+          &:hover em {
+            color: #2a82e4;
+          }
+        }
+      }
+      .search_key {
+        width: 100%;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        left: 0;
+        top: 0;
+        height: 1.6vw;
+        min-height: 32px;
+        background: #808080;
+        border-radius: 5px;
+        padding: 0 0.5vw;
+        transition: 0.3s;
+        p {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 0.8rem;
+        }
+      }
+      &:hover .search_key {
+        visibility: hidden;
+        opacity: 0;
+      }
+    }
+    .note_list {
+      margin-top: 0.5vw;
+      flex: 1;
+      // display: grid;
+      // grid-gap: 0.3vw;
+      // grid-auto-rows: 2.4vw; /* 固定每行的高度 */
+      grid-auto-rows: auto; /* 让行高自动 */
+      overflow-y: auto;
+      padding: 0 4px 5px 0;
+      .note_item {
+        width: 100%;
+        height: 2.4vw;
+        margin-bottom: 0.3vw;
+        border: 1px solid #3d3d3d;
+        background: #262626;
+        border-radius: 0.3vw;
+        display: grid;
+        // grid-template-rows: auto auto; /* 确保行高可以自适应 */
+        align-items: center;
+        color: #ffffff;
+        padding: 0 1vw;
+        transition: 0.3s;
+        .note_header {
+          display: flex;
+          justify-content: space-between;
+          margin: 0.3vw 0.1vw;
+          align-items: center;
+          .name {
+            font-size: 1.1rem;
+            font-weight: bold;
+          }
+          .option {
+            display: none;
+            em {
+              font-size: 1.1rem;
+              cursor: pointer;
+              margin-left: 0.1vw;
+            }
+          }
+        }
+        &:hover {
+          background: #383838;
+          .option {
+            display: block;
+          }
+        }
+        &.selected {
+          background: #4a4a4a; /* 高亮颜色 */
+          border-color: #ffffff; /* 高亮边框颜色 */
+          height: auto; /* 让高度自动适应内容，包括文本编辑框 */
+        }
+        .note-content-editor {
+          width: 100%;
+          height: auto;
+          padding: 0.5vw;
+          margin-top: 0.2vw;
+          margin-bottom: 0.5vw;
+          background: #3d3d3d;
+          color: #ffffff;
+          // border: 1px solid #ffffff;
+          border-radius: 0.3vw;
+          resize: none; /* 禁止调整文本框大小 */
+          box-sizing: border-box; /* 确保内边距和边框包含在宽度和高度内 */
+          overflow: hidden; /* 隐藏滚动条 */
+        }
+      }
+      &::-webkit-scrollbar {
+        width: 8px;
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb:vertical {
+        border-radius: 20px;
+        background: #808080;
+      }
+    }
+    .empty_note {
+      margin-top: 0.5vw;
+      flex: 1;
+    }
+    button {
+      margin-top: 5px;
+      width: 100%;
+      height: 2.1vw;
+      border-radius: 0.3vw;
+      font-weight: bold;
+      font-size: 1.1rem;
+      background: #383838;
+      transition: 0.3s;
+      color: #ffffff;
+      &:hover {
+        background: #2a82e4;
+      }
+    }
+  }
+  @import url(../note/form/index.less);
+}
