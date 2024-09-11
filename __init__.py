@@ -521,6 +521,41 @@ async def save_workflow(request: web.Request):
     return web.Response(status=200, body=json.dumps(ret_json))
 
 
+@server.PromptServer.instance.routes.post("/cs/save_note")
+async def save_note(request: web.Request):
+    """
+    根据传入的 mtype mname note名 保存data中的对应note
+    """
+    body = await request.read()
+    body = json.loads(body)
+    mtype = body.get("mtype")
+    mname = body.get("mname")
+    data = body.get("data")
+    note_name = body.get("name")
+    err_info = ""
+    ret_json = {"saved": False}
+    if not mtype:
+        err_info = "ComfyUI-Studio Save note: note is empty\n"
+    elif not mname:
+        err_info = "ComfyUI-Studio Save note: model name is empty\n"
+    elif not note_name:
+        err_info = "ComfyUI-Studio Save note: note name is empty\n"
+    else:
+        old_model_map = CFG_MANAGER.get_detail(mtype)
+        mcfg = old_model_map.get(mname, {})
+        old_model_map[mname] = mcfg
+        notes = mcfg.get("notes", {})
+        notes[note_name] = data
+        mcfg["notes"] = notes
+        CFG_MANAGER.dump_config()
+        ret_json["saved"] = True
+        sys.stdout.write(f"ComfyUI-Studio Save note: [{note_name}] success\n")
+    if err_info:
+        sys.stderr.write(err_info)
+        sys.stderr.flush()
+    return web.Response(status=200, body=json.dumps(ret_json))
+
+
 @server.PromptServer.instance.routes.post("/cs/remove_workflow")
 async def remove_workflow(request: web.Request):
     """
@@ -552,6 +587,45 @@ async def remove_workflow(request: web.Request):
             sys.stdout.write(f"ComfyUI-Studio Remove workflow: [{wk_name}] success\n")
         except Exception as e:
             err_info = f"ComfyUI-Studio Remove workflow: {e}\n"
+    if err_info:
+        sys.stderr.write(err_info)
+        sys.stderr.flush()
+    return web.Response(status=200, body=json.dumps(ret_json))
+
+
+@server.PromptServer.instance.routes.post("/cs/remove_note")
+async def remove_note(request: web.Request):
+    """
+    根据传入的 mtype mname note名 删除data中的对应note
+    """
+    body = await request.read()
+    body = json.loads(body)
+    mtype = body.get("mtype")
+    mname = body.get("mname")
+    note = body.get("note")
+    note_name = body.get("name")
+    if not note_name:
+        note_name = note
+    err_info = ""
+    ret_json = {"removed": False}
+    if not mtype:
+        err_info = "ComfyUI-Studio Remove note: note is empty\n"
+    elif not mname:
+        err_info = "ComfyUI-Studio Remove note: model name is empty\n"
+    elif not note:
+        err_info = "ComfyUI-Studio Remove note: note name is empty\n"
+    else:
+        old_model_map = CFG_MANAGER.get_detail(mtype)
+        mcfg = old_model_map.get(mname, {})
+        notes = mcfg.get("notes", {})
+        if note_name not in notes:
+            err_info = f"ComfyUI-Studio Remove note: note [{note_name}] not find\n"
+        else:
+            notes.pop(note_name)
+            CFG_MANAGER.dirty = True
+            CFG_MANAGER.dump_config()
+            ret_json["removed"] = True
+        sys.stdout.write(f"ComfyUI-Studio Remove note: [{note_name}] success\n")
     if err_info:
         sys.stderr.write(err_info)
         sys.stderr.flush()
