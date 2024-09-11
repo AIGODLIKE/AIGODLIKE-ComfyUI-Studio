@@ -2,6 +2,7 @@ import { getLevelInf } from "../../../../static/js/public.js";
 // import { api } from "/scripts/api.js";
 import BasicInf from "./basicInf/index.js";
 import Workflow from "./workflow/index.js";
+import Note from "./note/index.js";
 import IconRenderer from "../../../public/iconRenderer.js";
 
 function getApi() {
@@ -28,6 +29,7 @@ export default {
   components: {
     BasicInf,
     Workflow,
+    Note,
   },
   data() {
     return {
@@ -170,7 +172,8 @@ export default {
                 <div v-for="(item,index) in $t('home.modelDetail.menuTab')" :key="index" class="menu_item" :class="{'active_menu': index === menuIndex }" @click="changeMenu(index)">{{item.name}}</div>
               </div>
               <Workflow v-if="menuIndex === 0" :model="model" />
-              <BasicInf v-else  @addTag="addTag" @deleteTag="deleteTag" :model="model" />
+              <BasicInf v-if="menuIndex === 1"  @addTag="addTag" @deleteTag="deleteTag" :model="model" />
+              <Note v-if="menuIndex === 2" :model="model" />
               <button class="use_button" @click="useModel">{{$t("home.modelDetail.useButtonText")}}</button>
           </div>
   `,

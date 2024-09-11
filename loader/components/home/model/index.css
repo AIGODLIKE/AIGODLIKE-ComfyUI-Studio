@@ -11,8 +11,10 @@
   display: grid;
   grid-template-columns: repeat(var(--column), 1fr);
   grid-gap: 0.55vw;
+  grid-auto-rows: max-content;
   overflow-y: auto;
   padding-right: 0.55vw;
+  align-content: flex-start;
 }
 .model_display .model_list .selected {
   transition: 0.3s;
@@ -23,7 +25,6 @@
   position: relative;
   cursor: pointer;
   width: 100%;
-  height: 11.4vw;
   border-radius: 0.3vw;
   border: 2px solid #3d3d3d;
   display: flex;
@@ -32,8 +33,9 @@
 }
 .model_display .model_list .model_item .img_container {
   width: 100%;
-  height: 8.7vw;
+  height: calc(var(--height) - 4px);
   font-size: 0;
+  transition: 0.3s;
 }
 .model_display .model_list .model_item .img_container img {
   width: 100%;
@@ -41,13 +43,14 @@
   object-fit: cover;
 }
 .model_display .model_list .model_item .model_des {
-  flex: 1;
+  height: var(--height);
   width: 100%;
+  transition: 0.3s;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   background: #262626;
-  padding: 0.3vw;
+  padding: 0 0.5vw;
 }
 .model_display .model_list .model_item .model_des .level {
   width: 1.56vw;
@@ -151,6 +154,10 @@
   width: 0.15vw;
   height: 0.7vw;
 }
+.model_display .model_detail .img_container .option_group #file_input {
+  position: absolute;
+  display: none;
+}
 .model_display .model_detail .focus {
   background: #1f1f1f;
 }
@@ -163,6 +170,7 @@
   margin: 0.5vw 0;
   transition: 0.2s;
   min-height: 2.1vw;
+  min-width: 0;
   display: flex;
   align-items: center;
   padding-left: 0.5vw;
@@ -171,6 +179,11 @@
 }
 .model_display .model_detail .model_name:hover {
   color: #bfbfbf;
+}
+.model_display .model_detail .model_name p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .model_display .model_detail .name_input {
   background: #000000;
@@ -229,28 +242,47 @@
 .model_display .model_detail .level_group .level_item:hover {
   background: var(--color);
 }
-.model_display .model_detail .model_inf {
-  margin-top: 0.5vw;
+.model_display .model_detail .menu_tab {
+  display: flex;
+  margin: 0.5vw 0;
+  padding: 0 0.8vw;
+}
+.model_display .model_detail .menu_tab .active_menu {
+  color: #ffffff !important;
+}
+.model_display .model_detail .menu_tab .menu_item {
+  color: #808080;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.model_display .model_detail .menu_tab .menu_item:nth-of-type(2) {
+  margin: 0 1vw;
+}
+.model_display .model_detail .basic_inf {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.model_display .model_detail .basic_inf .model_inf {
   display: grid;
   grid-gap: 0.5vw;
   width: 100%;
   padding: 0 0.8vw;
 }
-.model_display .model_detail .model_inf p {
-  font-weight: bold;
-}
-.model_display .model_detail .model_inf .inf_item {
+.model_display .model_detail .basic_inf .model_inf .inf_item {
   display: flex;
   align-items: center;
   width: 100%;
   justify-content: space-between;
   font-size: 1rem;
 }
-.model_display .model_detail .model_inf .inf_item span {
+.model_display .model_detail .basic_inf .model_inf .inf_item span {
   font-weight: bold;
   color: #bfbfbf;
 }
-.model_display .model_detail .classify_input_container {
+.model_display .model_detail .basic_inf .classify_input_container {
   flex: 1;
   overflow: hidden;
   padding: 0.5vw 0.3vw 0.5vw 0.5vw;
@@ -258,7 +290,7 @@
   border-radius: 0.3vw;
   margin: 0.5vw 0;
 }
-.model_display .model_detail .classify_input_container .classify_input {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input {
   width: 100%;
   height: 100%;
   overflow-y: auto;
@@ -268,7 +300,7 @@
   align-content: flex-start;
   padding-right: 0.3vw;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag {
   cursor: default;
   display: flex;
   color: #ffffff;
@@ -280,31 +312,31 @@
   font-weight: bold;
   align-items: center;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag em {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag em {
   color: #808080;
   cursor: pointer;
   margin-left: 0.4vw;
   transition: color 0.25s;
   font-size: 0.7rem;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag em:hover {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag em:hover {
   color: red;
 }
-.model_display .model_detail .classify_input_container .classify_input .expand {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .expand {
   background: #383838 !important;
   border: 1px solid transparent !important;
 }
-.model_display .model_detail .classify_input_container .classify_input .expand em {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .expand em {
   color: #ffffff !important;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag_input {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag_input {
   padding: 0.36vw 0.62vw;
   border: 1px solid #3d3d3d;
   border-radius: 0.36vw;
   background: #1f1f1f;
   cursor: pointer;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag_input input {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag_input input {
   width: 0;
   overflow: hidden;
   color: #ffffff;
@@ -312,28 +344,633 @@
   padding: 0;
   animation: tag_input_enter 0.3s forwards;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag_input em {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag_input em {
   color: #3d3d3d;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag_input:hover {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag_input:hover {
   background: #262626;
   border: 1px solid #262626;
 }
-.model_display .model_detail .classify_input_container .classify_input .tag_input:hover em {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input .tag_input:hover em {
   color: #ffffff;
 }
-.model_display .model_detail .classify_input_container .classify_input::-webkit-scrollbar {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar {
   width: 8px;
 }
-.model_display .model_detail .classify_input_container .classify_input::-webkit-scrollbar-thumb:vertical {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar-thumb:vertical {
   border-radius: 20px;
   background: #808080;
 }
-.model_display .model_detail .classify_input_container .classify_input::-webkit-scrollbar-track {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar-track {
   background-color: transparent;
 }
-.model_display .model_detail .classify_input_container .classify_input::-webkit-scrollbar-corner {
+.model_display .model_detail .basic_inf .classify_input_container .classify_input::-webkit-scrollbar-corner {
   background-color: transparent;
+}
+.model_display .model_detail .workflow {
+  padding: 0.5vw;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1f1f1f;
+  border-radius: 0.5vw;
+  margin-bottom: 0.3vw;
+}
+.model_display .model_detail .workflow .workflow_content {
+  display: flex;
+  height: 50%;
+  flex-direction: column;
+  flex: 1;
+}
+.model_display .model_detail .workflow .workflow_content .search_area {
+  position: relative;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #383838;
+  height: 1.6vw;
+  min-height: 32px;
+  border-radius: 5px;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: none;
+  color: #c4c4c4;
+  padding: 0 0.5vw;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.3vw;
+  height: 100%;
+  cursor: pointer;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search span em {
+  color: #c4c4c4;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  width: 0.2vw;
+  height: 70%;
+  background: #1f1f1f;
+  border-radius: 1vw;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search span:hover em {
+  color: #2a82e4;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search_key {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 0;
+  top: 0;
+  height: 1.6vw;
+  min-height: 32px;
+  background: #808080;
+  border-radius: 5px;
+  padding: 0 0.5vw;
+  transition: 0.3s;
+}
+.model_display .model_detail .workflow .workflow_content .search_area .search_key p {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+}
+.model_display .model_detail .workflow .workflow_content .search_area:hover .search_key {
+  visibility: hidden;
+  opacity: 0;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list {
+  margin-top: 0.5vw;
+  flex: 1;
+  display: grid;
+  grid-gap: 0.3vw;
+  grid-auto-rows: 2.4vw;
+  overflow-y: auto;
+  padding: 0 4px 5px 0;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list .workflow_item {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #3d3d3d;
+  background: #262626;
+  border-radius: 0.3vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  padding: 0 1vw;
+  transition: 0.3s;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list .workflow_item .name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list .workflow_item .option {
+  display: none;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list .workflow_item .option em {
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 0.1vw;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list .workflow_item:hover {
+  background: #383838;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list .workflow_item:hover .option {
+  display: block;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.model_display .model_detail .workflow .workflow_content .workflow_list::-webkit-scrollbar-thumb:vertical {
+  border-radius: 20px;
+  background: #808080;
+}
+.model_display .model_detail .workflow .workflow_content .empty_list {
+  margin-top: 0.5vw;
+  flex: 1;
+}
+.model_display .model_detail .workflow .workflow_content button {
+  margin-top: 5px;
+  width: 100%;
+  height: 2.1vw;
+  border-radius: 0.3vw;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: #383838;
+  transition: 0.3s;
+  color: #ffffff;
+}
+.model_display .model_detail .workflow .workflow_content button:hover {
+  background: #2a82e4;
+}
+.model_display .model_detail .workflow .form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #181818a2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.model_display .model_detail .workflow .form .form_content {
+  width: 100%;
+  height: 13.9vw;
+  background: #1a1b1c;
+  border-radius: 0.5vw;
+  box-shadow: 0 0 5px 1px #60606084;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.model_display .model_detail .workflow .form .form_content p {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.model_display .model_detail .workflow .form .form_content .input_area {
+  margin: 1vw 0 2.2vw 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.model_display .model_detail .workflow .form .form_content .input_area input {
+  width: 18vw;
+  height: 1.6vw;
+  min-height: 32px;
+  color: #ffffff;
+  font-weight: bold;
+  background: #383838;
+  font-size: 1.2rem;
+  border-radius: 2vw;
+  padding: 0 0.7vw;
+}
+.model_display .model_detail .workflow .form .form_content .input_area .show_clear {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.model_display .model_detail .workflow .form .form_content .input_area .clear {
+  position: absolute;
+  right: -0.3vw;
+  transform: translateX(100%);
+  width: 1.6vw;
+  height: 1.6vw;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #383838;
+  opacity: 0;
+  visibility: hidden;
+}
+.model_display .model_detail .workflow .form .form_content .input_area .clear em {
+  font-size: 0.8rem;
+}
+.model_display .model_detail .workflow .form .form_content .input_area .clear:hover {
+  background: #ff5733;
+}
+.model_display .model_detail .workflow .form .form_content .button_group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .button_item {
+  height: 2.2vw;
+  min-height: 40px;
+  background: #383838;
+  transition: 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .button_item .icon {
+  width: 1.5vw;
+  height: 1.5vw;
+  min-height: 23px;
+  min-width: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .button_item .icon em {
+  font-size: 1rem;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .button_item .text {
+  font-size: 1rem;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .accept {
+  border-radius: 2vw 0 0 2vw;
+  padding: 0 1vw 0 0.5vw;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .accept .icon {
+  margin-right: 1.5vw;
+  background: #43cf7c;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .accept:hover {
+  background: #43cf7c;
+  color: #ffffff;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .accept:hover .icon {
+  background: #383838;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .refuse {
+  border-radius: 0 2vw 2vw 0;
+  padding: 0 0.5vw 0 1vw;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .refuse .icon {
+  margin-left: 1.5vw;
+  background: #ff5733;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .refuse:hover {
+  background: #ff5733;
+  color: #ffffff;
+}
+.model_display .model_detail .workflow .form .form_content .button_group .refuse:hover .icon {
+  background: #383838;
+}
+.model_display .model_detail .note {
+  padding: 0.5vw;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1f1f1f;
+  border-radius: 0.5vw;
+  margin-bottom: 0.3vw;
+}
+.model_display .model_detail .note .notes {
+  display: flex;
+  height: 50%;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 0.5vw;
+}
+.model_display .model_detail .note .notes .search_area {
+  position: relative;
+}
+.model_display .model_detail .note .notes .search_area .search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #383838;
+  height: 1.6vw;
+  min-height: 32px;
+  border-radius: 5px;
+}
+.model_display .model_detail .note .notes .search_area .search input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  border: none;
+  color: #c4c4c4;
+  padding: 0 0.5vw;
+}
+.model_display .model_detail .note .notes .search_area .search span {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.3vw;
+  height: 100%;
+  cursor: pointer;
+}
+.model_display .model_detail .note .notes .search_area .search span em {
+  color: #c4c4c4;
+}
+.model_display .model_detail .note .notes .search_area .search span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  width: 0.2vw;
+  height: 70%;
+  background: #1f1f1f;
+  border-radius: 1vw;
+}
+.model_display .model_detail .note .notes .search_area .search span:hover em {
+  color: #2a82e4;
+}
+.model_display .model_detail .note .notes .search_area .search_key {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 0;
+  top: 0;
+  height: 1.6vw;
+  min-height: 32px;
+  background: #808080;
+  border-radius: 5px;
+  padding: 0 0.5vw;
+  transition: 0.3s;
+}
+.model_display .model_detail .note .notes .search_area .search_key p {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.8rem;
+}
+.model_display .model_detail .note .notes .search_area:hover .search_key {
+  visibility: hidden;
+  opacity: 0;
+}
+.model_display .model_detail .note .notes .note_list {
+  margin-top: 0.5vw;
+  flex: 1;
+  grid-auto-rows: auto;
+  /* 让行高自动 */
+  overflow-y: auto;
+  padding: 0 4px 5px 0;
+}
+.model_display .model_detail .note .notes .note_list .note_item {
+  width: 100%;
+  margin-top: 0.3vw;
+  background: #262626;
+  border-radius: 0.3vw;
+  display: grid;
+  color: #ffffff;
+  padding: 0 1vw;
+  transition: 0.3s;
+  align-items: center;
+}
+.model_display .model_detail .note .notes .note_list .note_item .note_header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.3vw 0.1vw;
+  align-items: center;
+}
+.model_display .model_detail .note .notes .note_list .note_item .note_header .name {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.model_display .model_detail .note .notes .note_list .note_item .note_header .option {
+  display: none;
+}
+.model_display .model_detail .note .notes .note_list .note_item .note_header .option em {
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 0.1vw;
+}
+.model_display .model_detail .note .notes .note_list .note_item:hover {
+  background: #383838;
+}
+.model_display .model_detail .note .notes .note_list .note_item:hover .option {
+  display: block;
+}
+.model_display .model_detail .note .notes .note_list .note_item.selected {
+  background: #4a4a4a;
+  /* 高亮颜色 */
+  border-color: #ffffff;
+  /* 高亮边框颜色 */
+  height: auto;
+  /* 让高度自动适应内容，包括文本编辑框 */
+}
+.model_display .model_detail .note .notes .note_list .note_item .note-content-editor {
+  width: 100%;
+  height: auto;
+  padding: 0.5vw;
+  margin-top: 0.2vw;
+  margin-bottom: 0.5vw;
+  background: #3d3d3d;
+  color: #ffffff;
+  border-radius: 0.3vw;
+  resize: none;
+  /* 禁止调整文本框大小 */
+  box-sizing: border-box;
+  /* 确保内边距和边框包含在宽度和高度内 */
+  overflow: hidden;
+  /* 隐藏滚动条 */
+}
+.model_display .model_detail .note .notes .note_list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.model_display .model_detail .note .notes .note_list::-webkit-scrollbar-thumb:vertical {
+  border-radius: 20px;
+  background: #808080;
+}
+.model_display .model_detail .note .notes .empty_note {
+  margin-top: 0.5vw;
+  flex: 1;
+}
+.model_display .model_detail .note .notes button {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 2.1vw;
+  border-radius: 0.3vw;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: #383838;
+  transition: 0.3s;
+  color: #ffffff;
+}
+.model_display .model_detail .note .notes button:hover {
+  background: #2a82e4;
+}
+.model_display .model_detail .note .form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #181818a2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.model_display .model_detail .note .form .form_content {
+  width: 100%;
+  height: 13.9vw;
+  background: #1a1b1c;
+  border-radius: 0.5vw;
+  box-shadow: 0 0 5px 1px #60606084;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.model_display .model_detail .note .form .form_content p {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.model_display .model_detail .note .form .form_content .input_area {
+  margin: 1vw 0 2.2vw 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.model_display .model_detail .note .form .form_content .input_area input {
+  width: 18vw;
+  height: 1.6vw;
+  min-height: 32px;
+  color: #ffffff;
+  font-weight: bold;
+  background: #383838;
+  font-size: 1.2rem;
+  border-radius: 2vw;
+  padding: 0 0.7vw;
+}
+.model_display .model_detail .note .form .form_content .input_area .show_clear {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.model_display .model_detail .note .form .form_content .input_area .clear {
+  position: absolute;
+  right: -0.3vw;
+  transform: translateX(100%);
+  width: 1.6vw;
+  height: 1.6vw;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #383838;
+  opacity: 0;
+  visibility: hidden;
+}
+.model_display .model_detail .note .form .form_content .input_area .clear em {
+  font-size: 0.8rem;
+}
+.model_display .model_detail .note .form .form_content .input_area .clear:hover {
+  background: #ff5733;
+}
+.model_display .model_detail .note .form .form_content .button_group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.model_display .model_detail .note .form .form_content .button_group .button_item {
+  height: 2.2vw;
+  min-height: 40px;
+  background: #383838;
+  transition: 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.model_display .model_detail .note .form .form_content .button_group .button_item .icon {
+  width: 1.5vw;
+  height: 1.5vw;
+  min-height: 23px;
+  min-width: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+.model_display .model_detail .note .form .form_content .button_group .button_item .icon em {
+  font-size: 1rem;
+}
+.model_display .model_detail .note .form .form_content .button_group .button_item .text {
+  font-size: 1rem;
+}
+.model_display .model_detail .note .form .form_content .button_group .accept {
+  border-radius: 2vw 0 0 2vw;
+  padding: 0 1vw 0 0.5vw;
+}
+.model_display .model_detail .note .form .form_content .button_group .accept .icon {
+  margin-right: 1.5vw;
+  background: #43cf7c;
+}
+.model_display .model_detail .note .form .form_content .button_group .accept:hover {
+  background: #43cf7c;
+  color: #ffffff;
+}
+.model_display .model_detail .note .form .form_content .button_group .accept:hover .icon {
+  background: #383838;
+}
+.model_display .model_detail .note .form .form_content .button_group .refuse {
+  border-radius: 0 2vw 2vw 0;
+  padding: 0 0.5vw 0 1vw;
+}
+.model_display .model_detail .note .form .form_content .button_group .refuse .icon {
+  margin-left: 1.5vw;
+  background: #ff5733;
+}
+.model_display .model_detail .note .form .form_content .button_group .refuse:hover {
+  background: #ff5733;
+  color: #ffffff;
+}
+.model_display .model_detail .note .form .form_content .button_group .refuse:hover .icon {
+  background: #383838;
 }
 .model_display .model_detail .use_button {
   width: 100%;

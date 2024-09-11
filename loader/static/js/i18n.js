@@ -113,6 +113,9 @@ const message = {
           {
             name: "基本信息",
           },
+          {
+            name: "笔记",
+          }
         ],
         basicInf: {
           title: "基本信息",
@@ -124,12 +127,9 @@ const message = {
         workflow: {
           importText: "导入",
           copyText: "复制JSON",
-          copyNote: "复制笔记",
           delete: "删除",
           addWorkflowButtonText: "添加工作流",
-          addNoteButtonText: "添加笔记",
           noWorkflowTip: "未发现工作流，点击下面添加工作流按钮即可添加",
-          noNoteTip: "未发现笔记，点击下面添加笔记按钮即可添加",
           form: {
             title: "更改名称",
             confirmText: "确认",
@@ -148,6 +148,12 @@ const message = {
           importSuccess: "导入成功",
           importFail: "导入失败",
           importTimeout: "导入超时",
+        },
+        note: {
+          delete: "删除",
+          copyNote: "复制笔记",
+          addNoteButtonText: "添加笔记",
+          noNoteTip: "未发现笔记，点击下面添加笔记按钮即可添加",
           saveNoteSuccess: "保存笔记成功",
           saveNoteFail: "保存笔记失敗",
           saveNoteTimeout: "保存笔记超时",
@@ -157,6 +163,12 @@ const message = {
           deleteNoteSuccess: "刪除笔记成功",
           deleteNoteFail: "刪除笔记失敗",
           deleteNoteTimeout: "刪除笔记超时",
+          form: {
+            title: "更改名称",
+            confirmText: "确认",
+            cancelText: "取消",
+            placeholder: "请输入笔记名称(默认随机填充)",
+          },
         },
         useButtonText: "使用此模型",
       },
@@ -321,6 +333,9 @@ const message = {
           {
             name: "Basic information",
           },
+          {
+            name: "Notes"
+          }
         ],
         basicInf: {
           title: "Basic",
@@ -332,12 +347,9 @@ const message = {
         workflow: {
           importText: "import",
           copyText: "Copy JSON",
-          copyNote: "Copy note",
           delete: "Delete",
           addWorkflowButtonText: "Add workflow",
-          addNoteButtonText: "Add note",
           noWorkflowTip: "No workflow found, click the add workflow button below to add it",
-          noNoteTip: "No notes found, click the add note button below to add it",
           form: {
             title: "Change name",
             confirmText: "Confirm",
@@ -356,6 +368,12 @@ const message = {
           importSuccess: "Import success",
           importFail: "Import failed",
           importTimeout: "Import timeout",
+        },
+        note: {
+          delete: "Delete",
+          copyNote: "Copy note",
+          addNoteButtonText: "Add note",
+          noNoteTip: "No notes found, click the add note button below to add it",
           saveNoteSuccess: "Save note success",
           saveNoteFail: "Save note failed",
           saveNoteTimeout: "Save note timeout",
@@ -365,6 +383,12 @@ const message = {
           deleteNoteSuccess: "Delete note success",
           deleteNoteFail: "Delete note failed",
           deleteNoteTimeout: "Delete note timeout",
+          form: {
+            title: "Change name",
+            confirmText: "Confirm",
+            cancelText: "Cancel",
+            placeholder: "Rand note name default",
+          },
         },
         useButtonText: "Use model",
       },
@@ -529,6 +553,9 @@ const message = {
           {
             name: "基本信息",
           },
+          {
+            name: "備註",
+          }
         ],
         basicInf: {
           title: "基本信息",
@@ -541,12 +568,9 @@ const message = {
         workflow: {
           importText: "導入",
           copyText: "復製JSON",
-          copyNote: "復製備註",
           delete: "刪除",
           addWorkflowButtonText: "添加工作流",
-          addNoteButtonText: "添加備註",
           noWorkflowTip: "未發現工作流，點擊下面添加工作流按鈕即可添加",
-          noNoteTip: "未發現備註，點擊下面添加備註按鈕即可添加",
           form: {
             title: "更改名稱",
             confirmText: "确認",
@@ -565,6 +589,12 @@ const message = {
           importSuccess: "導入成功",
           importFail: "導入失敗",
           importTimeout: "導入超時",
+        },
+        note: {
+          delete: "刪除",
+          copyNote: "復製備註",
+          addNoteButtonText: "添加備註",
+          noNoteTip: "未發現備註，點擊下面添加備註按鈕即可添加",
           saveNoteSuccess: "保存備註成功",
           saveNoteFail: "保存備註失敗",
           saveNoteTimeout: "保存備註超時",
@@ -574,6 +604,12 @@ const message = {
           deleteNoteSuccess: "刪除備註成功",
           deleteNoteFail: "刪除備註失敗",
           deleteNoteTimeout: "刪除備註超時",
+          form: {
+            title: "更改名稱",
+            confirmText: "确認",
+            cancelText: "取消",
+            placeholder: "請輸入備註名稱(默认随机填充)",
+          },
         },
         useButtonText: "使用此模型",
       },

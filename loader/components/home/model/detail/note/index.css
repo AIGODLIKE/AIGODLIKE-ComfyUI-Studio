@@ -1,4 +1,4 @@
-.workflow {
+.note {
   padding: 0.5vw;
   flex: 1;
   display: flex;
@@ -8,16 +8,16 @@
   border-radius: 0.5vw;
   margin-bottom: 0.3vw;
 }
-.workflow .workflow_content {
+.note .notes {
   display: flex;
   height: 50%;
   flex-direction: column;
   flex: 1;
 }
-.workflow .workflow_content .search_area {
+.note .notes .search_area {
   position: relative;
 }
-.workflow .workflow_content .search_area .search {
+.note .notes .search_area .search {
   width: 100%;
   display: flex;
   align-items: center;
@@ -26,7 +26,7 @@
   min-height: 32px;
   border-radius: 5px;
 }
-.workflow .workflow_content .search_area .search input {
+.note .notes .search_area .search input {
   flex: 1;
   height: 100%;
   background: transparent;
@@ -35,7 +35,7 @@
   color: #c4c4c4;
   padding: 0 0.5vw;
 }
-.workflow .workflow_content .search_area .search span {
+.note .notes .search_area .search span {
   position: relative;
   display: flex;
   justify-content: center;
@@ -44,10 +44,10 @@
   height: 100%;
   cursor: pointer;
 }
-.workflow .workflow_content .search_area .search span em {
+.note .notes .search_area .search span em {
   color: #c4c4c4;
 }
-.workflow .workflow_content .search_area .search span::before {
+.note .notes .search_area .search span::before {
   content: "";
   position: absolute;
   left: 0;
@@ -58,10 +58,10 @@
   background: #1f1f1f;
   border-radius: 1vw;
 }
-.workflow .workflow_content .search_area .search span:hover em {
+.note .notes .search_area .search span:hover em {
   color: #2a82e4;
 }
-.workflow .workflow_content .search_area .search_key {
+.note .notes .search_area .search_key {
   width: 100%;
   position: absolute;
   display: flex;
@@ -75,70 +75,99 @@
   padding: 0 0.5vw;
   transition: 0.3s;
 }
-.workflow .workflow_content .search_area .search_key p {
+.note .notes .search_area .search_key p {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.8rem;
 }
-.workflow .workflow_content .search_area:hover .search_key {
+.note .notes .search_area:hover .search_key {
   visibility: hidden;
   opacity: 0;
 }
-.workflow .workflow_content .workflow_list {
+.note .notes .note_list {
   margin-top: 0.5vw;
   flex: 1;
-  display: grid;
-  grid-gap: 0.3vw;
-  grid-auto-rows: 2.4vw;
+  grid-auto-rows: auto;
+  /* 让行高自动 */
   overflow-y: auto;
   padding: 0 4px 5px 0;
 }
-.workflow .workflow_content .workflow_list .workflow_item {
+.note .notes .note_list .note_item {
   width: 100%;
-  height: 100%;
+  height: 2.4vw;
+  margin-bottom: 0.3vw;
   border: 1px solid #3d3d3d;
   background: #262626;
   border-radius: 0.3vw;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
   align-items: center;
   color: #ffffff;
   padding: 0 1vw;
   transition: 0.3s;
 }
-.workflow .workflow_content .workflow_list .workflow_item .name {
+.note .notes .note_list .note_item .note_header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.3vw 0.1vw;
+  align-items: center;
+}
+.note .notes .note_list .note_item .note_header .name {
   font-size: 1.1rem;
   font-weight: bold;
 }
-.workflow .workflow_content .workflow_list .workflow_item .option {
+.note .notes .note_list .note_item .note_header .option {
   display: none;
 }
-.workflow .workflow_content .workflow_list .workflow_item .option em {
+.note .notes .note_list .note_item .note_header .option em {
   font-size: 1.1rem;
   cursor: pointer;
   margin-left: 0.1vw;
 }
-.workflow .workflow_content .workflow_list .workflow_item:hover {
+.note .notes .note_list .note_item:hover {
   background: #383838;
 }
-.workflow .workflow_content .workflow_list .workflow_item:hover .option {
+.note .notes .note_list .note_item:hover .option {
   display: block;
 }
-.workflow .workflow_content .workflow_list::-webkit-scrollbar {
+.note .notes .note_list .note_item.selected {
+  background: #4a4a4a;
+  /* 高亮颜色 */
+  border-color: #ffffff;
+  /* 高亮边框颜色 */
+  height: auto;
+  /* 让高度自动适应内容，包括文本编辑框 */
+}
+.note .notes .note_list .note_item .note-content-editor {
+  width: 100%;
+  height: auto;
+  padding: 0.5vw;
+  margin-top: 0.2vw;
+  margin-bottom: 0.5vw;
+  background: #3d3d3d;
+  color: #ffffff;
+  border-radius: 0.3vw;
+  resize: none;
+  /* 禁止调整文本框大小 */
+  box-sizing: border-box;
+  /* 确保内边距和边框包含在宽度和高度内 */
+  overflow: hidden;
+  /* 隐藏滚动条 */
+}
+.note .notes .note_list::-webkit-scrollbar {
   width: 8px;
   background: transparent;
 }
-.workflow .workflow_content .workflow_list::-webkit-scrollbar-thumb:vertical {
+.note .notes .note_list::-webkit-scrollbar-thumb:vertical {
   border-radius: 20px;
   background: #808080;
 }
-.workflow .workflow_content .empty_list {
+.note .notes .empty_note {
   margin-top: 0.5vw;
   flex: 1;
 }
-.workflow .workflow_content button {
+.note .notes button {
   margin-top: 5px;
   width: 100%;
   height: 2.1vw;
@@ -149,10 +178,10 @@
   transition: 0.3s;
   color: #ffffff;
 }
-.workflow .workflow_content button:hover {
+.note .notes button:hover {
   background: #2a82e4;
 }
-.workflow .form {
+.note .form {
   position: fixed;
   top: 0;
   left: 0;
@@ -164,7 +193,7 @@
   justify-content: center;
   align-items: center;
 }
-.workflow .form .form_content {
+.note .form .form_content {
   width: 100%;
   height: 13.9vw;
   background: #1a1b1c;
@@ -176,17 +205,17 @@
   align-items: center;
   justify-content: center;
 }
-.workflow .form .form_content p {
+.note .form .form_content p {
   font-size: 1.3rem;
   font-weight: bold;
 }
-.workflow .form .form_content .input_area {
+.note .form .form_content .input_area {
   margin: 1vw 0 2.2vw 0;
   display: flex;
   align-items: center;
   position: relative;
 }
-.workflow .form .form_content .input_area input {
+.note .form .form_content .input_area input {
   width: 18vw;
   height: 1.6vw;
   min-height: 32px;
@@ -197,11 +226,11 @@
   border-radius: 2vw;
   padding: 0 0.7vw;
 }
-.workflow .form .form_content .input_area .show_clear {
+.note .form .form_content .input_area .show_clear {
   opacity: 1 !important;
   visibility: visible !important;
 }
-.workflow .form .form_content .input_area .clear {
+.note .form .form_content .input_area .clear {
   position: absolute;
   right: -0.3vw;
   transform: translateX(100%);
@@ -217,18 +246,18 @@
   opacity: 0;
   visibility: hidden;
 }
-.workflow .form .form_content .input_area .clear em {
+.note .form .form_content .input_area .clear em {
   font-size: 0.8rem;
 }
-.workflow .form .form_content .input_area .clear:hover {
+.note .form .form_content .input_area .clear:hover {
   background: #ff5733;
 }
-.workflow .form .form_content .button_group {
+.note .form .form_content .button_group {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.workflow .form .form_content .button_group .button_item {
+.note .form .form_content .button_group .button_item {
   height: 2.2vw;
   min-height: 40px;
   background: #383838;
@@ -239,7 +268,7 @@
   white-space: nowrap;
   cursor: pointer;
 }
-.workflow .form .form_content .button_group .button_item .icon {
+.note .form .form_content .button_group .button_item .icon {
   width: 1.5vw;
   height: 1.5vw;
   min-height: 23px;
@@ -250,39 +279,39 @@
   transition: 0.2s;
   border-radius: 50%;
 }
-.workflow .form .form_content .button_group .button_item .icon em {
+.note .form .form_content .button_group .button_item .icon em {
   font-size: 1rem;
 }
-.workflow .form .form_content .button_group .button_item .text {
+.note .form .form_content .button_group .button_item .text {
   font-size: 1rem;
 }
-.workflow .form .form_content .button_group .accept {
+.note .form .form_content .button_group .accept {
   border-radius: 2vw 0 0 2vw;
   padding: 0 1vw 0 0.5vw;
 }
-.workflow .form .form_content .button_group .accept .icon {
+.note .form .form_content .button_group .accept .icon {
   margin-right: 1.5vw;
   background: #43cf7c;
 }
-.workflow .form .form_content .button_group .accept:hover {
+.note .form .form_content .button_group .accept:hover {
   background: #43cf7c;
   color: #ffffff;
 }
-.workflow .form .form_content .button_group .accept:hover .icon {
+.note .form .form_content .button_group .accept:hover .icon {
   background: #383838;
 }
-.workflow .form .form_content .button_group .refuse {
+.note .form .form_content .button_group .refuse {
   border-radius: 0 2vw 2vw 0;
   padding: 0 0.5vw 0 1vw;
 }
-.workflow .form .form_content .button_group .refuse .icon {
+.note .form .form_content .button_group .refuse .icon {
   margin-left: 1.5vw;
   background: #ff5733;
 }
-.workflow .form .form_content .button_group .refuse:hover {
+.note .form .form_content .button_group .refuse:hover {
   background: #ff5733;
   color: #ffffff;
 }
-.workflow .form .form_content .button_group .refuse:hover .icon {
+.note .form .form_content .button_group .refuse:hover .icon {
   background: #383838;
 }
