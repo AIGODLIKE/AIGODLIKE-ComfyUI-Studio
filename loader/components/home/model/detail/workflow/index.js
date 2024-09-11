@@ -11,52 +11,7 @@ export default {
       note_selected: "",
       note_key: "",
       note_value: "",
-      notes: [
-        {
-          name: "Note1",
-          content: "This is a note",
-        },
-        {
-          name: "Note2",
-          content: "This is another note",
-        },
-        {
-          name: "Note3",
-          content: "This is a third note",
-        },
-        {
-          name: "Note4",
-          content: "This is a fourth note",
-        },
-        {
-          name: "Note5",
-          content: "This is a fifth note",
-        },
-        {
-          name: "Note6",
-          content: "This is a sixth note",
-        },
-        {
-          name: "Note7",
-          content: "This is a seventh note",
-        },
-        {
-          name: "Note8",
-          content: "This is an eighth note",
-        },
-        {
-          name: "Note9",
-          content: "This is a ninth note",
-        },
-        {
-          name: "Note10",
-          content: "This is a tenth note",
-        },
-        {
-          name: "Note11",
-          content: "This is an eleventh note",
-        }
-      ],
+      notes: [],
       isShowForm: false,
       saveType: "workflow",
     };
