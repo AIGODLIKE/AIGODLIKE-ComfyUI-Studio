@@ -213,6 +213,7 @@ class ModelManager:
 
 class ThumbnailManager:
     _code_map = {}
+    _path_code_map = {}
     _image_map = {}
     _image_time = {}
 
@@ -221,7 +222,8 @@ class ThumbnailManager:
         if path not in cls._image_map:
             code = md5(path.encode()).hexdigest()
             cls._code_map[code] = path
-        return cls._code_map.get(code, "")
+            cls._path_code_map[path] = code
+        return cls._path_code_map.get(path, "")
 
     @classmethod
     def get_path(cls, code: str) -> str:
