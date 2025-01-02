@@ -72,6 +72,9 @@ export default {
       textarea.style.height = 'auto'; // 先重置高度
       textarea.style.height = `${textarea.scrollHeight}px`; // 然后设置成内容的滚动高度
     },
+    cancelSelect(){
+      this.note_selected = null;
+    },
     saveNote(name) {
       // 随机生成
       if (!name) name = `note-${Math.random().toString(36).substring(2, 10)}`;
@@ -133,8 +136,8 @@ export default {
                   </div>
                 </div>
 
-                <div v-if="notes.length > 0 && filterNoteList.length > 0" class="note_list">
-                  <div v-for="(item,index) in filterNoteList" :key="index" :class="['note_item', { selected: item.name === note_selected }]" @click="selectNote(item)">
+                <div v-if="notes.length > 0 && filterNoteList.length > 0" class="note_list" @click="cancelSelect">
+                  <div v-for="(item,index) in filterNoteList" :key="index" :class="['note_item', { selected: item.name === note_selected }]" @click.stop="selectNote(item)">
                     <div class="note_header">
                       <span class="name">{{item.name}}</span>
                       <div class="option">

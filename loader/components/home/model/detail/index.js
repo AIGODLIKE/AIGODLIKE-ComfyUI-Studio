@@ -172,8 +172,8 @@ export default {
                 <div v-for="(item,index) in $t('home.modelDetail.menuTab')" :key="index" class="menu_item" :class="{'active_menu': index === menuIndex }" @click="changeMenu(index)">{{item.name}}</div>
               </div>
               <Workflow v-if="menuIndex === 0" :model="model" />
-              <BasicInf v-if="menuIndex === 1"  @addTag="addTag" @deleteTag="deleteTag" :model="model" />
-              <Note v-if="menuIndex === 2" :model="model" />
+              <Note v-if="menuIndex === 1" :model="model" />
+              <BasicInf v-if="menuIndex === 2"  @addTag="addTag" @deleteTag="deleteTag" :model="model" />
               <button class="use_button" @click="useModel">{{$t("home.modelDetail.useButtonText")}}</button>
           </div>
   `,

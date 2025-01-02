@@ -111,10 +111,10 @@ const message = {
             name: "工作流",
           },
           {
-            name: "基本信息",
+            name: "笔记",
           },
           {
-            name: "笔记",
+            name: "基本信息",
           }
         ],
         basicInf: {
@@ -331,10 +331,10 @@ const message = {
             name: "Workflow",
           },
           {
-            name: "Basic information",
+            name: "Notes"
           },
           {
-            name: "Notes"
+            name: "Basic information",
           }
         ],
         basicInf: {
@@ -551,10 +551,10 @@ const message = {
             name: "工作流",
           },
           {
-            name: "基本信息",
+            name: "備註",
           },
           {
-            name: "備註",
+            name: "基本信息",
           }
         ],
         basicInf: {
