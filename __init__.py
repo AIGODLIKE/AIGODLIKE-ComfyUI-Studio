@@ -441,6 +441,8 @@ async def fetch_config(request: web.Request):
             mcfg["workflows"] = workflows
         dir_tags = find_tags(name)
         if dir_tags:
+            if "tags" not in mcfg:
+                mcfg["tags"] = []
             mcfg["tags"].extend(dir_tags)
             mcfg["dir_tags"] = dir_tags
         # mcfg["cover"] = urllib.parse.quote(path_to_url(mcfg["cover"]))
