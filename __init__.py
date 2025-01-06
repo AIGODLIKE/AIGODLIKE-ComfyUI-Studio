@@ -826,13 +826,13 @@ def add_static_resource(prefix, path, pprefix=MOUNT_ROOT, limit=False):
 
 
 def init():
-    modelpath_map = ModelManager.model_path_dict()
-    for mtype in modelpath_map:
-        for path in modelpath_map[mtype][0]:
-            if not Path(path).exists():
-                continue
-            add_static_resource(path, path, "", limit=True)
-    add_static_resource("", CUR_PATH.as_posix())
+    # modelpath_map = ModelManager.model_path_dict()
+    # for mtype in modelpath_map:
+    #     for path in modelpath_map[mtype][0]:
+    #         if not Path(path).exists():
+    #             continue
+    #         add_static_resource(path, path, "", limit=True)
+    add_static_resource("", CUR_PATH.joinpath("loader").as_posix(), pprefix="/cs/loader")
 
 
 init()
