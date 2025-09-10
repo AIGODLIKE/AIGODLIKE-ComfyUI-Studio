@@ -42,14 +42,14 @@ export default {
     },
   },
   mounted() {
-    const language = localStorage.getItem("language") || "cn";
     this.columnIndex = JSON.parse(localStorage.getItem("columnIndex"));
     if (typeof this.columnIndex !== "number") {
       this.columnIndex = 3;
     }
     this.column = this.$t("home.head.sizeList")[this.columnIndex].value;
-    this.$i18n.locale = language;
-    this.$store.commit("config/updateLanguage", language);
+    this.$i18n.locale = this.$store.state.config.language;
+    this.$store.commit("config/updateShortcut", this.$store.state.config.shortcut);
+    this.$store.commit("config/updateWindowing", this.$store.state.config.windowing);
     this.isLoading = false;
   },
   methods: {
