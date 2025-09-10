@@ -77,6 +77,10 @@ CFG_MANAGER = ConfigManager()
 
 
 class ModelManager:
+    MODEL_ALIAS = {
+        "unet": ["diffusion_models"],
+    }
+
     @staticmethod
     def model_path_dict() -> dict[str, tuple[list[str], set[str]]]:
         cfg_example = {
@@ -111,6 +115,13 @@ class ModelManager:
 
     @staticmethod
     def model_config(mtype: str):
+        mtypes = [mtype.lower(), *ModelManager.MODEL_ALIAS.get(mtype.lower(), [])]
+        configs = ModelManager.model_path_dict()
+        for t in mtypes:
+            cfg = configs.get(t, None)
+            if cfg:
+                return cfg
+        return [[], {}]
         return ModelManager.model_path_dict().get(mtype.lower(), [[], {}])
 
     @staticmethod
