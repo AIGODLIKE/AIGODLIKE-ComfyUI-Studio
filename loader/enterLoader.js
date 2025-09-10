@@ -140,32 +140,6 @@ const ext = {
     styleInit();
     popUpReg();
   },
-  async setup(app) {},
-  async addCustomNodeDefs(defs, app) {
-    // Add custom node definitions
-    // These definitions will be configured and registered automatically
-    // defs is a lookup core nodes, add yours into this
-    // console.log("[logging]", "add custom node definitions", "current nodes:", Object.keys(defs));
-  },
-  async getCustomWidgets(app) {
-    // Return custom widget types
-    // See ComfyWidgets for widget examples
-    // console.log("[logging]", "provide custom widgets");
-  },
-  async beforeRegisterNodeDef(nodeType, nodeData, app) {
-    // Run custom logic before a node definition is registered with the graph
-    // console.log("[logging]", "before register node: ", nodeType.comfyClass);
-    // This fires for every node definition so only log once
-    // applyNodeTranslationDef(nodeType, nodeData);
-    // delete ext.beforeRegisterNodeDef;
-  },
-  async registerCustomNodes(app) {
-    // Register any custom node implementations here allowing for more flexability than a custom node def
-    // console.log("[logging]", "register custom nodes");
-  },
-  loadedGraphNode(node, app) {
-    // registerCallBack(node);
-  },
   nodeCreated(node, app) {
     registerCallBack(node);
   },
