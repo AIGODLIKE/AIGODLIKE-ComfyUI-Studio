@@ -131,6 +131,45 @@ function popUpReg() {
     return f.call(this, node, pos, event, active_widget);
   }
   LGraphCanvas.prototype.processNodeWidgets = processNodeWidgets;
+  let fff = app.canvas.onMouse;
+  function onMouse(event) {
+    var w = this.pointer.element.data.getWidgetAtCursor();
+    var node = this.pointer.element.data.current_node;
+    var shortcut = window.CSvm?.$store.state.config.shortcut || "click";
+    if (shouldPopUp(event, shortcut)) {
+      if (!node.widgets || !node.widgets.length || (!this.allow_interaction && !node.flags.allow_interaction)) {
+        return fff ? fff.call(this, event) : false;
+      }
+      // 仅枚举
+      if (!w || w.disabled || w.type !== "combo") {
+        return fff ? fff.call(this, event) : false;
+      }
+      const default_name2type = {
+        ckpt_name: "checkpoints",
+        vae_name: "vae",
+        clip_name: "clip",
+        gligen_name: "gligen",
+        control_net_name: "controlnet",
+        lora_name: "loras",
+        style_model_name: "style_models",
+        hypernetwork_name: "hypernetworks",
+        unet_name: "unets",
+      };
+      if (node.CSnative || default_name2type[w.name]) {
+        let page = loadPage();
+        page.style.display = "block";
+        window.CSvm.node = node;
+        window.CSvm.entryWidget = w.name;
+        if (!window.CSvm.renderer) {
+          window.CSvm.renderer = new IconRenderer();
+        }
+        page.focus();
+        return true;
+      }
+    }
+    return fff ? fff.call(this, event) : false;
+  }
+  app.canvas.onMouse = onMouse;
 }
 
 const ext = {
