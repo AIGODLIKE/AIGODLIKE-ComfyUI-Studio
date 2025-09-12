@@ -134,7 +134,7 @@ function popUpReg() {
   let fff = app.canvas.onMouse;
   function onMouse(event) {
     var w = this.pointer.element.data.getWidgetAtCursor();
-    var node = this.pointer.element.data.current_node;
+    var node = this.graph.getNodeOnPos(event.canvasX, event.canvasY, this.visible_nodes);
     var shortcut = window.CSvm?.$store.state.config.shortcut || "click";
     if (shouldPopUp(event, shortcut)) {
       if (!node.widgets || !node.widgets.length || (!this.allow_interaction && !node.flags.allow_interaction)) {
