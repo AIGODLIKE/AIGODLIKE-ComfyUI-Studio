@@ -79,6 +79,7 @@ CFG_MANAGER = ConfigManager()
 class ModelManager:
     MODEL_ALIAS = {
         "unet": ["diffusion_models"],
+        "clip": ["text_encoders"],
     }
 
     @staticmethod
